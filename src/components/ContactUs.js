@@ -1,25 +1,19 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, I18nManager, Linking, Platform, Dimensions, ImageBackground, Animated,} from "react-native";
-import {Container, Content, Icon, Header, List, ListItem, Left, Button, Item, Input, Right} from 'native-base'
+import {View, Text, Image, ImageBackground} from "react-native";
+import {Container, Content, Icon, Header, Left, Button, Body, Title} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
-import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
-import Communications from 'react-native-communications';
+import {DoubleBounce} from "react-native-loader";
+import { getContactUs } from '../actions'
 import * as Animatable from 'react-native-animatable';
-import {getContactUs} from "../actions";
-import contactUs from "../reducers/ContactUsReducer";
-
-const height = Dimensions.get('window').height;
-
 
 class ContactUs extends Component {
     constructor(props){
         super(props);
 
         this.state={
-            status: null,
+            status              : null,
         }
     }
 
@@ -31,8 +25,8 @@ class ContactUs extends Component {
     renderLoader(){
         if (this.props.loader){
             return(
-                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
-                    <DoubleBounce size={20} color={COLORS.labelBackground} />
+                <View style={[styles.loading, styles.flexCenter]}>
+                    <DoubleBounce size={20} />
                 </View>
             );
         }
@@ -42,22 +36,28 @@ class ContactUs extends Component {
 
         return (
             <Container>
-                <Header style={[styles.header , styles.plateformMarginTop]} noShadow>
-                    <Animated.View style={[styles.headerView  , styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
-                        <Right style={styles.flex0}>
-                            <Button transparent onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
-                                <Icon type={'FontAwesome'} name={'angle-right'} style={[styles.transform, styles.rightHeaderIcon]} />
-                            </Button>
-                        </Right>
-                        <Text style={[styles.headerText , styles.headerTitle]}>{ i18n.t('contactUs') }</Text>
-                        <Left style={styles.flex0}/>
-                    </Animated.View>
+                { this.renderLoader() }
+                <Header style={styles.headerView}>
+                    <Left style={styles.leftIcon}>
+                        <Button style={styles.Button} transparent onPress={() => this.props.navigation.goBack()}>
+                            <Icon style={[styles.text_black, styles.textSize_22]} type="AntDesign" name='right' />
+                        </Button>
+                    </Left>
+                    <Body style={styles.bodyText}>
+                        <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>{ i18n.t('about') }</Title>
+                    </Body>
                 </Header>
-                <Content  contentContainerStyle={styles.flexGrow} style={[styles.homecontent ]}  onScroll={e => this.headerScrollingAnimation(e) }>
-                    { this.renderLoader() }
-                    {/*<ImageBackground source={require('../../assets/images/contact_bg.png')} resizeMode={'cover'} style={styles.imageBackground}>*/}
-
-                    {/*</ImageBackground>*/}
+                <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
+                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
+                        <View style={[styles.Border, styles.marginVertical_10, styles.rowGroup]}>
+                            <View style={[styles.bg_turquoise, styles.iconImg]}>
+                                <Icon style={[styles.text_black, styles.textSize_22]} type="Feather" name='user' />
+                            </View>
+                            <Text style={[styles.textRegular , styles.text_black, styles.textCenter, styles.Width_100, styles.marginVertical_15]}>
+                                { this.props.name }
+                            </Text>
+                        </View>
+                    </ImageBackground>
                 </Content>
             </Container>
 
@@ -65,14 +65,14 @@ class ContactUs extends Component {
     }
 }
 
-
 const mapStateToProps = ({ lang , contactUs }) => {
     return {
-        lang            : lang.lang,
-        phone           : contactUs.phone,
-        mail            : contactUs.mail,
-        socials         : contactUs.socials,
-        loader          : contactUs.loader
+        lang        : lang.lang,
+        name        : contactUs.name,
+        phone       : contactUs.phone,
+        address     : contactUs.address,
+        socials     : contactUs.socials,
+        loader      : contactUs.loader
     };
 };
 export default connect(mapStateToProps, {getContactUs})(ContactUs);

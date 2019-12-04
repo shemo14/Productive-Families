@@ -14,6 +14,12 @@ import InitScreen           from "../components/InitScreen";
 
 
 const appStack =  createStackNavigator({
+    home: {
+        screen: Home,
+        navigationOptions: {
+            header: null
+        }
+    },
     Terms: {
         screen: Terms,
         navigationOptions: {
@@ -28,12 +34,6 @@ const appStack =  createStackNavigator({
     },
     aboutApp: {
         screen: AboutApp,
-        navigationOptions: {
-            header: null
-        }
-    },
-    home: {
-        screen: Home,
         navigationOptions: {
             header: null
         }

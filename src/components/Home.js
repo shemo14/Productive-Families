@@ -63,10 +63,10 @@ class Home extends Component {
                     </Body>
                     <Right style={styles.rightIcon}>
                         <Button style={[styles.text_gray]} transparent>
-                            <Icon style={[styles.text_darkGreen, styles.textSize_22]} type="Ionicons" name='md-notifications-outline' />
+                            <Icon style={[styles.text_black, styles.textSize_22]} type="Ionicons" name='md-notifications-outline' />
                         </Button>
                         <Button style={[styles.text_gray]} transparent>
-                            <Icon style={[styles.text_darkGreen, styles.textSize_22]} type="SimpleLineIcons" name='basket' />
+                            <Icon style={[styles.text_black, styles.textSize_22]} type="SimpleLineIcons" name='basket' />
                         </Button>
                     </Right>
                 </Header>
@@ -76,17 +76,17 @@ class Home extends Component {
 
                         <View style={styles.viewBlock}>
                             <Swiper
-                                containerStyle      = {[styles.Width_90, styles.marginVertical_15, styles.swiper, styles.viewBlock]}
+                                containerStyle      = {[styles.Width_95, styles.marginVertical_15, styles.swiper, styles.viewBlock]}
                                 autoplay            = {true}
-                                paginationStyle     = {{ alignSelf : "flex-end", paddingHorizontal : 30 , position:  'absolute',transform : [{ rotate: '90deg' }] , right : -330, zIndex: 999}}
-                                dotStyle            = {{ backgroundColor: '#fff' }}
+                                paginationStyle     = {[styles.paginationStyle]}
+                                dotStyle            = {[styles.bg_lightWhite]}
                                 activeDotStyle      = {{ backgroundColor: '#F00', width: 20,}}
                                 animated            = {true}
                                 loop                = {true}
                                 autoplayTimeout     = { 2 }
                             >
                                 <View style={[styles.viewBlock]}>
-                                    <Image style={[styles.Width_90, styles.swiper]} source={require('../../assets/images/img_product.png')} resizeMode={'cover'}/>
+                                    <Image style={[styles.Width_95, styles.swiper]} source={require('../../assets/images/img_product.png')} resizeMode={'cover'}/>
                                     <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
                                         <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
                                             <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head"> آهلا بك </Text>
@@ -96,7 +96,7 @@ class Home extends Component {
                                     </Animatable.View>
                                 </View>
                                 <View style={[styles.viewBlock]}>
-                                    <Image style={[styles.Width_90, styles.swiper]} source={require('../../assets/images/img_two.png')} resizeMode={'cover'}/>
+                                    <Image style={[styles.Width_95, styles.swiper]} source={require('../../assets/images/img_two.png')} resizeMode={'cover'}/>
                                     <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
                                         <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
                                             <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head"> آهلا بك </Text>
@@ -106,7 +106,7 @@ class Home extends Component {
                                     </Animatable.View>
                                 </View>
                                 <View style={[styles.viewBlock]}>
-                                    <Image style={[styles.Width_90, styles.swiper]} source={require('../../assets/images/img_three.png')} resizeMode={'cover'}/>
+                                    <Image style={[styles.Width_95, styles.swiper]} source={require('../../assets/images/img_three.png')} resizeMode={'cover'}/>
                                     <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
                                         <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
                                             <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head"> آهلا بك </Text>

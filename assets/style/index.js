@@ -391,6 +391,9 @@ const styles = ({
     Width_90 : {
         width               : '90%'
     },
+    Width_95 : {
+        width               : '95%'
+    },
     Width_100 : {
         width               : '100%'
     },
@@ -633,7 +636,7 @@ const styles = ({
     // Style Swiper
 
     swiper : {
-        height                  : 220,
+        height                  : 200,
     },
     viewBlock : {
         position                :  "relative",
@@ -644,6 +647,14 @@ const styles = ({
         left                    : 0,
         top                     : 40,
         backgroundColor         : "rgba(0,0,0,0.5)",
+    },
+    paginationStyle : {
+        alignSelf               : "flex-end",
+        paddingHorizontal       : 30 ,
+        position                : 'absolute',
+        transform               : [{ rotate: '90deg' }] ,
+        right                   : -330,
+        zIndex                  : 999
     }
 
 
