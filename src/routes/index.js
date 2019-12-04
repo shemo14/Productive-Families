@@ -13,14 +13,14 @@ import InitScreen from "../components/InitScreen";
 
 
 const appStack =  createStackNavigator({
-    aboutApp: {
-        screen: AboutApp,
+    home: {
+        screen: Home,
         navigationOptions: {
             header: null
         }
     },
-    home: {
-        screen: Home,
+    aboutApp: {
+        screen: AboutApp,
         navigationOptions: {
             header: null
         }

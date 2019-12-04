@@ -706,6 +706,19 @@ const styles = ({
         height                  : '100%',
         zIndex                  :  99999,
         backgroundColor         : "rgba(0,0,0,0.5)",
+    },
+    swiper : {
+        height                  : 220,
+    },
+    viewBlock : {
+        position                :  "relative",
+    },
+    blockContent : {
+        position                : 'absolute',
+        zIndex                  : 999,
+        left                    : 0,
+        top                     : 40,
+        backgroundColor         : "rgba(0,0,0,0.5)",
     }
 
 

@@ -41,11 +41,11 @@ class AboutApp extends Component {
                 <Header style={styles.headerView}>
                     <Left style={styles.leftIcon}>
                         <Button style={styles.Button} transparent onPress={() => this.props.navigation.goBack()}>
-                            <Icon style={[styles.text_darkGreen, styles.textSize_22]} type="AntDesign" name='arrowright' />
+                            <Icon style={[styles.text_darkGreen, styles.textSize_22]} type="AntDesign" name='right' />
                         </Button>
                     </Left>
                     <Body style={styles.bodyText}>
-                        <Title style={[styles.textRegular , styles.text_darkGreen, styles.textSize_20]}>{i18n.translate('about')}</Title>
+                        <Title style={[styles.textRegular , styles.text_darkGreen, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>{i18n.translate('about')}</Title>
                     </Body>
                 </Header>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
