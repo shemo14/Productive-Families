@@ -5,6 +5,7 @@ import profile from './ProfileReducer';
 import aboutApp from './AboutAppReducer';
 import contactUs from './ContactUsReducer';
 import faq from './FaqReducer';
+import terms from './TermsReducer';
 
 export default combineReducers({
     lang,
@@ -13,5 +14,6 @@ export default combineReducers({
     aboutApp,
     contactUs,
     faq,
+    terms
 });
 

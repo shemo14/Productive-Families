@@ -2,16 +2,14 @@ import axios from "axios";
 import CONST from "../consts";
 
 
-export const getFaq = lang => {
+export const getTerms = lang => {
     return (dispatch) => {
-
         axios({
-            url         : CONST.url + 'faqs',
+            url         : CONST.url + 'app-terms',
             method      : 'POST',
             data        : { lang }
         }).then(response => {
-            dispatch({type: 'getFaq', payload: response.data})
-        })
-
+            dispatch({type: 'getTerms', payload: response.data});
+        });
     }
 };

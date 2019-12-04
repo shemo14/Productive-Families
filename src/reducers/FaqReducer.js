@@ -4,8 +4,8 @@ export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case 'getFaq':{
             return {
-                ques: action.payload.data,
-                loader: action.payload.status == 200 ? false : true
+                ques        : action.payload.data,
+                loader      : action.payload.key === 1 ? false : true
             };
         }
 

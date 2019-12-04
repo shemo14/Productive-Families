@@ -1,15 +1,12 @@
 import React, { Component } from "react";
-import {View, Text, Image, Dimensions, ImageBackground, Animated, I18nManager,} from "react-native";
-import {Container, Content, Icon, Header,Left, Button, Right} from 'native-base'
+import {View, Text, Image, ImageBackground} from "react-native";
+import {Container, Content, Icon, Header, Left, Button, Body, Title} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
-import COLORS from '../../src/consts/colors'
 import {connect} from "react-redux";
 import {DoubleBounce} from "react-native-loader";
-import { getAboutApp } from '../actions'
+import { getTerms } from '../actions'
 import * as Animatable from 'react-native-animatable';
-import aboutApp from "../reducers/AboutAppReducer";
-
 
 class Terms extends Component {
     constructor(props){
@@ -22,14 +19,14 @@ class Terms extends Component {
 
 
     componentWillMount() {
-        this.props.getAboutApp( this.props.lang )
+        this.props.getTerms( this.props.lang )
     }
 
     renderLoader(){
         if (this.props.loader){
             return(
-                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
-                    <DoubleBounce size={20} color={COLORS.labelBackground} />
+                <View style={[styles.loading, styles.flexCenter]}>
+                    <DoubleBounce size={20} />
                 </View>
             );
         }
@@ -39,22 +36,37 @@ class Terms extends Component {
 
         return (
             <Container>
-                <Header style={[styles.header , styles.plateformMarginTop]} noShadow>
-                    <Animated.View style={[styles.headerView  , styles.animatedHeader ,{ backgroundColor: backgroundColor}]}>
-                        <Right style={styles.flex0}>
-                            <Button transparent onPress={() => this.props.navigation.goBack()} style={styles.headerBtn}>
-                                <Icon type={'FontAwesome'} name={'angle-right'} style={[styles.transform, styles.rightHeaderIcon]} />
-                            </Button>
-                        </Right>
-                        <Text style={[styles.headerText , styles.headerTitle]}>{ i18n.t('aboutApp') }</Text>
-                        <Left style={styles.flex0}/>
-                    </Animated.View>
+                { this.renderLoader() }
+                <Header style={styles.headerView}>
+                    <Left style={styles.leftIcon}>
+                        <Button style={styles.Button} transparent onPress={() => this.props.navigation.goBack()}>
+                            <Icon style={[styles.text_black, styles.textSize_22]} type="AntDesign" name='right' />
+                        </Button>
+                    </Left>
+                    <Body style={styles.bodyText}>
+                        <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
+                            { i18n.t('terms') }
+                        </Title>
+                    </Body>
                 </Header>
-                <Content  contentContainerStyle={styles.flexGrow} style={[styles.homecontent ]} onScroll={e => this.headerScrollingAnimation(e) }>
-                    { this.renderLoader() }
-                    {/*<ImageBackground source={require('../../assets/images/about_bg.png')} resizeMode={'cover'} style={styles.imageBackground}>*/}
-
-                    {/*</ImageBackground>*/}
+                <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
+                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
+                        <View style={[styles.position_R, styles.bgFullWidth, styles.Width_90, styles.marginVertical_15, styles.SelfCenter]}>
+                            <View style={[styles.lightOverlay, styles.Border]}></View>
+                            <View style={[styles.position_R, styles.Width_100, styles.overHidden, styles.bg_White, styles.Border,styles.bgFullWidth,]}>
+                                <Animatable.View animation="fadeInDown" easing="ease-out" delay={500} style={[styles.flexCenter]}>
+                                    <Image style={[styles.icoImage]} source={require('../../assets/images/logo.png')}/>
+                                </Animatable.View>
+                                <View style={[styles.overHidden]}>
+                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500}>
+                                        <Text style={[styles.textRegular , styles.text_black, styles.textCenter, styles.Width_100, styles.marginVertical_15]}>
+                                            { this.props.Terms }
+                                        </Text>
+                                    </Animatable.View>
+                                </View>
+                            </View>
+                        </View>
+                    </ImageBackground>
                 </Content>
             </Container>
 
@@ -62,11 +74,11 @@ class Terms extends Component {
     }
 }
 
-const mapStateToProps = ({ lang, aboutApp }) => {
+const mapStateToProps = ({ lang, terms }) => {
     return {
         lang        : lang.lang,
-        aboutApp    : aboutApp.aboutApp,
-        loader      : aboutApp.loader
+        Terms       : terms.Terms,
+        loader      : terms.loader
     };
 };
-export default connect(mapStateToProps, { getAboutApp })(Terms);
+export default connect(mapStateToProps, { getTerms })(Terms);

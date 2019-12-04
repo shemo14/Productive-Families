@@ -4,15 +4,28 @@ import { createStackNavigator} from "react-navigation-stack";
 
 
 
-import Login from '../components/Login'
-import Home from '../components/Home'
-import AboutApp from "../components/AboutApp";
-import Faq from "../components/Faq";
-import ContactUs from "../components/ContactUs";
-import InitScreen from "../components/InitScreen";
+import Login                from '../components/Login'
+import Home                 from '../components/Home'
+import AboutApp             from "../components/AboutApp";
+import Faq                  from "../components/Faq";
+import ContactUs            from "../components/ContactUs";
+import Terms                from "../components/Terms";
+import InitScreen           from "../components/InitScreen";
 
 
 const appStack =  createStackNavigator({
+    Terms: {
+        screen: Terms,
+        navigationOptions: {
+            header: null
+        }
+    },
+    faq: {
+        screen: Faq,
+        navigationOptions: {
+            header: null
+        }
+    },
     aboutApp: {
         screen: AboutApp,
         navigationOptions: {
@@ -21,12 +34,6 @@ const appStack =  createStackNavigator({
     },
     home: {
         screen: Home,
-        navigationOptions: {
-            header: null
-        }
-    },
-    faq: {
-        screen: Faq,
         navigationOptions: {
             header: null
         }

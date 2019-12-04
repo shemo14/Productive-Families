@@ -183,6 +183,7 @@ const en = {
     'laor'                      : 'Number of professional workers',
     'corcial'                   : 'Commercial Registration',
     'city'                      : 'city',
+    'FAQs'                      : 'FAQs',
 };
 
 export default en;

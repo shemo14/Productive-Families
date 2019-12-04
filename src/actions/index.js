@@ -4,3 +4,4 @@ export * from './ProfileAction';
 export * from './AboutAppAction';
 export * from './ContactUsAction';
 export * from './FaqAction';
+export * from './TermsAction';

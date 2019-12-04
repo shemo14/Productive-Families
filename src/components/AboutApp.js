@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import {View, Text, Image, Dimensions, ImageBackground, Animated, I18nManager,} from "react-native";
-import {Container, Content, Icon, Header, Left, Button, Right, Body, Title} from 'native-base'
+import {View, Text, Image, ImageBackground} from "react-native";
+import {Container, Content, Icon, Header, Left, Button, Body, Title} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
 import {connect} from "react-redux";
 import {DoubleBounce} from "react-native-loader";
 import { getAboutApp } from '../actions'
 import * as Animatable from 'react-native-animatable';
-import aboutApp from "../reducers/AboutAppReducer";
 
 class AboutApp extends Component {
     constructor(props){

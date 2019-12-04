@@ -575,7 +575,7 @@ const styles = ({
         position            : 'relative',
         alignItems          : 'center',
         flex                : 1,
-        top                 : -2
+        top                 : -1
     },
     leftIcon : {
         flex                : 0,
