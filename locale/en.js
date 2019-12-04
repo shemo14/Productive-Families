@@ -22,7 +22,7 @@ const en = {
     'donSent'                   : 'I didnt receive the code',
     'home'                      : 'home',
     'chickSearch'               : 'Refine your search',
-    'about'                     : 'About society',
+    'about'                     : 'about app',
     'Cases'                     : 'Cases',
     'tarAsso'                   : 'Tarif Charity Association Statistics',
     'status'                    : 'status',

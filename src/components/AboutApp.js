@@ -41,20 +41,30 @@ class AboutApp extends Component {
                 <Header style={styles.headerView}>
                     <Left style={styles.leftIcon}>
                         <Button style={styles.Button} transparent onPress={() => this.props.navigation.goBack()}>
-                            <Icon style={[styles.text_darkGreen, styles.textSize_22]} type="AntDesign" name='right' />
+                            <Icon style={[styles.text_black, styles.textSize_22]} type="AntDesign" name='right' />
                         </Button>
                     </Left>
                     <Body style={styles.bodyText}>
-                        <Title style={[styles.textRegular , styles.text_darkGreen, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>{i18n.translate('about')}</Title>
+                        <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>{ i18n.t('about') }</Title>
                     </Body>
                 </Header>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
-                    <ImageBackground source={require('../../assets/images/background.png')} style={[styles.bgFullWidth]}>
-                        <View>
-                            <Text>
-                                { this.props.aboutApp }
-                            </Text>
-                        </View>
+                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
+                       <View style={[styles.position_R, styles.bgFullWidth, styles.Width_90, styles.marginVertical_15, styles.SelfCenter]}>
+                           <View style={[styles.lightOverlay, styles.Border]}></View>
+                           <View style={[styles.position_R, styles.Width_100, styles.overHidden, styles.bg_White, styles.Border,styles.bgFullWidth,]}>
+                               <Animatable.View animation="fadeInDown" easing="ease-out" delay={500} style={[styles.flexCenter]}>
+                                   <Image style={[styles.icoImage]} source={require('../../assets/images/logo.png')}/>
+                               </Animatable.View>
+                               <View style={[styles.overHidden]}>
+                                   <Animatable.View animation="fadeInRight" easing="ease-out" delay={500}>
+                                       <Text style={[styles.textRegular , styles.text_black, styles.textCenter, styles.Width_100, styles.marginVertical_15]}>
+                                           { this.props.aboutApp }
+                                       </Text>
+                                   </Animatable.View>
+                               </View>
+                           </View>
+                       </View>
                     </ImageBackground>
                 </Content>
             </Container>

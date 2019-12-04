@@ -55,11 +55,11 @@ class Home extends Component {
                 <Header style={styles.headerView}>
                     <Left style={styles.leftIcon}>
                         <Button style={styles.Button} transparent onPress={() => this.props.navigation.goBack()}>
-                            <Icon style={[styles.text_darkGreen, styles.textSize_22]} type="SimpleLineIcons" name='menu' />
+                            <Icon style={[styles.text_black, styles.textSize_22]} type="SimpleLineIcons" name='menu' />
                         </Button>
                     </Left>
                     <Body style={styles.bodyText}>
-                        <Title style={[styles.textRegular , styles.text_darkGreen, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>الرئيسيه</Title>
+                        <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>الرئيسيه</Title>
                     </Body>
                     <Right style={styles.rightIcon}>
                         <Button style={[styles.text_gray]} transparent>

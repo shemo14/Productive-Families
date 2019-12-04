@@ -8,23 +8,11 @@ const styles = ({
 
     // Style Color ConText
 
-    text_darkGreen : {
-        color               : COLORS.darkGreen
-    },
-    text_lightGreen : {
-        color               : COLORS.lightGreen
-    },
     text_yellow : {
         color               : COLORS.yellow
     },
-    text_orange : {
-        color               : COLORS.orange
-    },
     text_red : {
         color               : COLORS.red
-    },
-    text_turquoise : {
-        color               : COLORS.turquoise
     },
     text_brown : {
         color               : COLORS.brown
@@ -40,6 +28,21 @@ const styles = ({
     },
     text_toby : {
         color               : COLORS.toby
+    },
+    text_orange : {
+        color               : COLORS.orange
+    },
+    text_light_oran : {
+        color               : COLORS.light_oran
+    },
+    text_black : {
+        color               : COLORS.black
+    },
+    text_bold_gray : {
+        color               : COLORS.bold_gray
+    },
+    text_light_gray : {
+        color               : COLORS.light_gray
     },
     text_White : {
         color               : '#FFF'
@@ -272,7 +275,7 @@ const styles = ({
 
     Border : {
       borderWidth           : 1,
-      borderColor           : COLORS.darkGreen
+      borderColor           : COLORS.lightWhite
     },
 
     // Style Shadow
@@ -554,12 +557,6 @@ const styles = ({
 
     // Style Language
 
-    clickLang : {
-        width               : 90,
-        height              : 90,
-        borderWidth         : 1,
-        borderColor         : COLORS.darkGreen
-    },
 
     //  Style Header
 
@@ -577,7 +574,8 @@ const styles = ({
     bodyText : {
         position            : 'relative',
         alignItems          : 'center',
-        flex                : 1
+        flex                : 1,
+        top                 : -2
     },
     leftIcon : {
         flex                : 0,
@@ -587,117 +585,41 @@ const styles = ({
         flex                : 0
     },
 
-    // Style Tabs
+    // Style position
 
-    view_Footer : {
-        height                  : 50,
-        borderTopLeftRadius     : 20,
-        borderTopRightRadius    : 20,
-        borderTopWidth          : 0,
-        backgroundColor         : "#FFF",
-        shadowColor             : "#363636",
-        shadowOffset            : { width: 0, height: 1},
-        shadowOpacity           : 0.22,
-        shadowRadius            : 2.22,
-        elevation               : 3,
+    position_R : {
+        position                : 'relative',
+        zIndex                  : 999
     },
-    footer_Tab  : {
-        height                  : 50,
-        borderTopLeftRadius     : 20,
-        borderTopRightRadius    : 20,
-        borderTopWidth          : 0,
-        backgroundColor         : "#FFF",
-        // shadowColor             : "#363636",
-        // shadowOffset            : { width: 0, height: 1},
-        // shadowOpacity           : 0.22,
-        shadowRadius            : 2.22,
-        elevation               : 3,
+    position_A : {
+        position                : 'absolute',
+        zIndex                  : 9999
     },
 
-    // Style Home
+    // Style Bg OverLay
 
-    Victor : {
-        position                :  "relative",
-        top                     : 22
+    blackOverlay  : {
+        backgroundColor         : "rgba(0,0,0,0.5)",
+        position                : 'absolute',
+        top                     : -10,
+        left                    : -10,
+        width                   : '100%',
+        height                  : '100%'
+    },
+    lightOverlay  : {
+        backgroundColor         : "rgba(255,255,255,0.5)",
+        position                : 'absolute',
+        top                     : -10,
+        left                    : -10,
+        width                   : '100%',
+        height                  : '100%'
     },
 
     // Style Search
 
-    checkBox : {
-        paddingLeft             : 0,
-        paddingBottom           : 0,
-        borderRadius            : 5,
-        paddingRight            : 3
-    },
 
-    // Style Cases
+    // Style Loading
 
-    viewTabs : {
-        position                :  "relative",
-    },
-    borderView : {
-        position                : 'absolute',
-        width                   : 1,
-        height                  : '90%',
-        backgroundColor         : '#DDD',
-        top                     : 25,
-        left                    : '32%'
-    },
-    arrLeft : {
-        position                : 'absolute',
-        bottom                  : 10,
-        right                   : 10,
-        transform               : I18nManager.isRTL ? [{ rotate: '0deg' }] : [{ rotate: '180deg' }],
-    },
-    addcases : {
-        position                : 'absolute',
-        bottom                  : 20,
-        right                   : 20,
-        width                   : 50,
-        height                  : 50
-    },
-
-    // Style Bank
-
-    boxBank : {
-        borderBottomWidth : 1,
-        borderBottomColor : '#DDD'
-    },
-
-    // Style Profile
-
-    uploadImg : {
-        position                :  "relative",
-    },
-    openGallery : {
-        position                : 'absolute',
-        // top                     : 15,
-        width                   : 130,
-        height                  : 130,
-        backgroundColor         : "rgba(0,0,0,0.5)",
-    },
-
-    // Style The Cases
-
-    ActiveCases : {
-        backgroundColor         : COLORS.darkGreen,
-        borderRadius            : 40
-    },
-    textRatio : {
-        top                     : -2,
-        position                :  "relative",
-    },
-    iconDown : {
-        position                : 'absolute',
-        top                     : -20,
-        left                    : '45%'
-    },
-    bgModel : {
-        width                   : "100%",
-        backgroundColor         : "#615c56e8",
-        flex                    : 1,
-        alignSelf               : 'center',
-    },
     loading : {
         position                : 'absolute',
         top                     : 0,
@@ -707,6 +629,9 @@ const styles = ({
         zIndex                  :  99999,
         backgroundColor         : "rgba(0,0,0,0.5)",
     },
+
+    // Style Swiper
+
     swiper : {
         height                  : 220,
     },
