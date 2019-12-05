@@ -8,6 +8,7 @@ import COLORS from '../../src/consts/colors'
 import i18n from "../../locale/i18n";
 import {connect} from "react-redux";
 import {logout, tempAuth} from "../actions";
+import * as Animatable from "react-native-animatable";
 
 class DrawerCustomization extends Component {
     constructor(props){
@@ -41,13 +42,22 @@ class DrawerCustomization extends Component {
             <Container>
                 <Content contentContainerStyle={styles.bgFullWidth}>
 
-                    <View style={styles.blockUser}>
+                    <View style={[styles.bg_light_oran, styles.width_40, styles.heightFull, styles.position_A, styles.bg_bdfore, styles.zIndexDown]}></View>
 
-                        <View style={[styles.viewUser, styles.flexCenter]}>
-                            <Image source={{ uri: user.avatar }} style={[styles.icoImage, styles.Radius_50,styles.marginVertical_5]}/>
-                            <TouchableOpacity style={styles.nameUser} onPress={() => this.props.navigation.navigate('profile')}>
-                                <Text style={[styles.textRegular, styles.textSize_14]}>{ user.name }</Text>
-                            </TouchableOpacity>
+                    <Image style={[styles.imageMask,]} source={require('../../assets/images/Mask.png')}/>
+
+                    <View style={[styles.marginVertical_15, styles.SelfLeft]}>
+
+                        <View style={[styles.viewUser, styles.SelfLeft, styles.justifyCenter]}>
+                            <View style={[styles.bg_red, styles.width_150, styles.height_70, styles.position_A, styles.zIndexDown]}></View>
+                            <View style={[styles.position_R, styles.flexCenter, styles.zIndexUp, styles.Width_100, styles.marginHorizontal_25]}>
+                                {/*<Image source={{ uri: user.avatar }} style={[styles.icoImage, styles.Radius_50,styles.marginVertical_5]}/>*/}
+                                <Image style={[styles.width_90, styles.height_90]} source={require('../../assets/images/bg_coffee.png')}/>
+                                <TouchableOpacity style={styles.nameUser} onPress={() => this.props.navigation.navigate('profile')}>
+                                    {/*<Text style={[styles.textRegular, styles.textSize_14]}>{ user.name }</Text>*/}
+                                    <Text style={[styles.textRegular, styles.textSize_14]}>شعوذه الندم</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
 
                     </View>
@@ -64,12 +74,12 @@ class DrawerCustomization extends Component {
                          }
 
                          items                          = {this.props.auth !== null ? this.props.items : this.props.items.filter((item) =>  this.filterItems(item) ) }
-                         activeBackgroundColor          = {styles.bg_lightGreen}
+                         activeBackgroundColor          = {styles.bg_red}
                          inactiveBackgroundColor        = 'transparent'
                          activeLabelStyle               = {COLORS.red}
                          labelStyle                     = {styles.drawerLabel}
                          iconContainerStyle             = {styles.drawerIcon}
-                         itemStyle                      = {[styles.drawerItemStyle, styles.paddingHorizontal_20, styles.marginVertical_10]}
+                         itemStyle                      = {[styles.drawerItemStyle]}
                          itemsContainerStyle            = {styles.drawerContainer}
                     />
 
@@ -78,13 +88,13 @@ class DrawerCustomization extends Component {
                 {
                     (this.props.auth == null || this.props.user == null) ?
 
-                    <TouchableOpacity style={[styles.clickLogin, styles.bg_darkGreen,styles.RadiusTop_5]} onPress={() => this.props.navigation.navigate('Login')}>
+                    <TouchableOpacity style={[styles.clickLogin, styles.bg_red, styles.position_A, styles.width_150]} onPress={() => this.props.navigation.navigate('Login')}>
                         <Text style={[styles.textRegular, styles.textSize_16, styles.text_White,styles.paddingVertical_5, styles.textCenter]}>{i18n.translate('login')}</Text>
                     </TouchableOpacity>
 
                     :
 
-                    <TouchableOpacity style={[styles.clickLogin, styles.bg_darkGreen,styles.RadiusTop_5]} onPress={() => this.logout()}>
+                    <TouchableOpacity style={[styles.clickLogin, styles.bg_red,styles.position_A, styles.width_150]} onPress={() => this.logout()}>
                         <Text style={[styles.textRegular, styles.textSize_16, styles.text_White,styles.paddingVertical_5, styles.textCenter]}>{i18n.translate('logout')}</Text>
                     </TouchableOpacity>
 

@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, Dimensions, ImageBackground, Animated, ScrollView, I18nManager, Platform} from "react-native";
-import {Container, Content, Header, Button, Item, Input, Left, Icon, Body, Title, Right} from 'native-base'
+import {View, Text, Image, TouchableOpacity, ImageBackground, Linking} from "react-native";
+import {Container, Content, Header, Button, Left, Icon, Body, Title, Right} from 'native-base'
 import styles from '../../assets/style'
-import COLORS from '../../src/consts/colors'
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {NavigationEvents} from "react-navigation";
-import i18n from "../../locale/i18n";
 import Swiper from 'react-native-swiper';
 import * as Animatable from 'react-native-animatable';
+import { sliderHome } from '../actions';
+import i18n from "../../locale/i18n";
+import home from "../reducers/HomeReducer";
 
 
 class Home extends Component {
@@ -16,26 +17,24 @@ class Home extends Component {
         super(props);
 
         this.state={
-            slider        : [],
-            Categories    : [],
         }
     }
 
     componentWillMount() {
-
+        this.props.sliderHome( this.props.lang );
     }
 
     static navigationOptions = () => ({
         header      : null,
-        drawerLabel : ( <Text style={styles.textLabel}>الرئيسيه</Text> ) ,
-        drawerIcon  : ( <Icon style={styles.icon} type="SimpleLineIcons" name="home" /> )
+        drawerLabel : ( <Text style={[styles.textRegular, styles.text_black, styles.textSize_18]}>{ i18n.t('home') }</Text> ) ,
+        drawerIcon  : ( <Icon style={[styles.text_black , styles.textSize_20]} type="SimpleLineIcons" name="home" /> )
     });
 
     renderLoader(){
         if (this.props.loader){
             return(
-                <View style={{ alignItems: 'center', justifyContent: 'center', height: height , alignSelf:'center' , backgroundColor:'#fff' , width:'100%' , position:'absolute' , zIndex:1  }}>
-                    <DoubleBounce size={20} color={COLORS.labelBackground} />
+                <View style={[styles.loading, styles.flexCenter]}>
+                    <DoubleBounce size={20} />
                 </View>
             );
         }
@@ -54,12 +53,14 @@ class Home extends Component {
 
                 <Header style={styles.headerView}>
                     <Left style={styles.leftIcon}>
-                        <Button style={styles.Button} transparent onPress={() => this.props.navigation.goBack()}>
+                        <Button style={styles.Button} transparent onPress={() => { this.props.navigation.openDrawer()} }>
                             <Icon style={[styles.text_black, styles.textSize_22]} type="SimpleLineIcons" name='menu' />
                         </Button>
                     </Left>
                     <Body style={styles.bodyText}>
-                        <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>الرئيسيه</Title>
+                        <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
+                            { i18n.t('home') }
+                        </Title>
                     </Body>
                     <Right style={styles.rightIcon}>
                         <Button style={[styles.text_gray]} transparent>
@@ -85,36 +86,30 @@ class Home extends Component {
                                 loop                = {true}
                                 autoplayTimeout     = { 2 }
                             >
-                                <View style={[styles.viewBlock]}>
-                                    <Image style={[styles.Width_95, styles.swiper]} source={require('../../assets/images/img_product.png')} resizeMode={'cover'}/>
-                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
-                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                            <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head"> آهلا بك </Text>
-                                            <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head"> الندم ف العمر عذاب ي بيبي </Text>
-                                            <Text style={[styles.textRegular, styles.text_red, styles.Width_100 ,styles.textSize_12, styles.textLeft, styles.textDecoration]} numberOfLines = { 1 } prop with ellipsizeMode = "head"> مشاهده المزيد </Text>
+
+                                {
+                                    this.props.slider.map((slid, i) => (
+                                        <View style={[styles.viewBlock]}>
+                                            <Image style={[styles.Width_95, styles.swiper]} source={{ uri : slid.image}} resizeMode={'cover'}/>
+                                            <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent, styles.Width_50]}>
+                                                <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                                    <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                        {slid.name}
+                                                    </Text>
+                                                    <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                        {slid.description}
+                                                    </Text>
+                                                    <TouchableOpacity key={i} onPress={() => Linking.openURL(slid.link)}>
+                                                            <Text style={[styles.textRegular, styles.text_red, styles.Width_100 ,styles.textSize_12, styles.textLeft, styles.textDecoration]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                                { i18n.t('here') }
+                                                            </Text>
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </Animatable.View>
                                         </View>
-                                    </Animatable.View>
-                                </View>
-                                <View style={[styles.viewBlock]}>
-                                    <Image style={[styles.Width_95, styles.swiper]} source={require('../../assets/images/img_two.png')} resizeMode={'cover'}/>
-                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
-                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                            <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head"> آهلا بك </Text>
-                                            <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head"> الندم ف العمر عذاب ي بيبي </Text>
-                                            <Text style={[styles.textRegular, styles.text_red, styles.Width_100 ,styles.textSize_12, styles.textLeft, styles.textDecoration]} numberOfLines = { 1 } prop with ellipsizeMode = "head"> مشاهده المزيد </Text>
-                                        </View>
-                                    </Animatable.View>
-                                </View>
-                                <View style={[styles.viewBlock]}>
-                                    <Image style={[styles.Width_95, styles.swiper]} source={require('../../assets/images/img_three.png')} resizeMode={'cover'}/>
-                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
-                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                            <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head"> آهلا بك </Text>
-                                            <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head"> الندم ف العمر عذاب ي بيبي </Text>
-                                            <Text style={[styles.textRegular, styles.text_red, styles.Width_100 ,styles.textSize_12, styles.textLeft, styles.textDecoration]} numberOfLines = { 1 } prop with ellipsizeMode = "head"> مشاهده المزيد </Text>
-                                        </View>
-                                    </Animatable.View>
-                                </View>
+                                    ))
+                                }
+
                             </Swiper>
                         </View>
 
@@ -126,9 +121,11 @@ class Home extends Component {
     }
 }
 
-const mapStateToProps = ({ lang , sweet}) => {
+const mapStateToProps = ({ lang, home }) => {
     return {
         lang        : lang.lang,
+        slider      : home.slider,
+        loader      : home.loader
     };
 };
-export default connect(mapStateToProps, {})(Home);
+export default connect(mapStateToProps, { sliderHome })(Home);

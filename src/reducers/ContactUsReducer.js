@@ -8,7 +8,7 @@ export default (state = INITIAL_STATE, action) => {
                 phone       : action.payload.data.contacts.phone,
                 address     : action.payload.data.contacts.address,
                 socials     : action.payload.data.socials,
-                loader      : action.payload.key == 1 ? false : true
+                loader      : action.payload.key === 1 ? false : true
             };
         }
 

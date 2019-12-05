@@ -14,5 +14,6 @@ export default {
     light_oran      : '#FEDAD0',
     black           : '#222222',
     bold_gray       : '#7C7C7C',
-    light_gray      : '#9E9B98'
+    light_gray      : '#9E9B98',
+    opcity_gray     : '#ddd',
 }
