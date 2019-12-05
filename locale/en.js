@@ -184,6 +184,17 @@ const en = {
     'corcial'                   : 'Commercial Registration',
     'city'                      : 'city',
     'FAQs'                      : 'FAQs',
+
+
+
+    /// amany
+    'RS'                        : 'RS',
+    'productPrice'              : 'Product price',
+    'productSpec'               : 'Product specifications',
+    'addToCart'                 : 'Add to cart',
+    'comments'                  : 'Comments',
+    'addComment'                : 'Add comment',
+    'comment'                   : 'Comment',
 };
 
 export default en;

@@ -169,6 +169,17 @@ const ar = {
     'entername'                 : 'ادخل اسم المستخدم',
     'city'                      : 'المدينه',
     'FAQs'                      : 'اسئله متكرره',
+
+
+
+    /// amany
+    'RS'                        : 'ر.س',
+    'productPrice'              : 'سعر المنتج',
+    'productSpec'               : 'مواصفات السلعة',
+    'addToCart'                 : 'اضف الي السلة',
+    'comments'                  : 'التعليقات',
+    'addComment'                : 'اضف تعليقا',
+    'comment'                   : 'التعليق',
 };
 
 export default ar;

@@ -13,7 +13,48 @@ import Terms                from "../components/Terms";
 import InitScreen           from "../components/InitScreen";
 
 
+//// amaaaany
+
+import Provider           from "../components/Provider";
+import Product           from "../components/Product";
+import Notifications           from "../components/Notifications";
+
+
+
 const appStack =  createStackNavigator({
+
+    /// Amaany
+    notifications: {
+        screen: Notifications,
+        navigationOptions: {
+            header: null
+        }
+    },
+    product: {
+        screen: Product,
+        navigationOptions: {
+            header: null
+        }
+    },
+    provider: {
+        screen: Provider,
+        navigationOptions: {
+            header: null
+        }
+    },
+
+
+
+
+
+    /////////////////////////////
+
+    home: {
+        screen: Home,
+        navigationOptions: {
+            header: null
+        }
+    },
     Terms: {
         screen: Terms,
         navigationOptions: {
@@ -32,18 +73,15 @@ const appStack =  createStackNavigator({
             header: null
         }
     },
-    home: {
-        screen: Home,
-        navigationOptions: {
-            header: null
-        }
-    },
     contactUs: {
         screen: ContactUs,
         navigationOptions: {
             header: null
         }
     },
+
+
+
 });
 
 const authStack = createStackNavigator({
