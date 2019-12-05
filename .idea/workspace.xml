@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3d493a9f-8835-4a32-b677-e35dde588144" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ReactotronConfig.js" beforeDir="false" afterPath="$PROJECT_DIR$/ReactotronConfig.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/style/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/style/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/locale/ar.js" beforeDir="false" afterPath="$PROJECT_DIR$/locale/ar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/locale/en.js" beforeDir="false" afterPath="$PROJECT_DIR$/locale/en.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/actions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ContactUs.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ContactUs.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/consts/colors.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/consts/colors.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/reducers/ContactUsReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/reducers/ContactUsReducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/reducers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/reducers/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/DrawerCustomization.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/DrawerCustomization.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/index.js" afterDir="false" />
-    </list>
+    <list default="true" id="3d493a9f-8835-4a32-b677-e35dde588144" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -250,12 +233,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1575399456756</updated>
-      <workItem from="1575399458313" duration="46873000" />
+      <workItem from="1575399458313" duration="47203000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46873000" />
+    <option name="totallyTimeSpent" value="47203000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
