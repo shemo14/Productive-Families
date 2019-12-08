@@ -4,11 +4,18 @@ import CONST from '../consts';
 
 export const userLogin = ({phone, password, deviceId, type}, lang) => {
     return (dispatch) => {
+
         dispatch({type: 'login_user'});
 
-        axios.post( CONST.url + 'login', {phone, password, device_id: deviceId, type, lang})
-            .then(response => handelLogin(dispatch, response.data))
-            .catch(error => console.warn(error.data));
+        axios.post(
+            CONST.url + 'login',
+            {phone, password, type, lang, device_id: deviceId})
+            .then(
+                response => handelLogin(dispatch, response.data)
+            )
+            .catch(
+                error => console.warn(error.data)
+            );
     };
 };
 
@@ -18,19 +25,8 @@ export const tempAuth = () => {
     };
 };
 
-export const activeAccount = phone => {
-	return (dispatch) => {
-		dispatch({ type: 'active_account' });
-		axios.post(CONST.url + 'active_account', { phone }).then(response => {
-			if (response.data.status !== 200){
-				alert(response.data.msg);
-			}
-		})
-	};
-};
-
 const handelLogin = (dispatch, data) => {
-    if (data.status !== 200){
+    if (!data.success){
         loginFailed(dispatch, data)
     }else{
         loginSuccess(dispatch, data)
@@ -45,4 +41,4 @@ const loginSuccess = (dispatch, data) => {
 
 const loginFailed = (dispatch, error) => {
     dispatch({type: 'login_failed', error});
-}
+};

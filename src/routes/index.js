@@ -18,12 +18,28 @@ import Register                 from "../components/Register";
 import ActivationCode           from "../components/ActivationCode";
 import NewPassword              from "../components/NewPassword";
 import ForgetPassword           from "../components/ForgetPassword";
+import DetailsBasket            from "../components/DetailsBasket";
+import Location                 from "../components/Location";
+import ChoosePayment            from "../components/ChoosePayment";
+import FormPayment              from "../components/FormPayment";
+import ConfirmPayment           from "../components/ConfirmPayment";
+import MyOrders                 from "../components/MyOrders";
+import Notification             from "../components/Notification";
+import Offers                   from "../components/Offers";
+import Favorite                 from "../components/Favorite";
 import DrawerCustomization      from "./DrawerCustomization";
 
 const drawerCust = (props) => (<DrawerCustomization {...props} />);
 
 const drawerNavigator = createDrawerNavigator({
     Home                : Home,
+    MyOrders            : MyOrders,
+    Offers              : Offers,
+    Favorite            : Favorite,
+    AboutApp            : AboutApp,
+    Faq                 : Faq,
+    Terms               : Terms,
+    ContactUs           : ContactUs,
 },
 {
     initialRouteName    : 'Home',
@@ -39,6 +55,60 @@ const drawerNavigator = createDrawerNavigator({
 const appStack =  createStackNavigator({
     drawerNavigator: {
         screen: drawerNavigator,
+        navigationOptions: {
+            header: null
+        }
+    },
+    DetailsBasket : {
+        screen: DetailsBasket,
+        navigationOptions: {
+            header: null
+        }
+    },
+    Favorite : {
+        screen: Favorite,
+        navigationOptions: {
+            header: null
+        }
+    },
+    Offers : {
+        screen: Offers,
+        navigationOptions: {
+            header: null
+        }
+    },
+    Notification : {
+        screen: Notification,
+        navigationOptions: {
+            header: null
+        }
+    },
+    MyOrders : {
+        screen: MyOrders,
+        navigationOptions: {
+            header: null
+        }
+    },
+    ConfirmPayment : {
+        screen: ConfirmPayment,
+        navigationOptions: {
+            header: null
+        }
+    },
+    FormPayment : {
+        screen: FormPayment,
+        navigationOptions: {
+            header: null
+        }
+    },
+    ChoosePayment : {
+        screen: ChoosePayment,
+        navigationOptions: {
+            header: null
+        }
+    },
+    Location : {
+        screen: Location,
         navigationOptions: {
             header: null
         }
@@ -82,6 +152,18 @@ const appStack =  createStackNavigator({
 });
 
 const authStack = createStackNavigator({
+    InitScreen: {
+        screen: InitScreen,
+        navigationOptions: {
+            header: null
+        }
+    },
+    login: {
+        screen: Login,
+        navigationOptions: {
+            header: null
+        }
+    },
     Register: {
         screen: Register,
         navigationOptions: {
@@ -106,23 +188,11 @@ const authStack = createStackNavigator({
             header: null
         }
     },
-    login: {
-        screen: Login,
-        navigationOptions: {
-            header: null
-        }
-    },
-    initScreen: {
-        screen: InitScreen,
-        navigationOptions: {
-            header: null
-        }
-    },
 });
 
 const AppNavigator = createSwitchNavigator({
-    app     : appStack,
     auth    : authStack,
+    app     : appStack,
 });
 
 export default createAppContainer(AppNavigator);

@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {DoubleBounce} from "react-native-loader";
 import { getContactUs, complaint } from '../actions';
 import  Modal  from "react-native-modal";
+import * as Animatable from 'react-native-animatable';
 
 class ContactUs extends Component {
     constructor(props){
@@ -74,6 +75,12 @@ class ContactUs extends Component {
     toggleModal = () => {
         this.setState({ show_modal: !this.state.show_modal });
     };
+
+    static navigationOptions = () => ({
+        header      : null,
+        drawerLabel : ( <Text style={[styles.textRegular, styles.text_black, styles.textSize_18]}>{ i18n.t('contact') }</Text> ) ,
+        drawerIcon  : ( <Image style={[styles.smImage]} source={require('../../assets/images/contact.png')}/>)
+    });
 
     render() {
 
@@ -150,7 +157,7 @@ class ContactUs extends Component {
                             <View style={styles.contentModel}>
                                 <View style={styles.model}>
 
-                                    <Animatable.View animation="fadeInUp" easing="ease-out" key={i} delay={500}>
+                                    <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
                                     <View style={[styles.bg_White, styles.overHidden, styles.Width_100, styles.paddingVertical_10]}>
                                         <View style={[styles.overHidden]}>
                                             <Text style={[styles.textRegular, styles.textSize_16, styles.text_black, styles.textCenter]}>

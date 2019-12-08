@@ -42,10 +42,16 @@ class Register extends Component {
         }else if(this.state.phone.length < 10){
             isError     = true;
             msg         = i18n.translate('aggnumber');
+        }else if (this.state.chooseUser === null){
+            isError     = true;
+            msg         = i18n.translate('chooseuser');
+        }else if (this.state.country === null){
+            isError     = true;
+            msg         = i18n.translate('choosecity');
         }else if (this.state.password.length <= 0 || this.state.password.length < 6){
             isError     = true;
             msg         = i18n.translate('passreq');
-        }else if (this.state.password !== this.state.rePassword){
+        }else if (this.state.password !== this.state.confirmpassword){
             isError     = true;
             msg         = i18n.translate('notmatch');
         }else if (this.state.checked === false){
@@ -68,68 +74,25 @@ class Register extends Component {
         return isError;
     };
 
-    onLoginPressed() {
+    onRegisterPressed() {
+
+        this.setState({ spinner: true });
+
         const err = this.validate();
+
         if (!err){
-            const {phone, password, deviceId , type} = this.state;
-            this.props.userLogin({ phone, password, deviceId, type }, this.props.lang);
+
+            this.setState({ spinner: false });
+
+            const { fullName, email, phone, password, NationalNnm } = this.state;
+            const data = {fullName, email, phone, password, NationalNnm, lang: this.props.lang,};
+
+            this.props.register(data, this.props);
+        }else {
+
+            this.setState({ spinner: false });
+
         }
-    }
-
-    onChooseUser    (value) {this.setState({chooseUser: value});}
-
-    onValueCountry  (value) {this.setState({country: value});}
-
-    async componentWillMount() {
-        const { status: existingStatus } = await Permissions.getAsync(
-            Permissions.NOTIFICATIONS
-        );
-
-        let finalStatus = existingStatus;
-
-        if (existingStatus !== 'granted') {
-            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-            finalStatus = status;
-        }
-
-        if (finalStatus !== 'granted') {
-            return;
-        }
-
-        const deviceId = await Notifications.getExpoPushTokenAsync();
-        this.setState({ deviceId, userId: null });
-        AsyncStorage.setItem('deviceID', deviceId);
-
-    }
-
-    componentWillReceiveProps(newProps){
-        console.log('props auth ...', newProps.auth);
-
-
-        if (newProps.auth !== null && newProps.auth.status === 200){
-
-            console.log('this is user id...', this.state.userId);
-
-            if (this.state.userId === null){
-                this.setState({ userId: newProps.auth.data.id });
-                this.props.profile(newProps.auth.data.token);
-            }
-
-            this.props.navigation.navigate('home');
-        }
-
-        if (newProps.auth !== null) {
-            Toast.show({
-                text: newProps.auth.msg,
-                type: newProps.auth.status === 200 ? "success" : "danger",
-                duration: 3000
-            });
-        }
-
-    }
-
-    onFocus(){
-        this.componentWillMount()
     }
 
     render() {
@@ -231,7 +194,7 @@ class Register extends Component {
                                         placeholder             = {i18n.translate('confirmPassword')}
                                         style                   = {[styles.input, styles.height_50, styles.borderBold]}
                                         autoCapitalize          = 'none'
-                                        onChangeText            = {(password) => this.setState({password})}
+                                        onChangeText            = {(confirmpassword) => this.setState({confirmpassword})}
                                         secureTextEntry
                                     />
                                 </Item>
@@ -261,7 +224,7 @@ class Register extends Component {
                                         styles.marginVertical_15,
                                         styles.height_40
                                     ]}
-                                    onPress={() => this.onLoginPressed()}>
+                                    onPress={() => this.onRegisterPressed()}>
                                     <Text style={[styles.textRegular , styles.textSize_14, styles.text_White]}>
                                         {i18n.translate('doHaveAcc')}
                                     </Text>
