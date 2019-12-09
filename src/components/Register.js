@@ -24,8 +24,53 @@ class Register extends Component {
             chooseUser	        : null,
             checked             : false,
             type		        : 0,
+            usernameStatus      : 0,
+            phoneStatus         : 0,
+            passwordStatus      : 0,
+            rePasswordStatus    : 0,
         }
     }
+
+    activeInput(type){
+        if (type === 'username' || this.state.username !== ''){
+            this.setState({ usernameStatus: 1 })
+        }
+
+        if (type === 'phone' || this.state.phone !== ''){
+            this.setState({ phoneStatus: 1 })
+        }
+
+        if (type === 'password' || this.state.password !== ''){
+            this.setState({ passwordStatus: 1 })
+        }
+
+        if (type === 'rePasswordStatus' || this.state.confirmpassword !== ''){
+            this.setState({rePasswordStatus: 1})
+        }
+    }
+
+    unActiveInput(type){
+        if (type === 'username' && this.state.username === ''){
+            this.setState({ usernameStatus: 0 })
+        }
+
+        if (type === 'phone' && this.state.phone === ''){
+            this.setState({ phoneStatus: 0 })
+        }
+
+        if (type === 'password' && this.state.password === ''){
+            this.setState({ passwordStatus: 0 })
+        }
+
+        if (type === 'rePasswordStatus' && this.state.confirmpassword === ''){
+            this.setState({ rePasswordStatus: 0 })
+        }
+
+    }
+
+    onValueUser         (value) {this.setState({chooseUser: value});}
+
+    onValueCountry      (value) {this.setState({country: value});}
 
 
     validate = () => {
@@ -97,7 +142,6 @@ class Register extends Component {
 
     render() {
         return (
-
             <Container>
                 <NavigationEvents onWillFocus={() => this.onFocus()} />
                 <Content contentContainerStyle={styles.bgFullWidth}>
@@ -110,22 +154,35 @@ class Register extends Component {
                             </Animatable.View>
                             <Form style={[styles.Width_100, styles.flexCenter, styles.marginVertical_10, styles.Width_90]}>
 
-                                <Item floatingLabel style={styles.item}>
-                                    <Input
-                                        placeholder             = {i18n.translate('userName')}
-                                        style                   = {[styles.input, styles.height_50, styles.borderBold]}
-                                        onChangeText            = {(phone) => this.setState({phone})}
-                                    />
-                                </Item>
+                                <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
+                                    <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
+                                        <Input
+                                            placeholder             = {i18n.translate('userName')}
+                                            style                   = {[ styles.input , styles.height_50 , (this.state.usernameStatus === 1 ? styles.Active : styles.noActive )]}
+                                            onChangeText            = {(username) => this.setState({username})}
+                                            onBlur                  = {() => this.unActiveInput('username')}
+                                            onFocus                 = {() => this.activeInput('username')}
+                                        />
+                                    </Item>
+                                    <View style = {[ styles.position_A , styles.bg_White, styles.flexCenter, styles.iconInput,  (this.state.usernameStatus === 1 ? styles.left_0 : styles.leftHidLeft )]}>
+                                        <Icon style = {[styles.text_orange, styles.textSize_22]} type="AntDesign" name='user' />
+                                    </View>
+                                </View>
 
-                                <Item floatingLabel style={styles.item}>
-                                    <Input
-                                        placeholder             = {i18n.translate('phone')}
-                                        keyboardType            = {'number-pad'}
-                                        style                   = {[styles.input, styles.height_50, styles.borderBold]}
-                                        onChangeText            = {(phone) => this.setState({phone})}
-                                    />
-                                </Item>
+                                <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
+                                    <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
+                                        <Input
+                                            placeholder             = {i18n.translate('phone')}
+                                            style                   = {[ styles.input , styles.height_50 , (this.state.phoneStatus === 1 ? styles.Active : styles.noActive )]}
+                                            onChangeText            = {(phone) => this.setState({phone})}
+                                            onBlur                  = {() => this.unActiveInput('phone')}
+                                            onFocus                 = {() => this.activeInput('phone')}
+                                        />
+                                    </Item>
+                                    <View style = {[ styles.position_A , styles.bg_White, styles.flexCenter, styles.iconInput,  (this.state.phoneStatus === 1 ? styles.left_0 : styles.leftHidLeft )]}>
+                                        <Icon style = {[styles.text_orange, styles.textSize_22]} type="MaterialCommunityIcons" name='cellphone' />
+                                    </View>
+                                </View>
 
                                 <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15,styles.Width_100, styles.borderBold]}>
                                     <Item style={styles.itemPiker} regular>
@@ -134,7 +191,7 @@ class Register extends Component {
                                             style                   = {styles.Picker}
                                             placeholderStyle        = {[styles.textRegular,{ color: "#121212", writingDirection: 'rtl', width : '100%', fontSize : 14 }]}
                                             selectedValue           = {this.state.chooseUser}
-                                            onValueChange           = {this.onChooseUser.bind(this)}
+                                            onValueChange           = {this.onValueUser.bind(this)}
                                             textStyle               = {[styles.textRegular,{ color: "#121212", writingDirection: 'rtl' }]}
                                             placeholder             = {i18n.t('viewgest')}
                                             itemTextStyle           = {[styles.textRegular,{ color: "#121212", writingDirection: 'rtl' }]}
@@ -179,25 +236,37 @@ class Register extends Component {
                                     </View>
                                 </TouchableOpacity>
 
-                                <Item floatingLabel style={styles.item}>
-                                    <Input
-                                        placeholder             = {i18n.translate('password')}
-                                        style                   = {[styles.input, styles.height_50, styles.borderBold]}
-                                        autoCapitalize          = 'none'
-                                        onChangeText            = {(password) => this.setState({password})}
-                                        secureTextEntry
-                                    />
-                                </Item>
+                                <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
+                                    <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
+                                        <Input
+                                            placeholder             = {i18n.translate('password')}
+                                            style                   = {[ styles.input , styles.height_50 , (this.state.passwordStatus === 1 ? styles.Active : styles.noActive )]}
+                                            onChangeText            = {(password) => this.setState({password})}
+                                            onBlur                  = {() => this.unActiveInput('password')}
+                                            onFocus                 = {() => this.activeInput('password')}
+                                            secureTextEntry
+                                        />
+                                    </Item>
+                                    <View style = {[ styles.position_A , styles.bg_White, styles.flexCenter, styles.iconInput,  (this.state.passwordStatus === 1 ? styles.left_0 : styles.leftHidLeft )]}>
+                                        <Icon style = {[styles.text_orange, styles.textSize_22]} type="AntDesign" name='lock1' />
+                                    </View>
+                                </View>
 
-                                <Item floatingLabel style={styles.item}>
-                                    <Input
-                                        placeholder             = {i18n.translate('confirmPassword')}
-                                        style                   = {[styles.input, styles.height_50, styles.borderBold]}
-                                        autoCapitalize          = 'none'
-                                        onChangeText            = {(confirmpassword) => this.setState({confirmpassword})}
-                                        secureTextEntry
-                                    />
-                                </Item>
+                                <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
+                                    <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
+                                        <Input
+                                            placeholder             = {i18n.translate('password')}
+                                            style                   = {[ styles.input , styles.height_50 , (this.state.rePasswordStatus === 1 ? styles.Active : styles.noActive )]}
+                                            onChangeText            = {(confirmpassword) => this.setState({confirmpassword})}
+                                            onBlur                  = {() => this.unActiveInput('rePasswordStatus')}
+                                            onFocus                 = {() => this.activeInput('rePasswordStatus')}
+                                            secureTextEntry
+                                        />
+                                    </Item>
+                                    <View style = {[ styles.position_A , styles.bg_White, styles.flexCenter, styles.iconInput,  (this.state.rePasswordStatus === 1 ? styles.left_0 : styles.leftHidLeft )]}>
+                                        <Icon style = {[styles.text_orange, styles.textSize_22]} type="AntDesign" name='lock1' />
+                                    </View>
+                                </View>
 
                                 <View style={[styles.rowRight, styles.marginVertical_20]}>
                                     <TouchableOpacity style = {[styles.rowRight, styles.marginVertical_10]}>

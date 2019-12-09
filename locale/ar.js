@@ -91,6 +91,7 @@ const ar = {
     'Location'                  : 'تحديد الموقع',
     'pay'                       : 'الدفع',
     'confirmpayment'            : 'تاكيد الدفع',
+    'here'                      : 'طلبك عندنا',
 };
 
 export default ar;

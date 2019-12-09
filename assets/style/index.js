@@ -513,6 +513,9 @@ const styles = ({
     height_50 : {
         height               : 50
     },
+    height_60 : {
+        height               : 60
+    },
     height_70 : {
         height               : 70
     },
@@ -556,12 +559,10 @@ const styles = ({
     input : {
         width               : "100%",
         color               : COLORS.gray,
-        paddingRight        : 20,
-        paddingLeft         : 20,
         textAlign           : I18nManager.isRTL ? 'right' : 'left',
         fontFamily          : 'cairo',
         fontSize            : 15,
-        top                 : 1,
+        top                 : 0,
     },
     textArea : {
         width               : "100%",
@@ -580,6 +581,29 @@ const styles = ({
     bg_bdfore : {
         left                : 25,
         top                 : 0
+    },
+    Active : {
+        borderWidth           : 1,
+        borderColor           : COLORS.orange,
+        paddingRight          : 60,
+        paddingLeft           : 60,
+    },
+    noActive : {
+        borderWidth           : 1,
+        borderColor           : COLORS.opcity_gray,
+        paddingRight          : 20,
+        paddingLeft           : 20,
+    },
+    leftHidRight : {
+        right                    : -60,
+    },
+    leftHidLeft : {
+        left                    : -60,
+    },
+    iconInput : {
+        top                     : 12,
+        height                  : 52,
+        width                   : 52
     },
 
     // Style Picker

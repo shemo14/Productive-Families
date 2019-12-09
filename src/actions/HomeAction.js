@@ -9,6 +9,7 @@ export const sliderHome = lang => {
             data        : { lang }
         }).then(response => {
             dispatch({type: 'sliderHome', payload: response.data});
+            console.log('data ==', response.data)
         });
 
     }

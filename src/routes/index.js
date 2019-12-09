@@ -152,20 +152,20 @@ const appStack =  createStackNavigator({
 });
 
 const authStack = createStackNavigator({
+    Register: {
+        screen: Register,
+        navigationOptions: {
+            header: null
+        }
+    },
     InitScreen: {
         screen: InitScreen,
         navigationOptions: {
             header: null
         }
     },
-    login: {
+    Login: {
         screen: Login,
-        navigationOptions: {
-            header: null
-        }
-    },
-    Register: {
-        screen: Register,
         navigationOptions: {
             header: null
         }
