@@ -63,6 +63,8 @@ class Home extends Component {
                         </Title>
                     </Body>
                     <Right style={styles.rightIcon}>
+                        {/*<Button onPress={() => this.props.navigation.navigate('notifications')} style={[styles.text_gray]} transparent>*/}
+                            {/*<Icon style={[styles.text_black, styles.textSize_22]} type="Ionicons" name='md-notifications-outline' />*/}
                         <Button style={[styles.text_gray]} transparent>
                             <Image style={[styles.ionImage]} source={require('../../assets/images/alarm.png')}/>
                         </Button>

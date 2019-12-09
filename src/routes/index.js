@@ -27,12 +27,22 @@ import MyOrders                 from "../components/MyOrders";
 import Notification             from "../components/Notification";
 import Offers                   from "../components/Offers";
 import Favorite                 from "../components/Favorite";
+import OrderDetails                 from "../components/OrderDetails";
 import DrawerCustomization      from "./DrawerCustomization";
+
+//// amaaaany
+
+import Provider           from "../components/Provider";
+import Product           from "../components/Product";
+import Notifications           from "../components/Notifications";
+import Profile           from "../components/Profile";
+
 
 const drawerCust = (props) => (<DrawerCustomization {...props} />);
 
 const drawerNavigator = createDrawerNavigator({
     Home                : Home,
+    profile                : Profile,
     MyOrders            : MyOrders,
     Offers              : Offers,
     Favorite            : Favorite,
@@ -52,7 +62,49 @@ const drawerNavigator = createDrawerNavigator({
     contentComponent    : drawerCust
 });
 
+
+
 const appStack =  createStackNavigator({
+    /// Amaany
+    orderDetails: {
+        screen: OrderDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
+    product: {
+        screen: Product,
+        navigationOptions: {
+            header: null
+        }
+    },
+    notifications: {
+        screen: Notifications,
+        navigationOptions: {
+            header: null
+        }
+    },
+    provider: {
+        screen: Provider,
+        navigationOptions: {
+            header: null
+        }
+    },
+    profile: {
+        screen: Profile,
+        navigationOptions: {
+            header: null
+        }
+    },
+
+
+
+    MyOrders : {
+        screen: MyOrders,
+        navigationOptions: {
+            header: null
+        }
+    },
     drawerNavigator: {
         screen: drawerNavigator,
         navigationOptions: {
@@ -79,12 +131,6 @@ const appStack =  createStackNavigator({
     },
     Notification : {
         screen: Notification,
-        navigationOptions: {
-            header: null
-        }
-    },
-    MyOrders : {
-        screen: MyOrders,
         navigationOptions: {
             header: null
         }
@@ -137,23 +183,20 @@ const appStack =  createStackNavigator({
             header: null
         }
     },
-    faq: {
-        screen: Faq,
-        navigationOptions: {
-            header: null
-        }
-    },
-    aboutApp: {
-        screen: AboutApp,
-        navigationOptions: {
-            header: null
-        }
-    },
+
+
+
 });
 
 const authStack = createStackNavigator({
     Register: {
         screen: Register,
+        navigationOptions: {
+            header: null
+        }
+    },
+    contactUs: {
+        screen: ContactUs,
         navigationOptions: {
             header: null
         }
@@ -184,6 +227,30 @@ const authStack = createStackNavigator({
     },
     ActivationCode: {
         screen: ActivationCode,
+        navigationOptions: {
+            header: null
+        }
+    },
+    initScreen: {
+        screen: InitScreen,
+        navigationOptions: {
+            header: null
+        }
+    },
+    Terms: {
+        screen: Terms,
+        navigationOptions: {
+            header: null
+        }
+    },
+    faq: {
+        screen: Faq,
+        navigationOptions: {
+            header: null
+        }
+    },
+    aboutApp: {
+        screen: AboutApp,
         navigationOptions: {
             header: null
         }

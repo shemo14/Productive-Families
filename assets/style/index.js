@@ -459,9 +459,6 @@ const styles = ({
     Width_90 : {
         width               : '90%'
     },
-    Width_95 : {
-        width               : '95%'
-    },
     Width_100 : {
         width               : '100%'
     },
@@ -945,6 +942,183 @@ const styles = ({
     },
 
 
+
+
+
+    //// amaaaaaaany
+    starStyle:{
+        color: COLORS.orange,
+        marginHorizontal:0,
+    },
+    locationImg:{
+        width:12,
+        height:12,
+        marginRight:5
+    },
+    locationView:{
+        flexDirection:'row',
+        alignItems:'center',
+    },
+    mainScroll:{
+        height:70,
+        marginTop:10
+    },
+    scrollView:{
+        width:40,
+        justifyContent:'center',
+        alignItems:'center',
+        height:40,
+        marginHorizontal:10,
+        paddingHorizontal:5,
+        paddingVertical: 20,
+        backgroundColor:COLORS.light_gray,
+        borderTopWidth: 2
+    },
+    scrollImg:{
+        width:17,
+        height:17,
+    },
+    prodImg:{
+        width:'100%',
+        height:100,
+        alignSelf:'center',
+    },
+    Width_45 : {
+        width : '45%'
+    },
+    paddingHorizontal_7 : {
+        paddingHorizontal : 7
+    },
+    paddingVertical_7 : {
+        paddingVertical : 7
+    },
+    bgBtn : {
+        backgroundColor:COLORS.light_oran,
+        borderRadius:0,
+        width:40,
+        height:40,
+        paddingRight:0,
+        paddingLeft:0,
+        alignItems:'center',
+        justifyContent:'center',
+        right:-10
+    },
+    Width_95 : {
+        width: '95%'
+    },
+    Width_93 : {
+        width: '92%'
+    },
+    directionRow : {
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'space-between'
+    },
+    counterParent:{
+        flexDirection:'column' ,
+        justifyContent:'center' ,
+        alignItems:'center'  ,
+        alignSelf:'center'
+    },
+    touchPlus:{
+        backgroundColor:COLORS.light_oran ,
+        height:20,
+        width:20,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    touchMinus:{
+        backgroundColor:COLORS.light_gray ,
+        height:20,
+        width:20,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    plus:{
+        fontSize:15 ,
+        color:COLORS.orange
+    },
+    minus:{
+        fontSize:15 ,
+        color:'#FFF'
+    },
+    countText:{
+        width:20,
+        height:35,
+        borderWidth:1,
+        borderColor:COLORS.orange,
+        marginVertical:5,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    cartBtn:{
+        backgroundColor:COLORS.orange,
+        width:'45%',
+        paddingHorizontal: 15,
+        paddingVertical: 7,
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    subView: {
+        position: "absolute",
+        bottom: 0,
+        left: 8,
+        right: 8,
+        backgroundColor: "#fff",
+        height: 490,
+        zIndex:100,
+        alignSelf:'center'
+    },
+    notiBlock:{
+        flexDirection:'row',
+        alignItems:'center',
+        marginBottom:10,
+        borderBottomWidth:.5,
+        borderBottomColor:COLORS.light_gray,
+        paddingBottom: 10
+    },
+    notiImg:{
+        width:40,
+        height:40,
+        borderRadius:50,
+        marginRight:10,
+        flex:0
+    },
+    directionColumn:{
+        flexDirection:'column',
+    },
+    directionColumnCenter:{
+        justifyContent:'center' ,
+        alignItems:'center' ,
+        flexDirection:'column'
+    },
+    directionRowCenter:{
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    directionRowSpace:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center'
+    },
+    restImg:{
+        width:50,
+        height:50,
+        borderRadius:50,
+        marginRight:10,
+        flex:0
+    },
+    commentModal:{
+        width: '110%',
+        position: 'absolute',
+        bottom: -18,
+        backgroundColor: '#fff',
+        alignSelf: 'center' ,
+    },
+    textarea:{
+        height:100
+    },
 });
 
 export default styles;

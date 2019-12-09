@@ -87,7 +87,7 @@ class MyOrders extends Component {
                             </TouchableOpacity>
                         </View>
 
-                        <TouchableOpacity style={[styles.position_R, styles.flexCenter, styles.Width_90, styles.marginVertical_25]}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('orderDetails')} style={[styles.position_R, styles.flexCenter, styles.Width_90, styles.marginVertical_25]}>
                             <View style={[styles.lightOverlay, styles.Border]}></View>
                             <View style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
                                 <View style={[styles.icImg, styles.flex_30]}>

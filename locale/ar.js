@@ -85,6 +85,20 @@ const ar = {
     'starrate'                  : 'الآعلي تقيما',
     'oldrate'                   : 'الآقل تقيما',
     'sear'                      : 'بحث بمزود الخدمه',
+
+
+
+
+
+    /// amany
+    'RS'                        : 'ر.س',
+    'productPrice'              : 'سعر المنتج',
+    'productSpec'               : 'مواصفات السلعة',
+    'addToCart'                 : 'اضف الي السلة',
+    'comments'                  : 'التعليقات',
+    'addComment'                : 'اضف تعليقا',
+    'comment'                   : 'التعليق',
+    'myAcc'                     : 'حسابي',
     'priceprod'                 : 'سعر المنتجات',
     'deliveryprice'             : 'سعر التوصيل',
     'totalprice'                : 'السعر الإجمالي',
@@ -92,6 +106,14 @@ const ar = {
     'pay'                       : 'الدفع',
     'confirmpayment'            : 'تاكيد الدفع',
     'here'                      : 'طلبك عندنا',
+    'productNum'                : 'عدد المنتجات',
+    'deliveredPrice'            : 'سعر التوصيل',
+    'total'                     : 'السعر الاجمالي',
+    'orderDet'                  : 'تفاصيل الطلب',
+    'cancelOrder'               : 'الغاء الطلب',
+    'cancelOrderReason'         : 'ادخل سبب الالغاء',
+    'finishOrder'               : 'انهاء الطلب',
+    'deliveredPlace'               : 'مكان التوصيل',
 };
 
 export default ar;
