@@ -1,13 +1,14 @@
-const INITIAL_STATE = { phone : null , mail : null , socials : [], loader : true };
+const INITIAL_STATE = { name : null, phone : null , address : null , socials : [], loader : true };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case 'getContactUs':{
             return {
-                phone: action.payload.data.info.phone,
-                mail: action.payload.data.info.email,
-                socials: action.payload.data.socials,
-                loader: action.payload.status == 200 ? false : true
+                name        : action.payload.data.contacts.name,
+                phone       : action.payload.data.contacts.phone,
+                address     : action.payload.data.contacts.address,
+                socials     : action.payload.data.socials,
+                loader      : action.payload.key === 1 ? false : true
             };
         }
 

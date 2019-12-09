@@ -195,6 +195,7 @@ const en = {
     'comments'                  : 'Comments',
     'addComment'                : 'Add comment',
     'comment'                   : 'Comment',
+
 };
 
 export default en;

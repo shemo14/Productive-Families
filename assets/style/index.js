@@ -194,6 +194,9 @@ const styles = ({
 
     // Style Border Radius
 
+    Radius_0 : {
+        borderRadius        : 0
+    },
     Radius_5 : {
         borderRadius        : 5
     },
@@ -237,14 +240,11 @@ const styles = ({
 
     // Background Color
 
-    bg_darkGreen : {
-        backgroundColor     : COLORS.darkGreen
+    bg_toby : {
+        backgroundColor     : COLORS.toby
     },
-    bg_lightGreen : {
-        backgroundColor     : COLORS.lightGreen
-    },
-    bg_yellow : {
-        backgroundColor     : COLORS.yellow
+    bg_light_oran : {
+        backgroundColor     : COLORS.light_oran
     },
     bg_orange : {
         backgroundColor     : COLORS.orange
@@ -267,15 +267,50 @@ const styles = ({
     bg_lightWhite : {
         backgroundColor     : COLORS.lightWhite
     },
+    bg_overlay : {
+        backgroundColor     : "rgba(250, 218, 208, 0.9)"
+    },
     bg_White : {
         backgroundColor     : '#FFF'
+    },
+    bg_light_gray : {
+        backgroundColor     : '#d2d2d2'
     },
 
     // Style Border
 
-    Border : {
+    borderToby : {
       borderWidth           : 1,
-      borderColor           : COLORS.lightWhite
+      borderColor           : COLORS.toby
+    },
+    borderLightOran : {
+        borderWidth           : 1,
+        borderColor           : COLORS.light_oran
+    },
+    borderRed : {
+        borderWidth           : 1,
+        borderColor           : COLORS.orange
+    },
+    borderGray : {
+        borderWidth           : 1,
+        borderColor           : COLORS.light_gray
+    },
+    borderBold : {
+        borderWidth           : 1,
+        borderColor           : COLORS.bold_gray
+    },
+    Border : {
+        borderWidth           : 1,
+        borderColor           : COLORS.opcity_gray
+    },
+
+    // Style Search
+
+    checkBox : {
+        paddingLeft             : 0,
+        paddingBottom           : 0,
+        borderRadius            : 5,
+        paddingRight            : 3
     },
 
     // Style Shadow
@@ -299,8 +334,29 @@ const styles = ({
         alignItems          : 'center',
         justifyContent      : 'center',
     },
+    centerColum : {
+        alignSelf           : 'center',
+    },
     SelfCenter : {
-        alignSelf           : 'center'
+        alignSelf           : 'center',
+        justifyContent      : 'center',
+    },
+    SelfRight : {
+        alignSelf           : 'flex-end',
+        justifyContent      : 'center',
+    },
+    SelfLeft : {
+        alignSelf           : 'flex-start',
+        justifyContent      : 'center',
+    },
+    justifyCenter : {
+        justifyContent      : 'center',
+    },
+    justifyTop : {
+        justifyContent      : 'flex-end',
+    },
+    justifyBottom : {
+        justifyContent      : 'flex-start',
     },
     rowGroup : {
         flexDirection       : "row",
@@ -394,6 +450,36 @@ const styles = ({
     Width_100 : {
         width               : '100%'
     },
+    width_40 : {
+        width               : 40
+    },
+    width_50 : {
+        width               : 50
+    },
+    width_60 : {
+        width               : 60
+    },
+    width_70 : {
+        width               : 70
+    },
+    width_80 : {
+        width               : 80
+    },
+    width_90 : {
+        width               : 90
+    },
+    width_100 : {
+        width               : 100
+    },
+    width_120 : {
+        width               : 120
+    },
+    width_130 : {
+        width               : 130
+    },
+    width_150 : {
+        width               : 150
+    },
     height_10 : {
         height               : 10
     },
@@ -419,13 +505,16 @@ const styles = ({
         height               : 90
     },
     height_100 : {
-        height               : 100
+        height              : 100
+    },
+    heightFull : {
+        height              : '100%'
     },
     minHeight : {
-        minHeight            :  150
+        minHeight           :  150
     },
     overHidden : {
-        overflow             : 'hidden'
+        overflow            : 'hidden'
     },
 
     //  Style Input
@@ -441,9 +530,6 @@ const styles = ({
         borderBottomWidth   : 0,
     },
     input : {
-        borderColor         : COLORS.lightWhite,
-        borderWidth         : 1,
-        borderRadius        : 2,
         width               : "100%",
         color               : COLORS.gray,
         paddingRight        : 20,
@@ -451,14 +537,9 @@ const styles = ({
         textAlign           : I18nManager.isRTL ? 'right' : 'left',
         fontFamily          : 'cairo',
         fontSize            : 15,
-        top                 : 0,
-        height              : 45,
-        backgroundColor     : COLORS.lightWhite
+        top                 : 1,
     },
     textArea : {
-        borderColor         : COLORS.lightWhite,
-        borderWidth         : 1,
-        borderRadius        : 2,
         width               : "100%",
         color               : COLORS.gray,
         paddingRight        : 20,
@@ -467,15 +548,20 @@ const styles = ({
         fontFamily          : 'cairo',
         fontSize            : 15,
         top                 : 0,
-        height              : 180,
-        backgroundColor     : COLORS.lightWhite
+        height              : 120,
+    },
+    iconSearch : {
+        right               : 5
+    },
+    bg_bdfore : {
+        left                : 25,
+        top                 : 0
     },
 
     // Style Picker
 
     viewPiker : {
         position            : 'relative',
-        backgroundColor     : COLORS.lightWhite,
     },
     Picker : {
         width               : '100%',
@@ -485,7 +571,7 @@ const styles = ({
         fontSize            : 18,
         backgroundColor     : 'transparent',
         marginRight         : 0,
-        borderRadius        : 10,
+        borderRadius        : 0,
         height              : 50,
     },
     itemPiker : {
@@ -494,7 +580,7 @@ const styles = ({
         width               : '100%',
         position            : 'relative',
         fontSize            : 18,
-        borderRadius        : 5,
+        borderRadius        : 0,
         borderLeftWidth     : 0,
         borderBottomWidth   : 0,
         borderTopWidth      : 0,
@@ -502,7 +588,7 @@ const styles = ({
     },
     iconPicker : {
         position            : 'absolute',
-        right               : 20,
+        right               : 12,
         color               : COLORS.gray,
         fontSize            : 16
     },
@@ -522,7 +608,7 @@ const styles = ({
     icImg : {
         width               : 80,
         height              : 80,
-        resizeMode          :  "contain"
+        resizeMode          : "cover"
     },
     sizeImage : {
         width               : 150,
@@ -555,17 +641,14 @@ const styles = ({
         resizeMode          : 'contain'
     },
 
-    // Style Language
-
-
     //  Style Header
 
     headerView : {
         backgroundColor     : 'transparent',
         zIndex              : 99,
         paddingTop          : 20,
-        paddingRight        : 15,
-        paddingLeft         : 15,
+        paddingRight        : 0,
+        paddingLeft         : 0,
         elevation           : 0,
         borderBottomWidth   : 0,
         alignItems          : 'center',
@@ -583,6 +666,10 @@ const styles = ({
     },
     rightIcon : {
         flex                : 0
+    },
+    iconHeader : {
+        width               : 50,
+        height              : 40
     },
 
     // Style position
@@ -633,7 +720,7 @@ const styles = ({
     // Style Swiper
 
     swiper : {
-        height                  : 220,
+        height                  : 200,
     },
     viewBlock : {
         position                :  "relative",
@@ -645,6 +732,63 @@ const styles = ({
         top                     : 40,
         backgroundColor         : "rgba(0,0,0,0.5)",
     },
+    paginationStyle : {
+        alignSelf               : "flex-end",
+        paddingHorizontal       : 30 ,
+        position                : 'absolute',
+        transform               : [{ rotate: '90deg' }] ,
+        right                   : -330,
+        zIndex                  : 999
+    },
+    iconContact : {
+        position                : 'absolute',
+        left                    : -1,
+        zIndex                  : 9999,
+        top                     : -1
+    },
+
+    // Style Model
+
+    bgModel : {
+        width                   : "100%",
+        backgroundColor         : "rgba(0,0,0,0.8)",
+        flex                    : 1,
+        alignSelf               : 'center',
+        justifyContent          : 'flex-end',
+    },
+    bgModelFilter : {
+        width                   : "100%",
+        backgroundColor         : "rgba(0,0,0,0.3)",
+        flex                    : 1,
+        alignSelf               : 'center',
+    },
+
+    // Style Drawer
+
+    clickLogin : {
+        bottom                  : 100,
+        right                   : -55,
+        transform               : [{ rotate: '90deg' }] ,
+    },
+    drawerItemStyle: {
+        paddingHorizontal       : 17,
+        marginVertical          : 15
+    },
+    zIndexUp : {
+        zIndex                  : 9999
+    },
+    zIndexDown : {
+        zIndex                  : -1
+    },
+    imageMask : {
+        bottom                  : 0,
+        right                   : -55,
+        transform               : [{ rotate: '0deg' }] ,
+        position                : 'absolute',
+    },
+
+
+
 
 
 

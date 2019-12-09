@@ -6,6 +6,8 @@ import aboutApp from './AboutAppReducer';
 import contactUs from './ContactUsReducer';
 import faq from './FaqReducer';
 import terms from './TermsReducer';
+import complaint from './SendComplaintReducer';
+import home from './HomeReducer';
 
 export default combineReducers({
     lang,
@@ -14,6 +16,8 @@ export default combineReducers({
     aboutApp,
     contactUs,
     faq,
-    terms
+    terms,
+    complaint,
+    home
 });
 
