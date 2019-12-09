@@ -7,7 +7,7 @@ const ar = {
     'password'                  : 'كلمه المرور',
     'forgetPassword'            : 'نسيت كلمه السر ؟',
     'doHaveAcc'                 : 'تسجيل',
-    'changepass'                : 'تغير كلمه المرور',
+    'changepass'                : 'تغيير كلمه المرور',
     'currentpass'               : 'كلمه المرور الحاليه',
     'newpass'                   : 'كلمه المرور الجديده',
     'confirmpass'               : 'تأكيد كلمه المرور الجديده',
@@ -113,7 +113,8 @@ const ar = {
     'cancelOrder'               : 'الغاء الطلب',
     'cancelOrderReason'         : 'ادخل سبب الالغاء',
     'finishOrder'               : 'انهاء الطلب',
-    'deliveredPlace'               : 'مكان التوصيل',
+    'deliveredPlace'            : 'مكان التوصيل',
+    'editAcc'                   : 'تعديل الحساب',
 };
 
 export default ar;

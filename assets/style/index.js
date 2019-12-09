@@ -587,7 +587,7 @@ const styles = ({
     },
     noActive : {
         borderWidth           : 1,
-        borderColor           : COLORS.opcity_gray,
+        borderColor           : COLORS.black,
         paddingRight          : 20,
         paddingLeft           : 20,
     },
@@ -1118,6 +1118,11 @@ const styles = ({
     },
     textarea:{
         height:100
+    },
+    keyboardAvoid: {
+        width:'100%',
+        height: null,
+        flex: 1,
     },
 });
 

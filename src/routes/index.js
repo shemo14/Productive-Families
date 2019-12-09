@@ -27,7 +27,6 @@ import MyOrders                 from "../components/MyOrders";
 import Notification             from "../components/Notification";
 import Offers                   from "../components/Offers";
 import Favorite                 from "../components/Favorite";
-import OrderDetails                 from "../components/OrderDetails";
 import DrawerCustomization      from "./DrawerCustomization";
 
 //// amaaaany
@@ -36,6 +35,8 @@ import Provider           from "../components/Provider";
 import Product           from "../components/Product";
 import Notifications           from "../components/Notifications";
 import Profile           from "../components/Profile";
+import OrderDetails                 from "../components/OrderDetails";
+import EditProfile           from "../components/EditProfile";
 
 
 const drawerCust = (props) => (<DrawerCustomization {...props} />);
@@ -66,6 +67,19 @@ const drawerNavigator = createDrawerNavigator({
 
 const appStack =  createStackNavigator({
     /// Amaany
+
+    editProfile: {
+        screen: EditProfile,
+        navigationOptions: {
+            header: null
+        }
+    },
+    profile: {
+        screen: Profile,
+        navigationOptions: {
+            header: null
+        }
+    },
     orderDetails: {
         screen: OrderDetails,
         navigationOptions: {
@@ -86,12 +100,6 @@ const appStack =  createStackNavigator({
     },
     provider: {
         screen: Provider,
-        navigationOptions: {
-            header: null
-        }
-    },
-    profile: {
-        screen: Profile,
         navigationOptions: {
             header: null
         }
@@ -258,8 +266,8 @@ const authStack = createStackNavigator({
 });
 
 const AppNavigator = createSwitchNavigator({
-    auth    : authStack,
     app     : appStack,
+    auth    : authStack,
 });
 
 export default createAppContainer(AppNavigator);
