@@ -32,6 +32,12 @@ class AboutApp extends Component {
         }
     }
 
+    static navigationOptions = () => ({
+        header      : null,
+        drawerLabel : ( <Text style={[styles.textRegular, styles.text_black, styles.textSize_18]}>{ i18n.t('about') }</Text> ) ,
+        drawerIcon  : ( <Image style={[styles.smImage]} source={require('../../assets/images/about_app.png')}/>)
+    });
+
     render() {
 
         return (
@@ -44,7 +50,9 @@ class AboutApp extends Component {
                         </Button>
                     </Left>
                     <Body style={styles.bodyText}>
-                        <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>{ i18n.t('about') }</Title>
+                        <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
+                            { i18n.t('about') }
+                        </Title>
                     </Body>
                 </Header>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>

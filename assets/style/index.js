@@ -267,8 +267,17 @@ const styles = ({
     bg_lightWhite : {
         backgroundColor     : COLORS.lightWhite
     },
+    bg_black : {
+        backgroundColor     : COLORS.black
+    },
     bg_overlay : {
         backgroundColor     : "rgba(250, 218, 208, 0.9)"
+    },
+    overlay_white : {
+        backgroundColor     : "rgba(255, 255, 255, 0.7)"
+    },
+    overlay_black : {
+        backgroundColor     : "rgba(0, 0, 0, 0.5)"
     },
     bg_White : {
         backgroundColor     : '#FFF'
@@ -403,6 +412,9 @@ const styles = ({
     flex_40 : {
         flexBasis           : '40%'
     },
+    flex_45 : {
+        flexBasis           : '45%'
+    },
     flex_50 : {
         flexBasis           : '50%'
     },
@@ -449,6 +461,9 @@ const styles = ({
     },
     Width_100 : {
         width               : '100%'
+    },
+    width_30 : {
+        width               : 30
     },
     width_40 : {
         width               : 40
@@ -506,6 +521,12 @@ const styles = ({
     },
     height_100 : {
         height              : 100
+    },
+    height_120 : {
+        height              : 120
+    },
+    height_200 : {
+        height              : 200
     },
     heightFull : {
         height              : '100%'
@@ -615,6 +636,11 @@ const styles = ({
         height              : 150,
         resizeMode          : 'contain'
     },
+    upImage : {
+        width               : 250,
+        height              : 250,
+        resizeMode          : 'contain'
+    },
     minImage : {
         width               : 130,
         height              : 130,
@@ -633,6 +659,11 @@ const styles = ({
     favImage : {
         width               : 15,
         height              : 15,
+        resizeMode          : 'contain'
+    },
+    ionImage : {
+        width               : 20,
+        height              : 20,
         resizeMode          : 'contain'
     },
     iconBank : {
@@ -663,6 +694,7 @@ const styles = ({
     leftIcon : {
         flex                : 0,
         transform           : I18nManager.isRTL ? [{ rotate: '0deg' }] : [{ rotate: '180deg' }],
+        marginHorizontal    : 15
     },
     rightIcon : {
         flex                : 0
@@ -681,6 +713,82 @@ const styles = ({
     position_A : {
         position                : 'absolute',
         zIndex                  : 9999
+    },
+    fixItem : {
+        top                     : -20,
+        right                   : -20
+    },
+    top_0 : {
+        top                     : 0
+    },
+    top_5 : {
+        top                     : 5
+    },
+    top_10 : {
+        top                     : 10
+    },
+    top_15 : {
+        top                     : 15
+    },
+    top_20 : {
+        top                     : 20
+    },
+    top_25 : {
+        top                     : 25
+    },
+    top_30 : {
+        top                     : 30
+    },
+    top_35 : {
+        top                     : 35
+    },
+    right_0 : {
+        right                     : 0
+    },
+    right_5 : {
+        right                     : 5
+    },
+    right_10 : {
+        right                     : 10
+    },
+    right_15 : {
+        right                     : 15
+    },
+    right_20 : {
+        right                     : 20
+    },
+    right_25 : {
+        right                     : 25
+    },
+    right_30 : {
+        right                     : 30
+    },
+    right_35 : {
+        right                     : 35
+    },
+    left_0 : {
+        left                     : 0
+    },
+    left_5 : {
+        left                     : 5
+    },
+    left_10 : {
+        left                     : 10
+    },
+    left_15 : {
+        left                     : 15
+    },
+    left_20 : {
+        left                     : 20
+    },
+    left_25 : {
+        left                     : 25
+    },
+    left_30 : {
+        left                     : 30
+    },
+    left_35 : {
+        left                     : 35
     },
 
     // Style Bg OverLay
@@ -772,7 +880,7 @@ const styles = ({
     },
     drawerItemStyle: {
         paddingHorizontal       : 17,
-        marginVertical          : 15
+        marginVertical          : 10
     },
     zIndexUp : {
         zIndex                  : 9999
@@ -783,11 +891,31 @@ const styles = ({
     imageMask : {
         bottom                  : 0,
         right                   : -55,
-        transform               : [{ rotate: '0deg' }] ,
         position                : 'absolute',
+        height                  : 400,
+        resizeMode              : 'contain'
     },
 
+    // Style Basket
 
+    iconRemove : {
+        bottom                  : 10,
+        right                   : 0
+    },
+    borderText : {
+        borderRightWidth        : 1,
+        borderRightColor        : '#F00',
+    },
+
+    // Style Map
+
+    map : {
+        width               : '100%',
+        height              : '100%',
+        alignItems          : 'center',
+        justifyContent      : 'center',
+        alignSelf           : 'center',
+    },
 
 
 

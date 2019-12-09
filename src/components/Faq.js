@@ -31,6 +31,12 @@ class Faq extends Component {
         }
     }
 
+    static navigationOptions = () => ({
+        header      : null,
+        drawerLabel : ( <Text style={[styles.textRegular, styles.text_black, styles.textSize_18]}>{ i18n.t('FAQs') }</Text> ) ,
+        drawerIcon  : ( <Image style={[styles.smImage]} source={require('../../assets/images/questions.png')}/>)
+    });
+
     render() {
 
         return (

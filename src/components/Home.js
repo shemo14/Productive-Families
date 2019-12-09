@@ -27,7 +27,7 @@ class Home extends Component {
     static navigationOptions = () => ({
         header      : null,
         drawerLabel : ( <Text style={[styles.textRegular, styles.text_black, styles.textSize_18]}>{ i18n.t('home') }</Text> ) ,
-        drawerIcon  : ( <Icon style={[styles.text_black , styles.textSize_20]} type="SimpleLineIcons" name="home" /> )
+        drawerIcon  : ( <Image style={[styles.smImage]} source={require('../../assets/images/home.png')} resizeMode={'cover'}/>)
     });
 
     renderLoader(){
@@ -52,9 +52,9 @@ class Home extends Component {
 				<NavigationEvents onWillFocus={() => this.onFocus()} />
 
                 <Header style={styles.headerView}>
-                    <Left style={styles.leftIcon}>
+                    <Left style={[styles.leftIcon, styles.marginHorizontal_15]}>
                         <Button style={styles.Button} transparent onPress={() => { this.props.navigation.openDrawer()} }>
-                            <Icon style={[styles.text_black, styles.textSize_22]} type="SimpleLineIcons" name='menu' />
+                            <Image style={[styles.ionImage]} source={require('../../assets/images/menu.png')}/>
                         </Button>
                     </Left>
                     <Body style={styles.bodyText}>
@@ -63,11 +63,13 @@ class Home extends Component {
                         </Title>
                     </Body>
                     <Right style={styles.rightIcon}>
-                        <Button onPress={() => this.props.navigation.navigate('notifications')} style={[styles.text_gray]} transparent>
-                            <Icon style={[styles.text_black, styles.textSize_22]} type="Ionicons" name='md-notifications-outline' />
-                        </Button>
+                        {/*<Button onPress={() => this.props.navigation.navigate('notifications')} style={[styles.text_gray]} transparent>*/}
+                            {/*<Icon style={[styles.text_black, styles.textSize_22]} type="Ionicons" name='md-notifications-outline' />*/}
                         <Button style={[styles.text_gray]} transparent>
-                            <Icon style={[styles.text_black, styles.textSize_22]} type="SimpleLineIcons" name='basket' />
+                            <Image style={[styles.ionImage]} source={require('../../assets/images/alarm.png')}/>
+                        </Button>
+                        <Button style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent onPress={this.toggleModal}>
+                            <Image style={[styles.ionImage]} source={require('../../assets/images/basket.png')}/>
                         </Button>
                     </Right>
                 </Header>
@@ -90,7 +92,7 @@ class Home extends Component {
                                 {
                                     this.props.slider.map((slid, i) => (
                                         <View style={[styles.viewBlock]}>
-                                            <Image style={[styles.Width_95, styles.swiper]} source={{ uri : slid.image}} resizeMode={'cover'}/>
+                                            <Image style={[styles.Width_95, styles.swiper]} source={{ uri : slid.image}}/>
                                             <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent, styles.Width_50]}>
                                                 <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
                                                     <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">

@@ -13,11 +13,9 @@ class NewPassword extends Component {
     constructor(props){
         super(props);
         this.state = {
-            phone		: '',
-            password	: '',
-            deviceId	: '',
-            userId		: null,
-            type		: 0
+            code                : '',
+            password            : '',
+            confirmpassword     : ''
         }
     }
 
@@ -26,18 +24,27 @@ class NewPassword extends Component {
         let isError = false;
         let msg = '';
 
-        if (this.state.phone.length <= 0 || this.state.phone.length !== 10) {
+        if (this.state.code.length <= 0) {
             isError = true;
             msg = i18n.t('phoneValidation');
-        }else if (this.state.password.length <= 0) {
-            isError = true;
-            msg = i18n.t('passwordRequired');
+        }else if (this.state.password.length <= 0 || this.state.password.length < 6){
+            isError     = true;
+            msg         = i18n.translate('passreq');
+        }else if (this.state.password !== this.state.confirmpassword){
+            isError     = true;
+            msg         = i18n.translate('notmatch');
         }
+
         if (msg !== ''){
             Toast.show({
-                text: msg,
-                type: "danger",
-                duration: 3000
+                text        : msg,
+                type        : "danger",
+                duration    : 3000,
+                textStyle     : {
+                    color           : "white",
+                    fontFamily      : 'cairo',
+                    textAlign       : 'center',
+                }
             });
         }
         return isError;
@@ -46,58 +53,11 @@ class NewPassword extends Component {
     onLoginPressed() {
         const err = this.validate();
         if (!err){
-            const {phone, password, deviceId , type} = this.state;
-            this.props.userLogin({ phone, password, deviceId, type }, this.props.lang);
+            const {code , password , confirmpassword} = this.state;
+            this.props.userLogin({ code , password , confirmpassword }, this.props.lang);
         }
     }
 
-    async componentWillMount() {
-        const { status: existingStatus } = await Permissions.getAsync(
-            Permissions.NOTIFICATIONS
-        );
-
-        let finalStatus = existingStatus;
-
-        if (existingStatus !== 'granted') {
-            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-            finalStatus = status;
-        }
-
-        if (finalStatus !== 'granted') {
-            return;
-        }
-
-        const deviceId = await Notifications.getExpoPushTokenAsync();
-        this.setState({ deviceId, userId: null });
-        AsyncStorage.setItem('deviceID', deviceId);
-
-    }
-
-    componentWillReceiveProps(newProps){
-        console.log('props auth ...', newProps.auth);
-
-
-        if (newProps.auth !== null && newProps.auth.status === 200){
-
-            console.log('this is user id...', this.state.userId);
-
-            if (this.state.userId === null){
-                this.setState({ userId: newProps.auth.data.id });
-                this.props.profile(newProps.auth.data.token);
-            }
-
-            this.props.navigation.navigate('home');
-        }
-
-        if (newProps.auth !== null) {
-            Toast.show({
-                text: newProps.auth.msg,
-                type: newProps.auth.status === 200 ? "success" : "danger",
-                duration: 3000
-            });
-        }
-
-    }
 
     onFocus(){
         this.componentWillMount()
@@ -120,16 +80,16 @@ class NewPassword extends Component {
 
                                 <Item floatingLabel style={styles.item}>
                                     <Input
-                                        placeholder             = {i18n.translate('code')}
+                                        placeholder             = {i18n.t('code')}
                                         keyboardType            = {'number-pad'}
                                         style                   = {[styles.input, styles.height_50, styles.borderBold]}
-                                        onChangeText            = {(phone) => this.setState({phone})}
+                                        onChangeText            = {(code) => this.setState({code})}
                                     />
                                 </Item>
 
                                 <Item floatingLabel style={styles.item}>
                                     <Input
-                                        placeholder             = {i18n.translate('newpass')}
+                                        placeholder             = {i18n.t('newpass')}
                                         style                   = {[styles.input, styles.height_50, styles.borderBold]}
                                         autoCapitalize          = 'none'
                                         onChangeText            = {(password) => this.setState({password})}
@@ -139,10 +99,10 @@ class NewPassword extends Component {
 
                                 <Item floatingLabel style={styles.item}>
                                     <Input
-                                        placeholder             = {i18n.translate('confirmpass')}
+                                        placeholder             = {i18n.t('confirmpass')}
                                         style                   = {[styles.input, styles.height_50, styles.borderBold]}
                                         autoCapitalize          = 'none'
-                                        onChangeText            = {(password) => this.setState({password})}
+                                        onChangeText            = {(confirmpassword) => this.setState({confirmpassword})}
                                         secureTextEntry
                                     />
                                 </Item>

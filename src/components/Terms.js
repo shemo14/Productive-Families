@@ -32,6 +32,12 @@ class Terms extends Component {
         }
     }
 
+    static navigationOptions = () => ({
+        header      : null,
+        drawerLabel : ( <Text style={[styles.textRegular, styles.text_black, styles.textSize_18]}>{ i18n.t('terms') }</Text> ) ,
+        drawerIcon  : ( <Image style={[styles.smImage]} source={require('../../assets/images/terms.png')}/>)
+    });
+
     render() {
 
         return (

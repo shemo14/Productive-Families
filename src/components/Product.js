@@ -152,8 +152,8 @@ class Product extends Component {
                     <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>صفحة المنتج الواحد</Title>
                     </Body>
                     <Right style={styles.rightIcon}>
-                        <Button style={styles.bgBtn} transparent onPress={() => this.onShare()}>
-                            <Icon style={[styles.text_black, styles.textSize_22]} type="Feather" name='share-2' />
+                        <Button  style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent onPress={() => this.onShare()}>
+                            <Image style={[styles.ionImage]} source={require('../../assets/images/share.png')}/>
                         </Button>
                     </Right>
                 </Header>
@@ -310,7 +310,7 @@ class Product extends Component {
                             <View style={[styles.Width_93 , {marginTop:20}]}>
                                 <View style={[styles.lightOverlay, styles.Border]}/>
                                 <Textarea placeholder={ i18n.t('comment') } placeholderTextColor={COLORS.bold_gray} autoCapitalize='none' value={this.state.desc} onChangeText={(desc) => this.setState({desc})}
-                                          style={[styles.textarea, styles.Width_100 , styles.overHidden, styles.bg_White, styles.Border,styles.paddingHorizontal_7 , styles.paddingVertical_7]}  />
+                                          style={[styles.textarea, styles.textRegular,styles.Width_100 , styles.overHidden, styles.bg_White, styles.Border,styles.paddingHorizontal_7 , styles.paddingVertical_7]}  />
                             </View>
                             <View style={styles.counterParent}>
                                 <TouchableOpacity onPress={() => this.increment2()} style={styles.touchPlus}>
