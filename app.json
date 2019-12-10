@@ -24,7 +24,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "app.aait.chifz"
+    },
+    "android": {
+      "package": "app.aait.chifz",
+      "versionCode": 12,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBripzhDn5xRMGI_ohKAsIcbd1-UuKS6uY"
+        }
+      }
     }
   }
 }

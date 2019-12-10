@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {View, Text, Image, TouchableOpacity, ImageBackground, AsyncStorage,} from "react-native";
-import {Container, Content, Form, Item, Input, Button, Toast} from 'native-base'
+import {Container, Content, Form, Item, Input, Button, Toast, Icon} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
 import {DoubleBounce} from "react-native-loader";
@@ -13,8 +13,25 @@ class ActivationCode extends Component {
     constructor(props){
         super(props);
         this.state = {
-            code		: '',
+            code		        : '',
+            codeStatus          : 0,
         }
+    }
+
+    activeInput(type){
+
+        if (type === 'code' || this.state.code !== ''){
+            this.setState({ codeStatus: 1 })
+        }
+
+    }
+
+    unActiveInput(type){
+
+        if (type === 'code' && this.state.code === ''){
+            this.setState({ codeStatus: 0 })
+        }
+
     }
 
 
@@ -60,14 +77,21 @@ class ActivationCode extends Component {
                             </Animatable.View>
                             <Form style={[styles.Width_100, styles.flexCenter, styles.marginVertical_10, styles.Width_90]}>
 
-                                <Item floatingLabel style={styles.item}>
-                                    <Input
-                                        placeholder             = {i18n.translate('actcode')}
-                                        keyboardType            = {'number-pad'}
-                                        style                   = {[styles.input, styles.height_50, styles.borderBold]}
-                                        onChangeText            = {(code) => this.setState({code})}
-                                    />
-                                </Item>
+                                <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
+                                    <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
+                                        <Input
+                                            placeholder             = {i18n.translate('actcode')}
+                                            style                   = {[ styles.input , styles.height_50 , (this.state.codeStatus === 1 ? styles.Active : styles.noActive )]}
+                                            onChangeText            = {(code) => this.setState({code})}
+                                            onBlur                  = {() => this.unActiveInput('code')}
+                                            onFocus                 = {() => this.activeInput('code')}
+                                            keyboardType            = {'number-pad'}
+                                        />
+                                    </Item>
+                                    <View style = {[ styles.position_A , styles.bg_White, styles.flexCenter, styles.iconInput,  (this.state.codeStatus === 1 ? styles.left_0 : styles.leftHidLeft )]}>
+                                        <Icon style = {[styles.text_orange, styles.textSize_22]} type="MaterialCommunityIcons" name='cellphone' />
+                                    </View>
+                                </View>
 
                                 <TouchableOpacity
                                     style={[

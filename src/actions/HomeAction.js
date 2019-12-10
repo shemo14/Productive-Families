@@ -2,6 +2,7 @@ import axios from "axios";
 import CONST from "../consts";
 
 export const sliderHome = lang => {
+
     return (dispatch) => {
         axios({
             url         : CONST.url + 'banners',
@@ -11,6 +12,6 @@ export const sliderHome = lang => {
             dispatch({type: 'sliderHome', payload: response.data});
             console.log('data ==', response.data)
         });
-
     }
+
 };

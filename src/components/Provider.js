@@ -14,7 +14,8 @@ const products=[
     {id:2 , name:'قهوة فرنسية' , content:'حليب - بن - بندق', price:'25', image:require('../../assets/images/img_product.png')},
     {id:3 , name:'قهوة فرنسية' , content:'حليب - بن - بندق', price:'25', image:require('../../assets/images/coffee_img.png')},
     {id:4 , name:'قهوة فرنسية' , content:'حليب - بن - بندق', price:'25', image:require('../../assets/images/img_product.png')},
-]
+];
+
 class Provider extends Component {
     constructor(props){
         super(props);
@@ -55,7 +56,7 @@ class Provider extends Component {
                 </View>
             </TouchableOpacity>
         );
-    }
+    };
 
     render() {
 

@@ -4,7 +4,6 @@ import {Container, Content, Form, Item, Input, Button, Toast, CheckBox, Picker, 
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
 import {DoubleBounce} from "react-native-loader";
-import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 
@@ -19,16 +18,36 @@ class Register extends Component {
             password	        : '',
             confirmpassword	    : '',
             deviceId	        : '',
-            userId		        : null,
-            country	            : null,
-            chooseUser	        : null,
-            checked             : false,
+            latitude            : '',
+            longitude           : '',
+            city_name           : '',
             type		        : 0,
             usernameStatus      : 0,
             phoneStatus         : 0,
             passwordStatus      : 0,
             rePasswordStatus    : 0,
+            userId		        : null,
+            country	            : null,
+            chooseUser	        : null,
+            checked             : false,
         }
+    }
+
+    componentWillMount() {
+
+        if(this.props.navigation.getParam('latitude') || this.props.navigation.getParam('longitude')){
+            this.state.city_name            =  this.props.navigation.getParam('city_name');
+            this.setState({latitude   : this.props.navigation.getParam('latitude')});
+            this.setState({longitude  : this.props.navigation.getParam('longitude')});
+        }else{
+            this.setState({city_name  : 'الموقع علي الخريطه'})
+        }
+
+        console.log('lat', this.props.navigation.getParam('latitude'));
+        console.log('lng', this.props.navigation.getParam('longitude'));
+        // console.log('city_name', this.props.navigation.getParam('city_name'));
+        console.log('city_name', this.props.navigation.state.params.city_name);
+
     }
 
     activeInput(type){
@@ -143,7 +162,6 @@ class Register extends Component {
     render() {
         return (
             <Container>
-                <NavigationEvents onWillFocus={() => this.onFocus()} />
                 <Content contentContainerStyle={styles.bgFullWidth}>
                     <ImageBackground source={require('../../assets/images/background.png')} style={[styles.bgFullWidth]}>
                         <View style={[styles.position_R, styles.bgFullWidth, styles.marginVertical_15, styles.SelfCenter, styles.Width_100]}>
@@ -177,6 +195,7 @@ class Register extends Component {
                                             onChangeText            = {(phone) => this.setState({phone})}
                                             onBlur                  = {() => this.unActiveInput('phone')}
                                             onFocus                 = {() => this.activeInput('phone')}
+                                            keyboardType            = {'number-pad'}
                                         />
                                     </Item>
                                     <View style = {[ styles.position_A , styles.bg_White, styles.flexCenter, styles.iconInput,  (this.state.phoneStatus === 1 ? styles.left_0 : styles.leftHidLeft )]}>
@@ -227,9 +246,12 @@ class Register extends Component {
                                     <Icon style={styles.iconPicker} type="AntDesign" name='down' />
                                 </View>
 
-                                <TouchableOpacity style={[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}>
+                                <TouchableOpacity
+                                    style           = {[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}
+                                    onPress         = {() => this.props.navigation.navigate('MapLocation')}
+                                >
                                     <Text style={[styles.textRegular , styles.text_black,]}>
-                                        {i18n.translate('map')}
+                                        { this.state.city_name }
                                     </Text>
                                     <View style={[styles.overHidden]}>
                                         <Icon style={[styles.text_black, styles.textSize_16]} type="Feather" name='map-pin' />

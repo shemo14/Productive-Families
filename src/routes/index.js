@@ -19,7 +19,7 @@ import ActivationCode           from "../components/ActivationCode";
 import NewPassword              from "../components/NewPassword";
 import ForgetPassword           from "../components/ForgetPassword";
 import DetailsBasket            from "../components/DetailsBasket";
-import Location                 from "../components/Location";
+import MapLocation              from "../components/MapLocation";
 import ChoosePayment            from "../components/ChoosePayment";
 import FormPayment              from "../components/FormPayment";
 import ConfirmPayment           from "../components/ConfirmPayment";
@@ -97,7 +97,7 @@ const appStack =  createStackNavigator({
         }
     },
 
-
+    // Sh3wza
 
     MyOrders : {
         screen: MyOrders,
@@ -153,12 +153,6 @@ const appStack =  createStackNavigator({
             header: null
         }
     },
-    Location : {
-        screen: Location,
-        navigationOptions: {
-            header: null
-        }
-    },
     FilterCategory : {
         screen: FilterCategory,
         navigationOptions: {
@@ -184,19 +178,11 @@ const appStack =  createStackNavigator({
         }
     },
 
-
-
 });
 
 const authStack = createStackNavigator({
-    Register: {
-        screen: Register,
-        navigationOptions: {
-            header: null
-        }
-    },
-    contactUs: {
-        screen: ContactUs,
+    MapLocation : {
+        screen: MapLocation,
         navigationOptions: {
             header: null
         }
@@ -207,8 +193,8 @@ const authStack = createStackNavigator({
             header: null
         }
     },
-    Login: {
-        screen: Login,
+    ActivationCode: {
+        screen: ActivationCode,
         navigationOptions: {
             header: null
         }
@@ -225,14 +211,26 @@ const authStack = createStackNavigator({
             header: null
         }
     },
-    ActivationCode: {
-        screen: ActivationCode,
+    Login: {
+        screen: Login,
+        navigationOptions: {
+            header: null
+        }
+    },
+    Register: {
+        screen: Register,
         navigationOptions: {
             header: null
         }
     },
     initScreen: {
         screen: InitScreen,
+        navigationOptions: {
+            header: null
+        }
+    },
+    contactUs: {
+        screen: ContactUs,
         navigationOptions: {
             header: null
         }

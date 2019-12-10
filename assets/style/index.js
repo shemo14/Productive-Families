@@ -587,7 +587,7 @@ const styles = ({
     },
     noActive : {
         borderWidth           : 1,
-        borderColor           : COLORS.opcity_gray,
+        borderColor           : COLORS.bold_gray,
         paddingRight          : 20,
         paddingLeft           : 20,
     },
@@ -765,6 +765,21 @@ const styles = ({
     },
     top_35 : {
         top                     : 35
+    },
+    bottom_0 : {
+        bottom                  : 0
+    },
+    bottom_10 : {
+        bottom                  : 10
+    },
+    bottom_20 : {
+        bottom                  : 20
+    },
+    bottom_30 : {
+        bottom                  : 30
+    },
+    bottom_40 : {
+        bottom                  : 40
     },
     right_0 : {
         right                     : 0
