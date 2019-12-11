@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground, AsyncStorage,} from "react-native";
-import {Container, Content, Form, Item, Input, Button, Toast, CheckBox, Picker, Icon} from 'native-base'
+import {View, Text, Image, TouchableOpacity, ImageBackground,} from "react-native";
+import {Container, Content, Form, Item, Input, Toast, CheckBox, Picker, Icon} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
 import {DoubleBounce} from "react-native-loader";
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
+import {NavigationEvents} from "react-navigation";
 
 
 class Register extends Component {
@@ -43,6 +44,10 @@ class Register extends Component {
             this.setState({city_name  : i18n.t('mapname')});
         }
 
+    }
+
+    onFocus(){
+        this.componentDidMount();
     }
 
     activeInput(type){
@@ -92,7 +97,7 @@ class Register extends Component {
         let isError     = false;
         let msg         = '';
 
-        if (this.state.phone.username <= 0 || this.state.username.length < 4) {
+        if (this.state.username.length <= 0 || this.state.username.length < 4) {
             isError     = true;
             msg         = i18n.translate('Full');
         }else if (this.state.phone.length <= 0){
@@ -157,6 +162,10 @@ class Register extends Component {
     render() {
         return (
             <Container>
+
+                { this.renderLoader() }
+                <NavigationEvents onWillFocus={() => this.onFocus()} />
+
                 <Content contentContainerStyle={styles.bgFullWidth}>
                     <ImageBackground source={require('../../assets/images/background.png')} style={[styles.bgFullWidth]}>
                         <View style={[styles.position_R, styles.bgFullWidth, styles.marginVertical_15, styles.SelfCenter, styles.Width_100]}>
@@ -243,7 +252,7 @@ class Register extends Component {
 
                                 <TouchableOpacity
                                     style           = {[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}
-                                    onPress         = {() => this.props.navigation.navigate('MapLocation', {pageName : Register})}
+                                    onPress={() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})}
                                 >
                                     <Text style={[styles.textRegular , styles.text_black, styles.width_150]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
                                         { this.state.city_name }

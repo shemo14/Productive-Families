@@ -166,7 +166,10 @@ class EditProfile extends Component {
                                     <Icon style={styles.iconPicker} type="AntDesign" name='down' />
                                 </View>
 
-                                <TouchableOpacity style={[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}>
+                                <TouchableOpacity
+                                    style           = {[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}
+                                    onPress         = {() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})}
+                                >
                                     <Text style={[styles.textRegular , styles.text_black,]}>
                                         {i18n.translate('map')}
                                     </Text>

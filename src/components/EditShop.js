@@ -119,7 +119,7 @@ class EditShop extends Component {
 
                                 <TouchableOpacity
                                     style           = {[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}
-                                    onPress         = {() => this.props.navigation.navigate('MapLocation', {pageName : EditShop})}
+                                    onPress         = {() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})}
                                 >
                                     <Text style={[styles.textRegular , styles.text_black, styles.width_150]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
                                         { this.state.city_name }

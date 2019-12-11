@@ -94,6 +94,10 @@ const ar = {
     'producer'                  : 'نوع المنتج',
     'monyproducer'              : 'سعر المنتج',
     'sallproducer'              : 'نسبه الخصم',
+    'searchCat'                 : 'بحث بالقسم',
+    'searchcom'                 : 'آكتب شئ ف البحث',
+    'nopro'                     : 'لا يوجد مزود خدمه',
+    'nodata'                    : 'لا يوجد شئ للعرض',
 
 
 

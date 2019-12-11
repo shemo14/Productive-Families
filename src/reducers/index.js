@@ -8,6 +8,12 @@ import faq from './FaqReducer';
 import terms from './TermsReducer';
 import complaint from './SendComplaintReducer';
 import home from './HomeReducer';
+import searchHome from './SearchHomeReducer';
+import categoryHome from './CategoryHomeReducer';
+import categoryProvider from './CategoryProviderRuducer';
+import SearchProvider from './SearchProvidersReducer';
+import filterProvider from './FilterProvidersReducer';
+import cities from './CitiesReducer';
 
 export default combineReducers({
     lang,
@@ -18,6 +24,12 @@ export default combineReducers({
     faq,
     terms,
     complaint,
-    home
+    home,
+    searchHome,
+    categoryHome,
+    categoryProvider,
+    SearchProvider,
+    filterProvider,
+    cities,
 });
 

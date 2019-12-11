@@ -454,6 +454,9 @@ const styles = ({
     Width_50 : {
         width               : '50%'
     },
+    Width_60 : {
+        width               : '60%'
+    },
     Width_70 : {
         width               : '70%'
     },
@@ -532,8 +535,14 @@ const styles = ({
     height_120 : {
         height              : 120
     },
+    height_150 : {
+        height              : 150
+    },
     height_200 : {
         height              : 200
+    },
+    height_250 : {
+        height              : 250
     },
     heightFull : {
         height              : '100%'
@@ -562,7 +571,7 @@ const styles = ({
         color               : COLORS.gray,
         textAlign           : I18nManager.isRTL ? 'right' : 'left',
         fontFamily          : 'cairo',
-        fontSize            : 15,
+        fontSize            : 14,
         top                 : 0,
     },
     textArea : {
@@ -572,7 +581,7 @@ const styles = ({
         paddingLeft         : 20,
         textAlign           : I18nManager.isRTL ? 'right' : 'left',
         fontFamily          : 'cairo',
-        fontSize            : 15,
+        fontSize            : 14,
         top                 : 0,
         height              : 150,
     },

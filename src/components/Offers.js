@@ -93,7 +93,7 @@ class Offers extends Component {
                                                 50 ر.س
                                             </Text>
                                             <TouchableOpacity>
-                                                <Text><Icon style={[styles.text_red, styles.textSize_22]} type="AntDesign" name='heart' /></Text>
+                                                <Text><Icon style={[styles.text_red, styles.textSize_20]} type="AntDesign" name='heart' /></Text>
                                             </TouchableOpacity>
                                         </View>
                                     </View>

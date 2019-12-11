@@ -158,6 +158,7 @@ class Provider extends Component {
                             keyExtractor={this._keyExtractor}
                             extraData={this.state.refreshed}
                         />
+
                     </ImageBackground>
                 </Content>
             </Container>

@@ -30,6 +30,7 @@ import Favorite                 from "../components/Favorite";
 import OpenCamera               from "../components/OpenCamera";
 import EditShop                 from "../components/EditShop";
 import AddProducer              from "../components/AddProducer";
+import SearchHome               from "../components/SearchHome";
 import DrawerCustomization      from "./DrawerCustomization";
 
 //// amaaaany
@@ -72,6 +73,18 @@ const appStack =  createStackNavigator({
 
     // Sh3wza
 
+    drawerNavigator: {
+        screen: drawerNavigator,
+        navigationOptions: {
+            header: null
+        }
+    },
+    SearchHome: {
+        screen: SearchHome,
+        navigationOptions: {
+            header: null
+        }
+    },
     AddProducer : {
         screen: AddProducer,
         navigationOptions: {
@@ -92,12 +105,6 @@ const appStack =  createStackNavigator({
     },
     MyOrders : {
         screen: MyOrders,
-        navigationOptions: {
-            header: null
-        }
-    },
-    drawerNavigator: {
-        screen: drawerNavigator,
         navigationOptions: {
             header: null
         }
@@ -168,6 +175,12 @@ const appStack =  createStackNavigator({
             header: null
         }
     },
+    MapLocation : {
+        screen: MapLocation,
+        navigationOptions: {
+            header: null
+        }
+    },
 
     /// Amaany
 
@@ -211,18 +224,6 @@ const appStack =  createStackNavigator({
 });
 
 const authStack = createStackNavigator({
-    contactUs: {
-        screen: ContactUs,
-        navigationOptions: {
-            header: null
-        }
-    },
-    MapLocation : {
-        screen: MapLocation,
-        navigationOptions: {
-            header: null
-        }
-    },
     InitScreen: {
         screen: InitScreen,
         navigationOptions: {
