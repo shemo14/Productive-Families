@@ -304,6 +304,10 @@ const styles = ({
         borderWidth           : 1,
         borderColor           : COLORS.light_gray
     },
+    borderBlack : {
+        borderWidth           : 1,
+        borderColor           : COLORS.black
+    },
     borderBold : {
         borderWidth           : 1,
         borderColor           : COLORS.bold_gray
@@ -566,16 +570,16 @@ const styles = ({
         color               : COLORS.gray,
         paddingRight        : 20,
         paddingLeft         : 20,
-        textAlign           : 'right',
+        textAlign           : I18nManager.isRTL ? 'right' : 'left',
         fontFamily          : 'cairo',
         fontSize            : 15,
         top                 : 0,
-        height              : 120,
+        height              : 150,
     },
     iconSearch : {
         right               : 5
     },
-    bg_bdfore : {
+    bg_before : {
         left                : 25,
         top                 : 0
     },
@@ -587,7 +591,7 @@ const styles = ({
     },
     noActive : {
         borderWidth           : 1,
-        borderColor           : COLORS.bold_gray,
+        borderColor           : COLORS.black,
         paddingRight          : 20,
         paddingLeft           : 20,
     },
@@ -1133,6 +1137,11 @@ const styles = ({
     },
     textarea:{
         height:100
+    },
+    keyboardAvoid: {
+        width:'100%',
+        height: null,
+        flex: 1,
     },
 });
 

@@ -7,7 +7,7 @@ const ar = {
     'password'                  : 'كلمه المرور',
     'forgetPassword'            : 'نسيت كلمه السر ؟',
     'doHaveAcc'                 : 'تسجيل',
-    'changepass'                : 'تغير كلمه المرور',
+    'changepass'                : 'تغيير كلمه المرور',
     'currentpass'               : 'كلمه المرور الحاليه',
     'newpass'                   : 'كلمه المرور الجديده',
     'confirmpass'               : 'تأكيد كلمه المرور الجديده',
@@ -85,6 +85,15 @@ const ar = {
     'starrate'                  : 'الآعلي تقيما',
     'oldrate'                   : 'الآقل تقيما',
     'sear'                      : 'بحث بمزود الخدمه',
+    'editstore'                 : 'تعديل بيانات المتجر',
+    'massmtger'                 : 'وصف المتجر',
+    'mapname'                   : 'الموقع علي الخريطه',
+    'chickmap'                  : 'يرجي تحديد الموقع',
+    'addpro'                    : 'إضافه منتج',
+    'nameproducer'              : 'اسم المنتج',
+    'producer'                  : 'نوع المنتج',
+    'monyproducer'              : 'سعر المنتج',
+    'sallproducer'              : 'نسبه الخصم',
 
 
 
@@ -113,7 +122,8 @@ const ar = {
     'cancelOrder'               : 'الغاء الطلب',
     'cancelOrderReason'         : 'ادخل سبب الالغاء',
     'finishOrder'               : 'انهاء الطلب',
-    'deliveredPlace'               : 'مكان التوصيل',
+    'deliveredPlace'            : 'مكان التوصيل',
+    'editAcc'                   : 'تعديل الحساب',
 };
 
 export default ar;

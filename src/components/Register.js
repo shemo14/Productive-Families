@@ -40,13 +40,8 @@ class Register extends Component {
             this.setState({latitude   : this.props.navigation.getParam('latitude')});
             this.setState({longitude  : this.props.navigation.getParam('longitude')});
         }else{
-            this.setState({city_name  : 'الموقع علي الخريطه'})
+            this.setState({city_name  : i18n.t('mapname')});
         }
-
-        console.log('lat', this.props.navigation.getParam('latitude'));
-        console.log('lng', this.props.navigation.getParam('longitude'));
-        // console.log('city_name', this.props.navigation.getParam('city_name'));
-        console.log('city_name', this.props.navigation.state.params.city_name);
 
     }
 
@@ -203,17 +198,17 @@ class Register extends Component {
                                     </View>
                                 </View>
 
-                                <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15,styles.Width_100, styles.borderBold]}>
+                                <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15,styles.Width_100, styles.borderBlack]}>
                                     <Item style={styles.itemPiker} regular>
                                         <Picker
                                             mode                    = "dropdown"
                                             style                   = {styles.Picker}
-                                            placeholderStyle        = {[styles.textRegular,{ color: "#121212", writingDirection: 'rtl', width : '100%', fontSize : 14 }]}
+                                            placeholderStyle        = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl', width : '100%', fontSize : 14 }]}
                                             selectedValue           = {this.state.chooseUser}
                                             onValueChange           = {this.onValueUser.bind(this)}
-                                            textStyle               = {[styles.textRegular,{ color: "#121212", writingDirection: 'rtl' }]}
+                                            textStyle               = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl' }]}
                                             placeholder             = {i18n.t('viewgest')}
-                                            itemTextStyle           = {[styles.textRegular,{ color: "#121212", writingDirection: 'rtl' }]}
+                                            itemTextStyle           = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl' }]}
                                         >
 
                                             <Picker.Item style={[styles.Width_100]} label={i18n.t('viewgest')} value={null} />
@@ -227,17 +222,17 @@ class Register extends Component {
                                     <Icon style={styles.iconPicker} type="AntDesign" name='down' />
                                 </View>
 
-                                <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15,styles.Width_100, styles.borderBold]}>
+                                <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15,styles.Width_100, styles.borderBlack]}>
                                     <Item style={styles.itemPiker} regular>
                                         <Picker
                                             mode                    = "dropdown"
                                             style                   = {styles.Picker}
-                                            placeholderStyle        = {[styles.textRegular,{ color: "#121212", writingDirection: 'rtl', width : '100%', fontSize : 14 }]}
+                                            placeholderStyle        = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl', width : '100%', fontSize : 14 }]}
                                             selectedValue           = {this.state.country}
                                             onValueChange           = {this.onValueCountry.bind(this)}
-                                            textStyle               = {[styles.textRegular,{ color: "#121212", writingDirection: 'rtl', width : '100%', }]}
+                                            textStyle               = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl', width : '100%', }]}
                                             placeholder             = {i18n.translate('city')}
-                                            itemTextStyle           = {[styles.textRegular,{ color: "#121212", writingDirection: 'rtl', width : '100%', }]}
+                                            itemTextStyle           = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl', width : '100%', }]}
                                         >
                                             <Picker.Item style={[styles.Width_100]} label={i18n.t('city')} value={null} />
 
@@ -248,9 +243,9 @@ class Register extends Component {
 
                                 <TouchableOpacity
                                     style           = {[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}
-                                    onPress         = {() => this.props.navigation.navigate('MapLocation')}
+                                    onPress         = {() => this.props.navigation.navigate('MapLocation', {pageName : Register})}
                                 >
-                                    <Text style={[styles.textRegular , styles.text_black,]}>
+                                    <Text style={[styles.textRegular , styles.text_black, styles.width_150]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
                                         { this.state.city_name }
                                     </Text>
                                     <View style={[styles.overHidden]}>
@@ -324,7 +319,7 @@ class Register extends Component {
                             </Form>
 
                             <View style={[styles.bg_lightWhite, styles.SelfLeft, styles.paddingHorizontal_10, styles.height_100, styles.centerContext, styles.marginVertical_25]}>
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('Register')}
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}
                                                   style={[styles.bg_light_oran, styles.paddingHorizontal_10, styles.height_40, styles.centerContext]}>
                                     <Text style={[styles.textRegular, styles.textSize_14, styles.text_red]}>
                                         {i18n.translate('login')}

@@ -27,22 +27,26 @@ import MyOrders                 from "../components/MyOrders";
 import Notification             from "../components/Notification";
 import Offers                   from "../components/Offers";
 import Favorite                 from "../components/Favorite";
-import OrderDetails                 from "../components/OrderDetails";
+import OpenCamera               from "../components/OpenCamera";
+import EditShop                 from "../components/EditShop";
+import AddProducer              from "../components/AddProducer";
 import DrawerCustomization      from "./DrawerCustomization";
 
 //// amaaaany
 
-import Provider           from "../components/Provider";
-import Product           from "../components/Product";
-import Notifications           from "../components/Notifications";
-import Profile           from "../components/Profile";
+import Provider                 from "../components/Provider";
+import Product                  from "../components/Product";
+import Notifications            from "../components/Notifications";
+import Profile                  from "../components/Profile";
+import OrderDetails             from "../components/OrderDetails";
+import EditProfile              from "../components/EditProfile";
 
 
 const drawerCust = (props) => (<DrawerCustomization {...props} />);
 
 const drawerNavigator = createDrawerNavigator({
     Home                : Home,
-    profile                : Profile,
+    profile             : Profile,
     MyOrders            : MyOrders,
     Offers              : Offers,
     Favorite            : Favorite,
@@ -65,40 +69,27 @@ const drawerNavigator = createDrawerNavigator({
 
 
 const appStack =  createStackNavigator({
-    /// Amaany
-    orderDetails: {
-        screen: OrderDetails,
-        navigationOptions: {
-            header: null
-        }
-    },
-    product: {
-        screen: Product,
-        navigationOptions: {
-            header: null
-        }
-    },
-    notifications: {
-        screen: Notifications,
-        navigationOptions: {
-            header: null
-        }
-    },
-    provider: {
-        screen: Provider,
-        navigationOptions: {
-            header: null
-        }
-    },
-    profile: {
-        screen: Profile,
-        navigationOptions: {
-            header: null
-        }
-    },
 
     // Sh3wza
 
+    AddProducer : {
+        screen: AddProducer,
+        navigationOptions: {
+            header: null
+        }
+    },
+    EditShop : {
+        screen: EditShop,
+        navigationOptions: {
+            header: null
+        }
+    },
+    OpenCamera : {
+        screen: OpenCamera,
+        navigationOptions: {
+            header: null
+        }
+    },
     MyOrders : {
         screen: MyOrders,
         navigationOptions: {
@@ -178,9 +169,54 @@ const appStack =  createStackNavigator({
         }
     },
 
+    /// Amaany
+
+    editProfile: {
+        screen: EditProfile,
+        navigationOptions: {
+            header: null
+        }
+    },
+    profile: {
+        screen: Profile,
+        navigationOptions: {
+            header: null
+        }
+    },
+    orderDetails: {
+        screen: OrderDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
+    product: {
+        screen: Product,
+        navigationOptions: {
+            header: null
+        }
+    },
+    notifications: {
+        screen: Notifications,
+        navigationOptions: {
+            header: null
+        }
+    },
+    provider: {
+        screen: Provider,
+        navigationOptions: {
+            header: null
+        }
+    },
+
 });
 
 const authStack = createStackNavigator({
+    contactUs: {
+        screen: ContactUs,
+        navigationOptions: {
+            header: null
+        }
+    },
     MapLocation : {
         screen: MapLocation,
         navigationOptions: {
@@ -229,12 +265,6 @@ const authStack = createStackNavigator({
             header: null
         }
     },
-    contactUs: {
-        screen: ContactUs,
-        navigationOptions: {
-            header: null
-        }
-    },
     Terms: {
         screen: Terms,
         navigationOptions: {
@@ -256,8 +286,8 @@ const authStack = createStackNavigator({
 });
 
 const AppNavigator = createSwitchNavigator({
-    auth    : authStack,
     app     : appStack,
+    auth    : authStack,
 });
 
 export default createAppContainer(AppNavigator);

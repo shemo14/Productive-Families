@@ -132,17 +132,18 @@ class ContactUs extends Component {
                             </Text>
                         </TouchableOpacity>
 
-                        <View style={[ styles.flexCenter , styles.marginVertical_15]}>
+                        <View style={[ styles.rowGroup , styles.marginVertical_15, styles.paddingHorizontal_20, styles.SelfCenter]}>
                             {
                                 this.props.socials.map((soc, i) => (
                                     <TouchableOpacity key={i} onPress={() => Linking.openURL(soc.url)}>
-                                        <Image source={{ uri: soc.icon }} style={{width : 50,  height : 50}}/>
+                                        <Image source={{ uri: soc.icon }} style={{width : 30,  height : 30, margin : 15}}/>
                                     </TouchableOpacity>
                                 ))
                             }
                         </View>
+
                         <Modal
-                            onBackButtonPress               = {()=> this.setState({show_modal : false})}
+                            onBackButtonPress               = {() => this.toggleModal()}
                             isVisible                       = {this.state.show_modal}
                             style                           = {styles.bgModel}
                             hasBackdrop                     = {false}
