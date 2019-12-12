@@ -3,7 +3,7 @@ import CONST from "../consts";
 import { Toast } from 'native-base'
 import i18n from "../../locale/i18n";
 
-export const categoryProviders = (lang , category_id ) => {
+export const categoryProviders = ( lang , category_id ) => {
 
     return (dispatch) => {
         axios({

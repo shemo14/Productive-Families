@@ -123,7 +123,7 @@ class FilterCategory extends Component {
     renderItems = (item, key) => {
         return(
             <TouchableOpacity
-                onPress     = {() => this.props.navigation.navigate('Provider', { id : item.id, name : item.name })}
+                onPress     = {() => this.props.navigation.navigate('provider', { id : item.id, name : item.name })}
                 style       = {[styles.position_R, styles.flexCenter, styles.Width_90, styles.marginVertical_15]}
                 key         = { key }
             >
@@ -164,8 +164,6 @@ class FilterCategory extends Component {
 
 
     render() {
-
-        console.log('ooooooo', this.props.city);
         return (
             <Container>
 

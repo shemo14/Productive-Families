@@ -68,6 +68,9 @@ const styles = ({
     textSize_12 : {
         fontSize            : 12,
     },
+    textSize_13 : {
+        fontSize            : 13,
+    },
     textSize_14 : {
         fontSize            : 14,
     },
@@ -955,7 +958,7 @@ const styles = ({
         right                   : 0
     },
     borderText : {
-        borderRightWidth        : 1,
+        borderRightWidth        : 2,
         borderRightColor        : '#F00',
     },
 

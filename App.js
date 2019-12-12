@@ -1,5 +1,5 @@
 import React from 'react';
-import { View} from 'react-native';
+import {AsyncStorage, View} from 'react-native';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import AppNavigator from './src/routes';
@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistedStore } from './src/store';
 import './ReactotronConfig';
+import * as Permissions from "expo-permissions";
 
 
 export default class App extends React.Component {
@@ -34,6 +35,29 @@ export default class App extends React.Component {
     this.setState({ isReady: true });
 
     // AsyncStorage.clear();
+
+  }
+
+  async componentWillMount() {
+
+    const { status: existingStatus } = await Permissions.getAsync(
+        Permissions.NOTIFICATIONS
+    );
+
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== 'granted') {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+
+    if (finalStatus !== 'granted') {
+      return;
+    }
+
+    const deviceId = await Notifications.getExpoPushTokenAsync();
+
+    AsyncStorage.setItem('deviceID', deviceId);
 
   }
 

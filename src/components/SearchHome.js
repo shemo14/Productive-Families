@@ -68,22 +68,22 @@ class SearchHome extends Component {
                     </View>
                     <View style={[styles.overHidden, styles.paddingHorizontal_10, styles.marginVertical_5]}>
                         <Text
-                            style           = {[styles.text_gray, styles.textSize_16, styles.textRegular, styles.Width_100, styles.textLeft]}
+                            style           = {[styles.text_gray, styles.textSize_14, styles.textRegular, styles.Width_100, styles.textLeft]}
                             numberOfLines   = { 1 } prop with
                             ellipsizeMode   = "head"
                         >
                             {item.name}
                         </Text>
-                        <Text style={[styles.text_light_gray, styles.textSize_14, styles.textRegular, styles.Width_100, styles.textLeft]}>
+                        <Text style={[styles.text_light_gray, styles.textSize_13, styles.textRegular, styles.Width_100, styles.textLeft]}>
                             {item.category} - {item.sub_category}
                         </Text>
                         <View style={[styles.rowGroup]}>
-                            <Text style={[styles.text_red, styles.textSize_14, styles.textRegular,styles.textLeft, styles.borderText]}>
-                                {item.price}
+                            <Text style={[styles.text_red, styles.textSize_13, styles.textRegular,styles.textLeft, styles.borderText, styles.paddingHorizontal_5]}>
+                                {item.price} {i18n.t('RS')}
                             </Text>
                             <TouchableOpacity>
                                 <Text>
-                                    <Icon style={[styles.text_red, styles.textSize_20]} type="AntDesign" name={item.is_fav === 1 ? 'heart' : 'hearto'} />
+                                    <Icon style={[styles.text_red, styles.textSize_18]} type="AntDesign" name={item.is_fav === 1 ? 'heart' : 'hearto'} />
                                 </Text>
                             </TouchableOpacity>
                         </View>

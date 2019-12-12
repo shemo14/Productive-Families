@@ -8,3 +8,5 @@ export * from './TermsAction';
 export * from './SendComplaintAction';
 export * from './HomeAction';
 export * from './CategoryProvidersAction';
+export * from './ProviderProductsAction';
+export * from './FavoriteAction';
