@@ -108,7 +108,7 @@ class Home extends Component {
                         <Button style={[styles.text_gray]} transparent>
                             <Image style={[styles.ionImage]} source={require('../../assets/images/alarm.png')}/>
                         </Button>
-                        <Button style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent onPress={this.toggleModal}>
+                        <Button  onPress={() => this.props.navigation.navigate('Basket')} style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent>
                             <Image style={[styles.ionImage]} source={require('../../assets/images/basket.png')}/>
                         </Button>
                     </Right>

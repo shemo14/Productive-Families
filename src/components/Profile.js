@@ -13,7 +13,7 @@ import {
     Item,
     Input,
     Right,
-    Textarea
+    Textarea, Toast
 } from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
@@ -22,6 +22,7 @@ import * as Animatable from 'react-native-animatable';
 import {connect} from "react-redux";
 import COLORS from '../../src/consts/colors'
 import Modal from "react-native-modal";
+import {getChangePassword} from "../actions";
 
 
 class Profile extends Component {
@@ -41,6 +42,7 @@ class Profile extends Component {
             passwordStatus                  : 0,
             newPasswordStatus               : 0,
             confirmNewPasswordStatus        : 0,
+            isSubmitted: false
         }
     }
 
@@ -50,8 +52,64 @@ class Profile extends Component {
         drawerIcon  : ( <Icon style={[styles.text_black , styles.textSize_20]} type="AntDesign" name="user" /> )
     });
 
+
+    renderSubmit(){
+        if (this.state.password == '' || this.state.newPassword == '' || this.state.confirmNewPassword == '') {
+            return (
+                <TouchableOpacity style={[styles.cartBtn , styles.SelfCenter , {marginTop:20}]}>
+                    <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft]}>{ i18n.t('confirm') }</Text>
+                </TouchableOpacity>
+            );
+        }
+        if (this.state.isSubmitted) {
+            return (
+                <View style={[{justifyContent: 'center', alignItems: 'center' , marginTop:20}]}>
+                    <DoubleBounce size={20} color={COLORS.orange} style={{alignSelf: 'center'}}/>
+                </View>
+            )
+        }
+        return (
+            <TouchableOpacity onPress={() => this.changePass()} style={[styles.cartBtn , styles.SelfCenter , {marginTop:20}]}>
+                <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft]}>{i18n.t('confirm')}</Text>
+            </TouchableOpacity>
+
+        );
+    }
+
+    changePass(){
+        if (this.state.newPassword.length < 6){
+            Toast.show({
+                text: i18n.t('passwordLength'),
+                type: "danger",
+                duration: 3000
+            });
+            return false
+        }
+        if(this.state.newPassword != this.state.confirmNewPassword){
+            Toast.show({
+                text: i18n.t('verifyPassword'),
+                type: "danger",
+                duration: 3000
+            });
+            return false
+        }
+
+        this.setState({ isSubmitted: true });
+        this.props.getChangePassword( this.props.lang ,
+            this.state.password,
+            this.state.newPassword,
+            this.props.user.token
+        )
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.changePassword) {
+            this.setState({isSubmitted: false , isModalVisible:false});
+        }
+    }
+
     toggleModal = () => {
-        this.setState({ isModalVisible: !this.state.isModalVisible });
+        this.setState({ isModalVisible: !this.state.isModalVisible , password : '' , newPassword : '', confirmNewPassword : ''});
     };
 
     activeInput(type){
@@ -109,7 +167,7 @@ class Profile extends Component {
                         <View style={[styles.position_R, styles.Width_90, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter,{right:20}]}>
                             <View style={[styles.blackOverlay, styles.Border , {top:10 , left:10}]}></View>
                             <View style={[styles.position_R, styles.Width_100, styles.overHidden, styles.bg_White,styles.bgFullWidth]}>
-                                <Image style={[styles.Width_100, styles.swiper]} source={require('../../assets/images/bg_coffee.png')} resizeMode={'cover'}/>
+                                <Image style={[styles.Width_100, styles.swiper]} source={{uri: this.props.user.avatar}} resizeMode={'cover'}/>
                             </View>
                         </View>
 
@@ -120,7 +178,7 @@ class Profile extends Component {
                                     <Input
                                         placeholder             = {i18n.translate('userName')}
                                         style                   = {[ styles.input , styles.height_50 , styles.Active]}
-                                        value                   = {this.state.username}
+                                        value                   = { this.props.user.name }
                                         // onChangeText            = {(username) => this.setState({username})}
                                         disabled
                                     />
@@ -134,7 +192,7 @@ class Profile extends Component {
                                     <Input
                                         placeholder             = {i18n.translate('phone')}
                                         style                   = {[ styles.input , styles.height_50, styles.Active ]}
-                                        value                   = {this.state.phone}
+                                        value                   = { this.props.user.phone }
                                         // onChangeText            = {(phone) => this.setState({phone})}
                                         disabled
                                     />
@@ -148,7 +206,7 @@ class Profile extends Component {
                                     <Input
                                         placeholder             = {i18n.translate('city')}
                                         style                   = {[ styles.input , styles.height_50 , styles.Active]}
-                                        value                   = {this.state.city}
+                                        value                   = {this.props.user.city_name}
                                         // onChangeText            = {(city) => this.setState({city})}
                                         disabled
                                     />
@@ -162,7 +220,7 @@ class Profile extends Component {
                                     <Input
                                         placeholder             = {i18n.translate('map')}
                                         style                   = {[ styles.input , styles.height_50 , styles.Active]}
-                                        value                   = {this.state.location}
+                                        value                   = {this.props.user.address}
                                         // onChangeText            = {(location) => this.setState({location})}
                                         disabled
                                     />
@@ -237,9 +295,9 @@ class Profile extends Component {
                             </View>
                         </View>
 
-                        <TouchableOpacity onPress={() => this.toggleModal()} style={[styles.cartBtn , styles.SelfCenter , {marginTop:20}]}>
-                            <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft ]} >{i18n.t('confirm')}</Text>
-                        </TouchableOpacity>
+                        {
+                            this.renderSubmit()
+                        }
                     </View>
                 </Modal>
             </Container>
@@ -249,9 +307,11 @@ class Profile extends Component {
 }
 
 
-const mapStateToProps = ({ lang }) => {
+const mapStateToProps = ({ lang , changePassword , profile }) => {
     return {
         lang        : lang.lang,
+        user        : profile.user,
+        changePassword        : changePassword.changePassword
     };
 };
-export default connect(mapStateToProps, {})(Profile);
+export default connect(mapStateToProps, {getChangePassword})(Profile);

@@ -20,13 +20,12 @@ class MapLocation extends Component {
             hasLocationPermissions    : false,
             initMap                   : true,
             location                  : '',
-            pageName                  : this.props.navigation.state.params.pageName,
         }
     }
 
     async componentWillMount() {
 
-        console.log('name', this.props.navigation.state.params.pageName);
+        console.log('name', this.props.navigation);
 
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
@@ -98,7 +97,8 @@ class MapLocation extends Component {
     };
 
     getLocation(){
-
+        const pageName = this.props.navigation.state.params.pageName;
+        console.log('this.state.mapRegion' , this.state.mapRegion)
         if(this.state.city === ''){
             Toast.show({
                 text        : i18n.t('chickmap'),
@@ -112,8 +112,16 @@ class MapLocation extends Component {
             });
         }else{
 
-            if (this.state.pageName === 'EditShop'){
+            if (pageName === 'EditShop'){
                 this.props.navigation.navigate('EditShop', {
+                    city_name               : this.state.city,
+                    latitude                : this.state.mapRegion.latitude,
+                    longitude               : this.state.mapRegion.longitude,
+                });
+            }
+            else if (pageName === 'editProfile'){
+                console.log(this.state.city, this.state.mapRegion.latitude,  this.state.mapRegion.longitude);
+                this.props.navigation.navigate('editProfile', {
                     city_name               : this.state.city,
                     latitude                : this.state.mapRegion.latitude,
                     longitude               : this.state.mapRegion.longitude,

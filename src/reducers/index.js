@@ -8,6 +8,8 @@ import faq from './FaqReducer';
 import terms from './TermsReducer';
 import complaint from './SendComplaintReducer';
 import home from './HomeReducer';
+import cities from './CitiesReducer';
+import changePassword from './ChangePasswordReducer';
 
 export default combineReducers({
     lang,
@@ -18,6 +20,8 @@ export default combineReducers({
     faq,
     terms,
     complaint,
-    home
+    home,
+    cities,
+    changePassword,
 });
 

@@ -7,3 +7,5 @@ export * from './FaqAction';
 export * from './TermsAction';
 export * from './SendComplaintAction';
 export * from './HomeAction';
+export * from './CitiesAction';
+export * from './ChangePasswordAction';

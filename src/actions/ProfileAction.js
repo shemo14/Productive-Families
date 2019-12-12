@@ -8,8 +8,8 @@ export const profile = (token) => {
     return (dispatch) => {
         axios({
             method: 'POST',
-            url: CONST.url + 'user_data',
-            headers: {Authorization: "Bearer " + token}
+            url: CONST.url + 'user-data',
+            headers: {Authorization: token}
         }).then(response => {
             const data = response.data.data;
             dispatch({type: 'profile_data', data})
@@ -21,30 +21,28 @@ export const profile = (token) => {
 export const updateProfile = (data) => {
     return (dispatch) => {
         axios({
-            url: CONST.url + 'update_profile',
+            url: CONST.url + 'update-profile',
             method: 'POST',
             headers: {Authorization: data.token },
             data: {
                 name: data.name,
                 phone: data.phone,
-                city_id: data.cityId,
-                image: data.image,
-                email: data.email,
+                city_id: data.city_id,
+                lat: data.lat,
+                lng: data.lng,
+                avatar: data.avatar,
+                address: data.address,
+                category_id: data.category_id,
                 lang: data.lang,
             }}).then(response => {
-            if (response.data.status == 200) {
-                const data = response.data.data;
-                dispatch({type: 'update_profile', data})
+            if (response.data.key == 1) {
+                // const data = response.data.data;
+                data.props.navigation.navigate('profile');
+                dispatch({type: 'update_profile', data:response.data.data})
             }
             Toast.show({
                 text: response.data.msg,
-                type: response.data.status == 200 ? "success" : "danger",
-                duration: 3000
-            });
-        }).catch(() => {
-            Toast.show({
-                text: 'لم يتم التعديل بعد , الرجاء المحاوله مره اخري',
-                type: "danger",
+                type: response.data.key == 1 ? "success" : "danger",
                 duration: 3000
             });
         })

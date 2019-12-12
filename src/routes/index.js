@@ -72,6 +72,12 @@ const appStack =  createStackNavigator({
 
     // Sh3wza
 
+    Basket: {
+        screen: Basket,
+        navigationOptions: {
+            header: null
+        }
+    },
     AddProducer : {
         screen: AddProducer,
         navigationOptions: {
@@ -150,12 +156,6 @@ const appStack =  createStackNavigator({
             header: null
         }
     },
-    Basket: {
-        screen: Basket,
-        navigationOptions: {
-            header: null
-        }
-    },
     contactUs: {
         screen: ContactUs,
         navigationOptions: {
@@ -207,22 +207,18 @@ const appStack =  createStackNavigator({
             header: null
         }
     },
-
-});
-
-const authStack = createStackNavigator({
-    contactUs: {
-        screen: ContactUs,
-        navigationOptions: {
-            header: null
-        }
-    },
     MapLocation : {
         screen: MapLocation,
         navigationOptions: {
             header: null
         }
     },
+
+
+});
+
+const authStack = createStackNavigator({
+
     InitScreen: {
         screen: InitScreen,
         navigationOptions: {
@@ -286,8 +282,8 @@ const authStack = createStackNavigator({
 });
 
 const AppNavigator = createSwitchNavigator({
-    app     : appStack,
     auth    : authStack,
+    app     : appStack,
 });
 
 export default createAppContainer(AppNavigator);

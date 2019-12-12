@@ -72,7 +72,7 @@ class Basket extends Component {
                                 </View>
                                 <View style={[styles.flex_70]}>
                                     <View style={[styles.rowGroup]}>
-                                        <Text style={[styles.textRegular , styles.text_black]}>مطاعم</Text>
+                                        <Text style={[styles.textRegular , styles.text_orange]}>مطاعم</Text>
                                     </View>
                                     <View style={[styles.overHidden]}>
                                         <Text style={[styles.textRegular , styles.text_gray, styles.Width_100, styles.textLeft]}>تصنيف القسم</Text>
