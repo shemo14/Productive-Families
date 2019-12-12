@@ -4,6 +4,7 @@ import {Container, Content, Header, Button, Left, Icon, Body, Title, Right} from
 import styles from '../../assets/style'
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
+import { getCartList } from '../actions'
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 import i18n from "../../locale/i18n";
@@ -19,6 +20,7 @@ class Basket extends Component {
     }
 
     componentWillMount() {
+        this.props.getCartList( this.props.lang , this.props.user.token )
     }
 
     static navigationOptions = () => ({
@@ -63,27 +65,38 @@ class Basket extends Component {
                 <Content  contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
                     { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
+                        {
 
-                        <TouchableOpacity style={[styles.position_R, styles.flexCenter, styles.Width_90, styles.marginVertical_25]}>
-                            <View style={[styles.lightOverlay, styles.Border]}></View>
-                            <View style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                <View style={[styles.icImg, styles.flex_30]}>
-                                    <Image style={[styles.icImg]} source={require('../../assets/images/bg_shope.png')} resizeMode={'cover'}/>
-                                </View>
-                                <View style={[styles.flex_70]}>
-                                    <View style={[styles.rowGroup]}>
-                                        <Text style={[styles.textRegular , styles.text_orange]}>مطاعم</Text>
+                            this.props.cartList.map((cart, i) => (
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('DetailsBasket' , {provider_id:cart.id})} key={i}
+                                    style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop:10}]}>
+                                    <View style={[styles.lightOverlay, styles.Border]}></View>
+                                    <View
+                                        style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                        <View style={[styles.icImg, styles.flex_30]}>
+                                            <Image style={[styles.icImg]}
+                                                   source={{ uri: cart.avatar }}
+                                                   resizeMode={'cover'}/>
+                                        </View>
+                                        <View style={[styles.flex_70]}>
+                                            <View style={[styles.rowGroup]}>
+                                                <Text style={[styles.textRegular, styles.text_orange]}>{cart.name}</Text>
+                                            </View>
+                                            <View style={[styles.overHidden]}>
+                                                <Text
+                                                    style={[styles.textRegular, styles.text_gray, styles.Width_100, styles.textLeft]}>{cart.category}</Text>
+                                            </View>
+                                            <View style={[styles.overHidden, styles.rowRight]}>
+                                                <Icon style={[styles.text_gray, styles.textSize_14]} type="Feather"
+                                                      name='map-pin'/>
+                                                <Text
+                                                    style={[styles.textRegular, styles.text_gray, styles.marginHorizontal_5]}>{cart.address}</Text>
+                                            </View>
+                                        </View>
                                     </View>
-                                    <View style={[styles.overHidden]}>
-                                        <Text style={[styles.textRegular , styles.text_gray, styles.Width_100, styles.textLeft]}>تصنيف القسم</Text>
-                                    </View>
-                                    <View style={[styles.overHidden, styles.rowRight]}>
-                                        <Icon style={[styles.text_gray, styles.textSize_14]} type="Feather" name='map-pin' />
-                                        <Text style={[styles.textRegular , styles.text_gray, styles.marginHorizontal_5]}>تصنيف القسم</Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </TouchableOpacity>
+                                </TouchableOpacity>
+                            ))
+                        }
 
                     </ImageBackground>
                 </Content>
@@ -93,9 +106,11 @@ class Basket extends Component {
     }
 }
 
-const mapStateToProps = ({ lang }) => {
+const mapStateToProps = ({ lang , cartList , profile}) => {
     return {
         lang        : lang.lang,
+        cartList        : cartList.cartList,
+        user        : profile.user
     };
 };
-export default connect(mapStateToProps, { })(Basket);
+export default connect(mapStateToProps, {getCartList})(Basket);

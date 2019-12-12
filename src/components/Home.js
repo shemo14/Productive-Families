@@ -113,7 +113,7 @@ class Home extends Component {
                     <Right style={styles.rightIcon}>
                         {/*<Button onPress={() => this.props.navigation.navigate('notifications')} style={[styles.text_gray]} transparent>*/}
                             {/*<Icon style={[styles.text_black, styles.textSize_22]} type="Ionicons" name='md-notifications-outline' />*/}
-                        <Button style={[styles.text_gray]} transparent>
+                        <Button onPress={() => this.props.navigation.navigate('notifications')} style={[styles.text_gray]} transparent>
                             <Image style={[styles.ionImage]} source={require('../../assets/images/alarm.png')}/>
                         </Button>
                         <Button  onPress={() => this.props.navigation.navigate('Basket')} style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent>

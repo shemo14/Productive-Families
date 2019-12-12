@@ -17,6 +17,9 @@ import filterProvider from './FilterProvidersReducer';
 import cities from './CitiesReducer';
 import providerProducts from './ProviderProductsReducer';
 import favorite from './FavoriteReducer';
+import cartList from './CartListReducer';
+import cartProducts from './CartProductsReducer';
+import notifications from './NotificationsReducer';
 
 export default combineReducers({
     lang,
@@ -36,6 +39,9 @@ export default combineReducers({
     SearchProvider,
     filterProvider,
     providerProducts,
-    favorite
+    favorite,
+    cartList,
+    cartProducts,
+    notifications,
 });
 

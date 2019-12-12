@@ -73,14 +73,14 @@ const appStack =  createStackNavigator({
 
     // Sh3wza
 
-    Basket: {
-        screen: Basket,
+    drawerNavigator: {
+        screen: drawerNavigator,
         navigationOptions: {
             header: null
         }
     },
-    drawerNavigator: {
-        screen: drawerNavigator,
+    Basket: {
+        screen: Basket,
         navigationOptions: {
             header: null
         }
