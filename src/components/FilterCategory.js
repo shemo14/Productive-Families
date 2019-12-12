@@ -23,7 +23,7 @@ import i18n from "../../locale/i18n";
 import StarRating from 'react-native-star-rating';
 import Modal from "react-native-modal";
 import * as Animatable from 'react-native-animatable';
-import { categoryProviders, searchProviders , filterProviders , city } from '../actions';
+import {categoryProviders, searchProviders, filterProviders, getCities} from '../actions';
 
 const isIOS = Platform.OS === 'ios';
 
@@ -395,7 +395,7 @@ const mapStateToProps = ({ lang, categoryProvider , SearchProvider , cities}) =>
         lang            : lang.lang,
         providers       : categoryProvider.categoryProviders,
         search          : SearchProvider.searchProviders,
-        cities          : cities.city,
+        cities          : cities.cities,
     };
 };
-export default connect(mapStateToProps, { categoryProviders , searchProviders, filterProviders , city })(FilterCategory);
+export default connect(mapStateToProps, { categoryProviders , searchProviders, filterProviders , getCities })(FilterCategory);

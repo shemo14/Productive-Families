@@ -10,6 +10,7 @@ export const getCities = lang => {
             method      : 'POST',
             data        : { lang }
         }).then(response => {
+            console.log('response.data' , response.data)
             dispatch({type: 'getCities', payload: response.data})
         })
 

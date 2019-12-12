@@ -8,10 +8,7 @@ import faq from './FaqReducer';
 import terms from './TermsReducer';
 import complaint from './SendComplaintReducer';
 import home from './HomeReducer';
-<<<<<<< HEAD
-import cities from './CitiesReducer';
 import changePassword from './ChangePasswordReducer';
-=======
 import searchHome from './SearchHomeReducer';
 import categoryHome from './CategoryHomeReducer';
 import categoryProvider from './CategoryProviderRuducer';
@@ -20,7 +17,6 @@ import filterProvider from './FilterProvidersReducer';
 import cities from './CitiesReducer';
 import providerProducts from './ProviderProductsReducer';
 import favorite from './FavoriteReducer';
->>>>>>> 81cafbcdb3df75e56f775b4301ba31311981fb0c
 
 export default combineReducers({
     lang,
@@ -32,18 +28,14 @@ export default combineReducers({
     terms,
     complaint,
     home,
-<<<<<<< HEAD
     cities,
     changePassword,
-=======
     searchHome,
     categoryHome,
     categoryProvider,
     SearchProvider,
     filterProvider,
-    cities,
     providerProducts,
     favorite
->>>>>>> 81cafbcdb3df75e56f775b4301ba31311981fb0c
 });
 

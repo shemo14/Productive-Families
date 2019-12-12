@@ -73,10 +73,12 @@ const appStack =  createStackNavigator({
 
     // Sh3wza
 
-<<<<<<< HEAD
     Basket: {
         screen: Basket,
-=======
+        navigationOptions: {
+            header: null
+        }
+    },
     drawerNavigator: {
         screen: drawerNavigator,
         navigationOptions: {
@@ -85,7 +87,6 @@ const appStack =  createStackNavigator({
     },
     SearchHome: {
         screen: SearchHome,
->>>>>>> 81cafbcdb3df75e56f775b4301ba31311981fb0c
         navigationOptions: {
             header: null
         }
@@ -219,24 +220,10 @@ const appStack =  createStackNavigator({
             header: null
         }
     },
-<<<<<<< HEAD
-    MapLocation : {
-        screen: MapLocation,
-        navigationOptions: {
-            header: null
-        }
-    },
-
-=======
->>>>>>> 81cafbcdb3df75e56f775b4301ba31311981fb0c
 
 });
 
 const authStack = createStackNavigator({
-<<<<<<< HEAD
-
-=======
->>>>>>> 81cafbcdb3df75e56f775b4301ba31311981fb0c
     InitScreen: {
         screen: InitScreen,
         navigationOptions: {

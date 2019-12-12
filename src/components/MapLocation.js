@@ -114,11 +114,9 @@ class MapLocation extends Component {
 
         }else{
 
-<<<<<<< HEAD
-=======
+
             let  pageName = this.props.navigation.state.params.pageName;
 
->>>>>>> 81cafbcdb3df75e56f775b4301ba31311981fb0c
             if (pageName === 'EditShop'){
                 this.props.navigation.navigate('EditShop', {
                     city_name   : this.state.city,
