@@ -30,6 +30,7 @@ import Favorite                 from "../components/Favorite";
 import OpenCamera               from "../components/OpenCamera";
 import EditShop                 from "../components/EditShop";
 import AddProducer              from "../components/AddProducer";
+import SearchHome               from "../components/SearchHome";
 import DrawerCustomization      from "./DrawerCustomization";
 
 //// amaaaany
@@ -72,8 +73,19 @@ const appStack =  createStackNavigator({
 
     // Sh3wza
 
+<<<<<<< HEAD
     Basket: {
         screen: Basket,
+=======
+    drawerNavigator: {
+        screen: drawerNavigator,
+        navigationOptions: {
+            header: null
+        }
+    },
+    SearchHome: {
+        screen: SearchHome,
+>>>>>>> 81cafbcdb3df75e56f775b4301ba31311981fb0c
         navigationOptions: {
             header: null
         }
@@ -98,12 +110,6 @@ const appStack =  createStackNavigator({
     },
     MyOrders : {
         screen: MyOrders,
-        navigationOptions: {
-            header: null
-        }
-    },
-    drawerNavigator: {
-        screen: drawerNavigator,
         navigationOptions: {
             header: null
         }
@@ -168,6 +174,12 @@ const appStack =  createStackNavigator({
             header: null
         }
     },
+    MapLocation : {
+        screen: MapLocation,
+        navigationOptions: {
+            header: null
+        }
+    },
 
     /// Amaany
 
@@ -207,6 +219,7 @@ const appStack =  createStackNavigator({
             header: null
         }
     },
+<<<<<<< HEAD
     MapLocation : {
         screen: MapLocation,
         navigationOptions: {
@@ -214,11 +227,16 @@ const appStack =  createStackNavigator({
         }
     },
 
+=======
+>>>>>>> 81cafbcdb3df75e56f775b4301ba31311981fb0c
 
 });
 
 const authStack = createStackNavigator({
+<<<<<<< HEAD
 
+=======
+>>>>>>> 81cafbcdb3df75e56f775b4301ba31311981fb0c
     InitScreen: {
         screen: InitScreen,
         navigationOptions: {

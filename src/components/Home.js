@@ -1,36 +1,29 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground, Linking, FlatList, ScrollView} from "react-native";
-import {Container, Content, Header, Button, Left, Icon, Body, Title, Right, } from 'native-base'
+import {View, Text, Image, TouchableOpacity, ImageBackground, Linking, FlatList, ScrollView , Platform} from "react-native";
+import {Container, Content, Header, Button, Left, Icon, Body, Title, Right, Item, Input,} from 'native-base'
 import styles from '../../assets/style'
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {NavigationEvents} from "react-navigation";
 import Swiper from 'react-native-swiper';
 import * as Animatable from 'react-native-animatable';
-import { sliderHome } from '../actions';
+import { sliderHome, categoryHome, searchHome } from '../actions';
 import i18n from "../../locale/i18n";
-import home from "../reducers/HomeReducer";
-import COLORS from "../consts/colors";
-import StarRating from "react-native-star-rating";
 
-const products=[
-    {id:1 , name:'قهوة فرنسية' , content:'حليب - بن - بندق', price:'25', image:require('../../assets/images/coffee_img.png')},
-    {id:2 , name:'قهوة فرنسية' , content:'حليب - بن - بندق', price:'25', image:require('../../assets/images/img_product.png')},
-    {id:3 , name:'قهوة فرنسية' , content:'حليب - بن - بندق', price:'25', image:require('../../assets/images/coffee_img.png')},
-    {id:4 , name:'قهوة فرنسية' , content:'حليب - بن - بندق', price:'25', image:require('../../assets/images/img_product.png')},
-];
+const isIOS = Platform.OS === 'ios';
 
 class Home extends Component {
     constructor(props){
         super(props);
 
         this.state={
-            products,
+            categorySearch      : '',
         }
     }
 
     componentWillMount() {
         this.props.sliderHome( this.props.lang );
+        this.props.categoryHome( this.props.lang );
     }
 
     static navigationOptions = () => ({
@@ -41,31 +34,46 @@ class Home extends Component {
 
     _keyExtractor = (item, index) => item.id;
 
-    renderItems = (item) => {
+    renderItems = (item, key) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('product')} style={[styles.position_R, styles.Width_45, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter]}>
-                <View style={[styles.lightOverlay, styles.Border]}></View>
-                <View style={[styles.position_R, styles.Width_100, styles.overHidden, styles.bg_White, styles.Border,styles.bgFullWidth,styles.paddingHorizontal_7 , styles.paddingVertical_7]}>
-                    <View style={[styles.overHidden]}>
-                        <Image source={item.image} resizeMode={'cover'} style={styles.prodImg}/>
-                        <Text style={[styles.textRegular, styles.text_black, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">{item.name}</Text>
-                        <Text style={[styles.textRegular, styles.text_bold_gray, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">{item.content}</Text>
-                        <View style={[styles.rowGroup]}>
-                            <Text style={[styles.textRegular, styles.text_orange,styles.textSize_12, styles.textLeft ,{borderRightWidth:2 , borderRightColor:COLORS.orange , paddingRight:5}]} numberOfLines = { 1 } prop with ellipsizeMode = "head">{item.price} {i18n.t('RS')}</Text>
-                            <TouchableOpacity onPress={() => this.setState({isFav:!this.state.isFav ,refreshed:!this.state.refreshed })}>
-                                {
-                                    this.state.isFav?
-                                        <Icon style={[styles.text_orange , styles.textSize_18]} type="AntDesign" name='heart' />
-                                        :
-                                        <Icon style={[styles.text_bold_gray , styles.textSize_18]} type="AntDesign" name='hearto' />
-                                }
-                            </TouchableOpacity>
+            <TouchableOpacity
+                onPress     = {() => this.props.navigation.navigate('FilterCategory', { id : item.id , name : item.name  })}
+                key         = { key }
+                style       = {[styles.position_R, styles.Width_45, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter]}>
+                <View style={[styles.position_R, styles.Width_100, styles.height_250 , styles.Border,styles.bgFullWidth,]}>
+                    <View style={[styles.overHidden, styles.position_R]}>
+                        <Image style={[styles.Width_100 , styles.height_250]} source={{ uri: item.image }}/>
+                        <View style={[
+                            styles.textRegular ,
+                            styles.text_White ,
+                            styles.textSize_14 ,
+                            styles.textCenter ,
+                            styles.position_A ,
+                            styles.left_0 ,
+                            styles.top_20 ,
+                            styles.overlay_black ,
+                            styles.paddingHorizontal_5 ,
+                            styles.paddingVertical_5 ,
+                            styles.width_120,
+                            styles.rowGroup,
+                            styles.paddingHorizontal_15
+                        ]}>
+                            <Image style={styles.ionImage} source={{ uri: item.icon }}/>
+                            <Text style={[styles.textRegular , styles.text_White , styles.textSize_14 , styles.textCenter ,]}>
+                                { item.name }
+                            </Text>
                         </View>
                     </View>
                 </View>
             </TouchableOpacity>
         );
     };
+
+    onSearch () {
+        this.props.navigation.navigate('SearchHome', {
+            categorySearch                  : this.state.categorySearch,
+        });
+    }
 
 
     renderLoader(){
@@ -92,7 +100,7 @@ class Home extends Component {
 				<NavigationEvents onWillFocus={() => this.onFocus()} />
 
                 <Header style={styles.headerView}>
-                    <Left style={[styles.leftIcon, styles.marginHorizontal_15]}>
+                    <Left style={[styles.leftIcon]}>
                         <Button style={styles.Button} transparent onPress={() => { this.props.navigation.openDrawer()} }>
                             <Image style={[styles.ionImage]} source={require('../../assets/images/menu.png')}/>
                         </Button>
@@ -114,7 +122,24 @@ class Home extends Component {
                     </Right>
                 </Header>
                 <Content  contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
-                    <ImageBackground source={require('../../assets/images/background.png')} style={[styles.bgFullWidth]}>
+                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
+
+                        <View style={[styles.position_R , styles.Width_60, styles.SelfRight]}>
+                            <Item floatingLabel style={styles.item}>
+                                <Input
+                                    placeholder             = {i18n.translate('searchCat')}
+                                    style                   = {[styles.input, styles.height_40, styles.bg_light_gray]}
+                                    autoCapitalize          = 'none'
+                                    onChangeText            = {(categorySearch) => this.setState({categorySearch})}
+                                />
+                            </Item>
+                            <TouchableOpacity
+                                style       = {[styles.position_A, styles.iconSearch, styles.width_50, styles.height_40, styles.flexCenter,]}
+                                onPress     = {() => this.onSearch()}
+                            >
+                                <Icon style={[styles.text_gray, styles.textSize_20]} type="AntDesign" name='search1' />
+                            </TouchableOpacity>
+                        </View>
 
                         <View style={[styles.homeUser]}>
 
@@ -155,6 +180,19 @@ class Home extends Component {
                                     }
 
                                 </Swiper>
+
+                            </View>
+
+                            <View style={[styles.marginVertical_5]}>
+
+                                <FlatList
+                                    data                    = {this.props.categories}
+                                    renderItem              = {({item}) => this.renderItems(item)}
+                                    numColumns              = {2}
+                                    keyExtractor            = {this._keyExtractor}
+                                    extraData               = {this.props.categories}
+                                    onEndReachedThreshold   = {isIOS ? .01 : 1}
+                                />
 
                             </View>
 
@@ -285,11 +323,12 @@ class Home extends Component {
     }
 }
 
-const mapStateToProps = ({ lang, home }) => {
+const mapStateToProps = ({ lang, home, searchHome, categoryHome }) => {
     return {
-        lang        : lang.lang,
-        slider      : home.slider,
-        loader      : home.loader
+        lang            : lang.lang,
+        slider          : home.slider,
+        categories      : categoryHome.categories,
+        loader          : home.loader
     };
 };
-export default connect(mapStateToProps, { sliderHome })(Home);
+export default connect(mapStateToProps, { sliderHome, categoryHome, searchHome })(Home);

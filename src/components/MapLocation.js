@@ -100,6 +100,7 @@ class MapLocation extends Component {
         const pageName = this.props.navigation.state.params.pageName;
         console.log('this.state.mapRegion' , this.state.mapRegion)
         if(this.state.city === ''){
+
             Toast.show({
                 text        : i18n.t('chickmap'),
                 duration    : 2000,
@@ -110,13 +111,31 @@ class MapLocation extends Component {
                     textAlign   :'center'
                 }
             });
+
         }else{
 
+<<<<<<< HEAD
+=======
+            let  pageName = this.props.navigation.state.params.pageName;
+
+>>>>>>> 81cafbcdb3df75e56f775b4301ba31311981fb0c
             if (pageName === 'EditShop'){
                 this.props.navigation.navigate('EditShop', {
-                    city_name               : this.state.city,
-                    latitude                : this.state.mapRegion.latitude,
-                    longitude               : this.state.mapRegion.longitude,
+                    city_name   : this.state.city,
+                    latitude    : this.state.mapRegion.latitude,
+                    longitude   : this.state.mapRegion.longitude,
+                });
+            } else if (pageName === 'editProfile'){
+                this.props.navigation.navigate('editProfile', {
+                    city_name   : this.state.city,
+                    latitude    : this.state.mapRegion.latitude,
+                    longitude   : this.state.mapRegion.longitude,
+                });
+            } else if (pageName === 'FilterCategory'){
+                this.props.navigation.navigate('FilterCategory', {
+                    city_name   : this.state.city,
+                    latitude    : this.state.mapRegion.latitude,
+                    longitude   : this.state.mapRegion.longitude,
                 });
             }
             else if (pageName === 'editProfile'){
@@ -128,9 +147,9 @@ class MapLocation extends Component {
                 });
             } else {
                 this.props.navigation.navigate('Register', {
-                    city_name               : this.state.city,
-                    latitude                : this.state.mapRegion.latitude,
-                    longitude               : this.state.mapRegion.longitude,
+                    city_name   : this.state.city,
+                    latitude    : this.state.mapRegion.latitude,
+                    longitude   : this.state.mapRegion.longitude,
                 });
             }
 

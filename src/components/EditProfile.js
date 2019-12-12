@@ -291,6 +291,7 @@ class EditProfile extends Component {
                                     </View>
                                 </View>
 
+<<<<<<< HEAD
                                 {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})} style={[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}>*/}
                                     {/*<Text style={[styles.textRegular , styles.text_black,]}>*/}
                                         {/*{this.state.city_name}*/}
@@ -312,6 +313,17 @@ class EditProfile extends Component {
                                     </Item>
                                     <View style = {[ styles.position_A , styles.bg_light_oran, styles.flexCenter, styles.iconInput, styles.left_0 ]}>
                                         <Icon style = {[styles.text_orange, styles.textSize_22]} type="Feather" name='map-pin' />
+=======
+                                <TouchableOpacity
+                                    style           = {[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}
+                                    onPress         = {() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})}
+                                >
+                                    <Text style={[styles.textRegular , styles.text_black,]}>
+                                        {i18n.translate('map')}
+                                    </Text>
+                                    <View style={[styles.overHidden]}>
+                                        <Icon style={[styles.text_black, styles.textSize_16]} type="Feather" name='map-pin' />
+>>>>>>> 81cafbcdb3df75e56f775b4301ba31311981fb0c
                                     </View>
                                 </TouchableOpacity>
                             </Form>
