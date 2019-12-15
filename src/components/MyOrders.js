@@ -175,7 +175,7 @@ class MyOrders extends Component {
                                 :
                                 this.props.userOrders.map((order, i) => (
                                     <TouchableOpacity key={i}
-                                                      onPress={() => this.props.navigation.navigate('orderDetails')}
+                                                      onPress={() => this.props.navigation.navigate('orderDetails' , {orderType:this.state.activeType , order_id:order.order_info.order_id})}
                                                       style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop: 20}]}>
                                         <View style={[styles.lightOverlay, styles.Border]}></View>
                                         <View

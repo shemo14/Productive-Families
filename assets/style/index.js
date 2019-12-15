@@ -1138,7 +1138,9 @@ const styles = ({
         height:50,
         borderRadius:50,
         marginRight:10,
-        flex:0
+        flex:0,
+        borderWidth:1,
+        borderColor:COLORS.orange
     },
     commentModal:{
         width: '110%',
@@ -1154,6 +1156,9 @@ const styles = ({
         width:'100%',
         height: null,
         flex: 1,
+    },
+    writing:{
+        writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'
     },
 });
 
