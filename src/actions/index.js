@@ -14,4 +14,4 @@ export * from './ProviderProductsAction';
 export * from './FavoriteAction';
 export * from './CartListAction';
 export * from './CartProductsAction';
-export * from './NotificationsAction';
+export * from './UserOrdersAction';

@@ -20,6 +20,7 @@ import favorite from './FavoriteReducer';
 import cartList from './CartListReducer';
 import cartProducts from './CartProductsReducer';
 import notifications from './NotificationsReducer';
+import userOrders from './UserOrdersReducer';
 
 export default combineReducers({
     lang,
@@ -43,5 +44,6 @@ export default combineReducers({
     cartList,
     cartProducts,
     notifications,
+    userOrders,
 });
 

@@ -1,115 +1,216 @@
-import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground} from "react-native";
+import React, {Component} from "react";
+import {View, Text, Image, TouchableOpacity, ImageBackground, Animated, Dimensions} from "react-native";
 import {Container, Content, Header, Button, Left, Icon, Body, Title} from 'native-base'
 import styles from '../../assets/style'
-import { DoubleBounce } from 'react-native-loader';
+import {DoubleBounce} from 'react-native-loader';
 import {connect} from "react-redux";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
+import COLORS from '../../src/consts/colors'
 import i18n from "../../locale/i18n";
+import {getUserOrders} from '../actions'
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 
 class MyOrders extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
-        this.state={
-
+        this.state = {
+            activeType: 0,
+            loader: true
         }
+    }
+
+
+    static navigationOptions = () => ({
+        header: null,
+        drawerLabel: (
+            <Text style={[styles.textRegular, styles.text_black, styles.textSize_18]}>{i18n.t('myorder')}</Text>),
+        drawerIcon: (<Image style={[styles.smImage]} source={require('../../assets/images/orders.png')}/>)
+    });
+
+
+    componentWillMount() {
+        this.getOrders(0)
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({loader: false});
+    }
+
+    getOrders(type) {
+        this.setState({activeType: type, loader: true});
+        const token = this.props.user.token;
+        setTimeout(() => this.props.getUserOrders(this.props.lang, type, token), 2000)
+
     }
 
     componentDidMount() {
+        this.runPlaceHolder();
     }
 
-    static navigationOptions = () => ({
-        header      : null,
-        drawerLabel : ( <Text style={[styles.textRegular, styles.text_black, styles.textSize_18]}>{ i18n.t('myorder') }</Text> ) ,
-        drawerIcon  : ( <Image style={[styles.smImage]} source={require('../../assets/images/orders.png')}/>)
-    });
-
-    renderLoader(){
-        if (this.props.loader){
-            return(
-                <View style={[styles.loading, styles.flexCenter]}>
-                    <DoubleBounce size={20} />
-                </View>
-            );
+    runPlaceHolder() {
+        if (Array.isArray(this.loadingAnimated) && this.loadingAnimated.length > 0) {
+            Animated.parallel(
+                this.loadingAnimated.map(animate => {
+                    if (animate && animate.getAnimated) {
+                        return animate.getAnimated();
+                    }
+                    return null;
+                }),
+                {
+                    stopTogether: false,
+                }
+            ).start(() => {
+                this.runPlaceHolder();
+            })
         }
     }
 
-    // onFocus(){
-    //     this.componentDidMount();
-    // }
+    _renderRows(loadingAnimated, numberRow, uniqueKey) {
+        let shimmerRows = [];
+        for (let index = 0; index < numberRow; index++) {
+            shimmerRows.push(
+                <ShimmerPlaceHolder
+                    key={`loading-${index}-${uniqueKey}`}
+                    ref={(ref) => loadingAnimated.push(ref)}
+                    style={{marginBottom: 7, alignSelf: 'center'}}
+                    width={width - 20}
+                    height={100}
+                    colorShimmer={['#ffffff75', '#FEDAD075', '#ffffff75']}
+                />
+            )
+        }
+
+        return (
+            <View style={{position: 'absolute', zIndex: 10, height: height - 175, bottom: 0, alignSelf: 'center'}}>
+                <ImageBackground source={require('../../assets/images/bg_img.png')}
+                                 style={[styles.bgFullWidth, {height: '100%', flex: 1}]}>
+                    {shimmerRows}
+                </ImageBackground>
+            </View>
+        )
+    }
+
+    onFocus() {
+        this.componentWillMount();
+    }
 
     render() {
+
+        const newOrderStatus = this.props.user.type === 'delegate' ? 1 : 0;
+        this.loadingAnimated = [];
+
 
         return (
             <Container>
 
-                {/*<NavigationEvents onWillFocus={() => this.onFocus()} />*/}
-                { this.renderLoader() }
 
                 <Header style={styles.headerView}>
                     <Left style={styles.leftIcon}>
                         <Button style={styles.Button} transparent onPress={() => this.props.navigation.goBack()}>
-                            <Icon style={[styles.text_black, styles.textSize_22]} type="AntDesign" name='right' />
+                            <Icon style={[styles.text_black, styles.textSize_22]} type="AntDesign" name='right'/>
                         </Button>
                     </Left>
                     <Body style={styles.bodyText}>
-                        <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
-                            { i18n.t('myorder') }
-                        </Title>
+                    <Title
+                        style={[styles.textRegular, styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
+                        {i18n.t('myorder')}
+                    </Title>
                     </Body>
                 </Header>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
-                        <View style={[styles.rowGroup , styles.paddingHorizontal_15, styles.marginVertical_15, styles.overlay_white, styles.Border, styles.paddingVertical_10]}>
-                            <TouchableOpacity>
-                                <Text style={[styles.textRegular, styles.text_black, styles.textSize_16,styles.ter]}>
+                        <NavigationEvents onWillFocus={() => this.onFocus()}/>
+
+                        <View
+                            style={[styles.rowGroup, styles.paddingHorizontal_15, styles.marginVertical_15, styles.overlay_white, styles.Border]}>
+                            <TouchableOpacity onPress={() => this.getOrders(newOrderStatus)} style={[{
+                                borderTopWidth: 3,
+                                borderTopColor: this.state.activeType === newOrderStatus ? COLORS.orange : 'transparent'
+                            }, styles.paddingVertical_10]}>
+                                <Text
+                                    style={[styles.textRegular, this.state.activeType === newOrderStatus ? styles.text_orange : styles.text_black, styles.textSize_16]}>
                                     تحت التاكيد
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
-                                <Text style={[styles.textRegular, styles.text_black, styles.textSize_16]}>
+                            <TouchableOpacity onPress={() => this.getOrders(2)} style={[{
+                                borderTopWidth: 3,
+                                borderTopColor: this.state.activeType === 2 ? COLORS.orange : 'transparent'
+                            }, styles.paddingVertical_10]}>
+                                <Text
+                                    style={[styles.textRegular, this.state.activeType === 2 ? styles.text_orange : styles.text_black, styles.textSize_16]}>
                                     تمت الموافقه
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
-                                <Text style={[styles.textRegular, styles.text_black, styles.textSize_16]}>
-                                     منفذه
+                            <TouchableOpacity onPress={() => this.getOrders(3)} style={[{
+                                borderTopWidth: 3,
+                                borderTopColor: this.state.activeType === 3 ? COLORS.orange : 'transparent'
+                            }, styles.paddingVertical_10]}>
+                                <Text
+                                    style={[styles.textRegular, this.state.activeType === 3 ? styles.text_orange : styles.text_black, styles.textSize_16]}>
+                                    منفذه
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
-                                <Text style={[styles.textRegular, styles.text_black, styles.textSize_16]}>
+                            <TouchableOpacity onPress={() => this.getOrders(4)} style={[{
+                                borderTopWidth: 3,
+                                borderTopColor: this.state.activeType === 4 ? COLORS.orange : 'transparent'
+                            }, styles.paddingVertical_10]}>
+                                <Text
+                                    style={[styles.textRegular, this.state.activeType === 4 ? styles.text_orange : styles.text_black, styles.textSize_16]}>
                                     ملغاه
                                 </Text>
                             </TouchableOpacity>
                         </View>
 
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('orderDetails')} style={[styles.position_R, styles.flexCenter, styles.Width_90, styles.marginVertical_25]}>
-                            <View style={[styles.lightOverlay, styles.Border]}></View>
-                            <View style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                <View style={[styles.icImg, styles.flex_30]}>
-                                    <Image style={[styles.icImg]} source={require('../../assets/images/bg_shope.png')}/>
-                                </View>
-                                <View style={[styles.flex_70]}>
-                                    <View style={[styles.rowGroup]}>
-                                        <Text style={[styles.textRegular , styles.text_black]}>مطاعم</Text>
-                                    </View>
-                                    <View style={[styles.overHidden]}>
-                                        <Text style={[styles.textRegular , styles.text_gray, styles.Width_100, styles.textLeft]}>تصنيف القسم</Text>
-                                    </View>
-                                    <View style={[styles.overHidden, styles.rowGroup]}>
-                                        <Text style={[styles.textRegular , styles.text_red,]}>30 ر.س</Text>
-                                        <Text style={[styles.textRegular , styles.text_gray,]}>12/12/2019</Text>
-                                    </View>
-                                </View>
-                                <TouchableOpacity style = {[styles.width_40 , styles.height_40 , styles.flexCenter, styles.bg_light_oran, styles.borderLightOran, styles.marginVertical_5, styles.position_A, styles.top_5, styles.right_0]}>
-                                    <Text style={[styles.textRegular , styles.text_red]}>12</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </TouchableOpacity>
+                        {
+                            this.state.loader ?
+                                this._renderRows(this.loadingAnimated, 5, '5rows')
+                                :
+                                this.props.userOrders.map((order, i) => (
+                                    <TouchableOpacity key={i}
+                                                      onPress={() => this.props.navigation.navigate('orderDetails')}
+                                                      style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop: 20}]}>
+                                        <View style={[styles.lightOverlay, styles.Border]}></View>
+                                        <View
+                                            style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                            <View style={[styles.icImg, styles.flex_30]}>
+                                                <Image style={[styles.icImg]}
+                                                       source={{uri: order.order_provider.avatar}}/>
+                                            </View>
+                                            <View style={[styles.flex_70]}>
+                                                <View style={[styles.rowGroup]}>
+                                                    <Text
+                                                        style={[styles.textRegular, styles.text_black]}>{order.order_provider.name}</Text>
+                                                </View>
+                                                <View style={[styles.overHidden]}>
+                                                    <Text
+                                                        style={[styles.textRegular, styles.text_gray, styles.Width_100, styles.textLeft]}>{order.order_info.category}</Text>
+                                                </View>
+                                                <View style={[styles.overHidden, styles.rowGroup]}>
+                                                    <Text
+                                                        style={[styles.textRegular, styles.text_red,]}>{order.order_info.price} {i18n.t('RS')}</Text>
+                                                    <Text
+                                                        style={[styles.textRegular, styles.text_gray,]}>{order.order_info.date}</Text>
+                                                </View>
+                                            </View>
+                                            <TouchableOpacity
+                                                style={[styles.width_40, styles.height_40, styles.flexCenter, styles.bg_light_oran, styles.borderLightOran, styles.marginVertical_5, styles.position_A, styles.top_5, styles.right_0]}>
+                                                <Text
+                                                    style={[styles.textRegular, styles.text_red]}>{order.order_info.order_items}</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </TouchableOpacity>
+                                ))
+
+
+                        }
 
                     </ImageBackground>
                 </Content>
@@ -119,9 +220,11 @@ class MyOrders extends Component {
     }
 }
 
-const mapStateToProps = ({ lang }) => {
+const mapStateToProps = ({lang, profile, userOrders}) => {
     return {
-        lang        : lang.lang,
+        lang: lang.lang,
+        user: profile.user,
+        userOrders: userOrders.userOrders,
     };
 };
-export default connect(mapStateToProps, { })(MyOrders);
+export default connect(mapStateToProps, {getUserOrders})(MyOrders);
