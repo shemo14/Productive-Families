@@ -20,7 +20,10 @@ import i18n from '../../locale/i18n'
 import {DoubleBounce} from "react-native-loader";
 import * as Animatable from 'react-native-animatable';
 import {connect} from "react-redux";
+import { getCities , updateProfile } from '../actions'
 import COLORS from '../../src/consts/colors'
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 
 
 class EditProfile extends Component {
@@ -29,13 +32,103 @@ class EditProfile extends Component {
 
         this.state={
             status              : null,
-            username		    : '',
-            phone	            : '',
-            usernameStatus      : 0,
-            phoneStatus         : 0,
-            country             : null,
+            username		    : this.props.user.name,
+            phone	            : this.props.user.phone,
+            usernameStatus      : 1,
+            phoneStatus         : 1,
+            country             : this.props.user.city_id,
+            latitude            : '',
+            longitude           : '',
+            city_name           : this.props.user.address,
+            userImage: this.props.user.avatar,
+            base64: null,
+            isSubmitted: false,
         }
     }
+
+    componentWillMount() {
+        this.props.getCities( this.props.lang )
+    }
+    renderEditProfile(){
+        if (this.state.username == '' || this.state.phone == ''){
+            return (
+                <TouchableOpacity style={[styles.cartBtn , styles.SelfCenter , {marginBottom:20}]}>
+                    <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft]}>{ i18n.t('confirm') }</Text>
+                </TouchableOpacity>
+            );
+        }
+
+        if (this.state.isSubmitted){
+            return(
+                <View style={[{ justifyContent: 'center', alignItems: 'center' , marginBottom:20 }]}>
+                    <DoubleBounce size={20} color={COLORS.orange} style={{ alignSelf: 'center' }} />
+                </View>
+            )
+        }
+
+        return (
+            <TouchableOpacity onPress={() => this.onUpdateProfile()} style={[styles.cartBtn , styles.SelfCenter , {marginBottom:20}]}>
+                <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft]}>{ i18n.t('confirm') }</Text>
+            </TouchableOpacity>
+        );
+    }
+
+
+    onUpdateProfile(){
+        const data = {
+            name: this.state.username,
+            phone: this.state.phone,
+            city_id:this.state.country,
+            lat:this.state.latitude,
+            lng:this.state.longitude,
+            address:this.state.city_name,
+            avatar: this.state.base64,
+            category_id: null,
+            lang: this.props.lang,
+            token: this.props.user.token,
+            props: this.props,
+        };
+
+        this.setState({ isSubmitted: true });
+        this.props.updateProfile(data);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ isSubmitted: false })
+        console.log('oooooo', this.props.navigation.state.params)
+        if( nextProps.navigation.state.params != undefined ||  nextProps.navigation.state.params  != undefined){
+            this.state.city_name            =   nextProps.navigation.state.params.city_name;
+            this.setState({latitude   : nextProps.navigation.state.params.latitude});
+            this.setState({longitude  : nextProps.navigation.state.params.longitude});
+        }else{
+            this.setState({city_name  : this.props.user.address});
+        }
+    }
+
+    askPermissionsAsync = async () => {
+        await Permissions.askAsync(Permissions.CAMERA);
+        await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+    };
+
+    _pickImage = async () => {
+
+        this.askPermissionsAsync();
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+            base64:true
+        });
+
+        console.log(result);
+
+        // check if there is image then set it and make button not disabled
+        if (!result.cancelled) {
+            this.setState({ userImage: result.uri ,base64:result.base64});
+        }
+    };
+
 
     onValueCountry      (value) {this.setState({country: value});}
 
@@ -78,6 +171,7 @@ class EditProfile extends Component {
 
     render() {
 
+        let image = this.state.userImage;
         return (
             <Container>
                 <Header style={styles.headerView}>
@@ -98,20 +192,42 @@ class EditProfile extends Component {
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
-                        <View style={[styles.position_R, styles.Width_90, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter,{right:20}]}>
-                            <View style={[styles.blackOverlay, styles.Border , {top:10 , left:10}]}/>
-                            <View style={[styles.position_R, styles.Width_100, styles.overHidden, styles.bg_White,styles.bgFullWidth]}>
-                                <Image style={[styles.Width_100, styles.swiper]} source={require('../../assets/images/bg_coffee.png')} resizeMode={'cover'}/>
-                                <View style={[styles.blackOverlay, {top:0 , left:0}]}/>
-                                <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
-                                    <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                        <TouchableOpacity>
-                                            <Icon style={[styles.text_White , styles.textSize_20]} type="AntDesign" name='plus' />
-                                        </TouchableOpacity>
-                                    </View>
-                                </Animatable.View>
+
+
+                        {image != null?
+
+                            <View style={[styles.position_R, styles.Width_90, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter,{right:20}]}>
+                                <View style={[styles.blackOverlay, styles.Border , {top:10 , left:10}]}/>
+                                <View style={[styles.position_R, styles.Width_100, styles.overHidden, styles.bg_White,styles.bgFullWidth]}>
+                                    <Image style={[styles.Width_100, styles.swiper]} source={{ uri: image }} resizeMode={'cover'}/>
+                                    <View style={[styles.blackOverlay, {top:0 , left:0}]}/>
+                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
+                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                            <TouchableOpacity onPress={this._pickImage}>
+                                                <Icon style={[styles.text_White , styles.textSize_20]} type="AntDesign" name='plus' />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </Animatable.View>
+                                </View>
                             </View>
-                        </View>
+
+                            :
+                            <View style={[styles.position_R, styles.Width_90, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter,{right:20}]}>
+                                <View style={[styles.blackOverlay, styles.Border , {top:10 , left:10}]}/>
+                                <View style={[styles.position_R, styles.Width_100, styles.overHidden, styles.bg_White,styles.bgFullWidth]}>
+                                    <Image style={[styles.Width_100, styles.swiper]} source={{ uri: image }} resizeMode={'cover'}/>
+                                    <View style={[styles.blackOverlay, {top:0 , left:0}]}/>
+                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
+                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                            <TouchableOpacity onPress={this._pickImage}>
+                                                <Icon style={[styles.text_White , styles.textSize_20]} type="AntDesign" name='plus' />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </Animatable.View>
+                                </View>
+                            </View>
+                        }
+
                         <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
                             <Form style={[styles.Width_100, styles.flexCenter, styles.marginVertical_10, styles.Width_90]}>
 
@@ -147,7 +263,7 @@ class EditProfile extends Component {
                                     </View>
                                 </View>
 
-                                <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15,styles.Width_100, styles.borderBlack]}>
+                                <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15,styles.Width_100, styles.Active,]}>
                                     <Item style={styles.itemPiker} regular>
                                         <Picker
                                             mode                    = "dropdown"
@@ -160,28 +276,49 @@ class EditProfile extends Component {
                                             itemTextStyle           = {[styles.textRegular,{ color: "#121212", writingDirection: 'rtl', width : '100%', }]}
                                         >
                                             <Picker.Item style={[styles.Width_100]} label={i18n.t('city')} value={null} />
+                                            {
+                                                this.props.cities.map((city, i) => (
+                                                    <Picker.Item key={i} label={city.name} value={city.id} />
+                                                ))
+
+                                            }
 
                                         </Picker>
                                     </Item>
                                     <Icon style={styles.iconPicker} type="AntDesign" name='down' />
+                                    <View style = {[ styles.position_A , styles.bg_light_oran, styles.flexCenter, styles.iconInput, styles.left_0 , {top:-1, left:-1}]}>
+                                        <Icon style = {[styles.text_orange, styles.textSize_22]} type="MaterialCommunityIcons" name='flag' />
+                                    </View>
                                 </View>
 
-                                <TouchableOpacity
-                                    style           = {[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}
-                                    onPress         = {() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})}
-                                >
-                                    <Text style={[styles.textRegular , styles.text_black,]}>
-                                        {i18n.translate('map')}
-                                    </Text>
-                                    <View style={[styles.overHidden]}>
-                                        <Icon style={[styles.text_black, styles.textSize_16]} type="Feather" name='map-pin' />
+                                {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})} style={[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}>*/}
+                                    {/*<Text style={[styles.textRegular , styles.text_black,]}>*/}
+                                        {/*{this.state.city_name}*/}
+                                    {/*</Text>*/}
+                                    {/*<View style={[styles.overHidden]}>*/}
+                                        {/*<Icon style={[styles.text_black, styles.textSize_16]} type="Feather" name='map-pin' />*/}
+                                    {/*</View>*/}
+                                {/*</TouchableOpacity>*/}
+
+
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})}  style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
+                                    <Item onPress={() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})} floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
+                                        <Input
+                                            placeholder             = {i18n.translate('map')}
+                                            style                   = {[ styles.input , styles.height_50 , styles.Active]}
+                                            value                   = {this.state.city_name}
+                                            disabled
+                                        />
+                                    </Item>
+                                    <View style = {[ styles.position_A , styles.bg_light_oran, styles.flexCenter, styles.iconInput, styles.left_0 ]}>
+                                        <Icon style = {[styles.text_orange, styles.textSize_22]} type="Feather" name='map-pin' />
                                     </View>
                                 </TouchableOpacity>
                             </Form>
 
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('profile')} style={[styles.cartBtn , styles.SelfCenter , {marginBottom:20}]}>
-                                <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft ]} >{i18n.t('confirm')}</Text>
-                            </TouchableOpacity>
+                            {
+                                this.renderEditProfile()
+                            }
 
                         </KeyboardAvoidingView>
                     </ImageBackground>
@@ -193,9 +330,11 @@ class EditProfile extends Component {
 }
 
 
-const mapStateToProps = ({ lang }) => {
+const mapStateToProps = ({ lang , cities , profile}) => {
     return {
         lang        : lang.lang,
+        cities      : cities.cities,
+        user        : profile.user
     };
 };
-export default connect(mapStateToProps, {})(EditProfile);
+export default connect(mapStateToProps, {getCities , updateProfile})(EditProfile);

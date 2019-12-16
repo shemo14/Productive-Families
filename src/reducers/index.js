@@ -8,6 +8,7 @@ import faq from './FaqReducer';
 import terms from './TermsReducer';
 import complaint from './SendComplaintReducer';
 import home from './HomeReducer';
+import changePassword from './ChangePasswordReducer';
 import searchHome from './SearchHomeReducer';
 import categoryHome from './CategoryHomeReducer';
 import categoryProvider from './CategoryProviderRuducer';
@@ -18,6 +19,11 @@ import providerProducts from './ProviderProductsReducer';
 import favorite from './FavoriteReducer';
 import productsDetail from './ProductsDetailsReducer';
 import addComment from './AddCommentReducer';
+import cartList from './CartListReducer';
+import cartProducts from './CartProductsReducer';
+import notifications from './NotificationsReducer';
+import userOrders from './UserOrdersReducer';
+import orderDetails from './OrderDetailsReducer';
 
 export default combineReducers({
     lang,
@@ -29,15 +35,21 @@ export default combineReducers({
     terms,
     complaint,
     home,
+    cities,
+    changePassword,
     searchHome,
     categoryHome,
     categoryProvider,
     SearchProvider,
     filterProvider,
-    cities,
     providerProducts,
     favorite,
     productsDetail,
-    addComment
+    addComment,
+    cartList,
+    cartProducts,
+    notifications,
+    userOrders,
+    orderDetails,
 });
 

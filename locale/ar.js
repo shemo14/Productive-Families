@@ -129,6 +129,13 @@ const ar = {
     'finishOrder'               : 'انهاء الطلب',
     'deliveredPlace'            : 'مكان التوصيل',
     'editAcc'                   : 'تعديل الحساب',
+    'passwordRequired'          : 'كلمة السر مطلوبه',
+    'phoneRequired'             : 'رقم الهاتف مطلوب',
+    'passwordLength'            : 'كلمة السر اقل من 6 احرف',
+    'phoneValidation'           : 'رقم الهاتف غير صحيح',
+    'verifyPassword'            : 'كلمة المرور و تأكيد كلمة المرور غير متطابقين',
+    'orderStatus'            : 'حالة الطلب',
+    'aboutDelegate'            : 'عن المندوب',
 };
 
 export default ar;

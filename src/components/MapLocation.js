@@ -25,7 +25,7 @@ class MapLocation extends Component {
 
     async componentWillMount() {
 
-        console.log('name', this.props.navigation.state.params.pageName);
+        console.log('name', this.props.navigation);
 
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
@@ -97,7 +97,8 @@ class MapLocation extends Component {
     };
 
     getLocation(){
-
+        const pageName = this.props.navigation.state.params.pageName;
+        console.log('this.state.mapRegion' , this.state.mapRegion)
         if(this.state.city === ''){
 
             Toast.show({
@@ -112,6 +113,7 @@ class MapLocation extends Component {
             });
 
         }else{
+
 
             let  pageName = this.props.navigation.state.params.pageName;
 
@@ -132,6 +134,14 @@ class MapLocation extends Component {
                     city_name   : this.state.city,
                     latitude    : this.state.mapRegion.latitude,
                     longitude   : this.state.mapRegion.longitude,
+                });
+            }
+            else if (pageName === 'editProfile'){
+                console.log(this.state.city, this.state.mapRegion.latitude,  this.state.mapRegion.longitude);
+                this.props.navigation.navigate('editProfile', {
+                    city_name               : this.state.city,
+                    latitude                : this.state.mapRegion.latitude,
+                    longitude               : this.state.mapRegion.longitude,
                 });
             } else {
                 this.props.navigation.navigate('Register', {

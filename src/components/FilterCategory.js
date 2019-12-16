@@ -23,7 +23,7 @@ import i18n from "../../locale/i18n";
 import StarRating from 'react-native-star-rating';
 import Modal from "react-native-modal";
 import * as Animatable from 'react-native-animatable';
-import { categoryProviders, searchProviders , filterProviders , city } from '../actions';
+import {categoryProviders, searchProviders, filterProviders, getCities} from '../actions';
 
 const isIOS = Platform.OS === 'ios';
 
@@ -47,7 +47,7 @@ class FilterCategory extends Component {
     componentWillMount() {
 
         this.props.categoryProviders( this.props.lang , this.props.navigation.state.params.id );
-        this.props.city( this.props.lang );
+        // this.props.city( this.props.lang );
 
         if(this.props.navigation.getParam('latitude') || this.props.navigation.getParam('longitude')){
             this.state.city_name            =  this.props.navigation.getParam('city_name');
@@ -395,7 +395,7 @@ const mapStateToProps = ({ lang, categoryProvider , SearchProvider , cities}) =>
         lang            : lang.lang,
         providers       : categoryProvider.categoryProviders,
         search          : SearchProvider.searchProviders,
-        cities          : cities.city,
+        cities          : cities.cities,
     };
 };
-export default connect(mapStateToProps, { categoryProviders , searchProviders, filterProviders , city })(FilterCategory);
+export default connect(mapStateToProps, { categoryProviders , searchProviders, filterProviders , getCities })(FilterCategory);

@@ -79,6 +79,12 @@ const appStack =  createStackNavigator({
             header: null
         }
     },
+    Basket: {
+        screen: Basket,
+        navigationOptions: {
+            header: null
+        }
+    },
     SearchHome: {
         screen: SearchHome,
         navigationOptions: {
@@ -153,12 +159,6 @@ const appStack =  createStackNavigator({
     },
     FilterCategory : {
         screen: FilterCategory,
-        navigationOptions: {
-            header: null
-        }
-    },
-    Basket: {
-        screen: Basket,
         navigationOptions: {
             header: null
         }
@@ -287,8 +287,8 @@ const authStack = createStackNavigator({
 });
 
 const AppNavigator = createSwitchNavigator({
-    auth    : authStack,
     app     : appStack,
+    auth    : authStack,
 });
 
 export default createAppContainer(AppNavigator);

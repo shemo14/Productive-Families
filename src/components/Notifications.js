@@ -3,18 +3,10 @@ import {View, Text, Image, ImageBackground , ScrollView , TouchableOpacity , Fla
 import {Container, Content, Icon, Header, Left, Button, Body, Title } from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
-import {DoubleBounce} from "react-native-loader";
-import * as Animatable from 'react-native-animatable';
 import {connect} from "react-redux";
 import COLORS from '../../src/consts/colors'
+import { getNotifications , deleteNotifications } from '../actions'
 
-const notifications=[
-    {id:1 , name:'اماني قاسم', location:'نص التعليق نص التعليق'},
-    {id:2 , name:'اماني قاسم', location:'نص التعليق نص التعليق'},
-    {id:3 , name:'اماني قاسم', location:'نص التعليق نص التعليق'},
-    {id:4 , name:'اماني قاسم', location:'نص التعليق نص التعليق'},
-    {id:5 , name:'اماني قاسم', location:'نص التعليق نص التعليق'},
-]
 class Notifications extends Component {
     constructor(props){
         super(props);
@@ -25,26 +17,39 @@ class Notifications extends Component {
             activeType          : 0,
             isFav               : false,
             refreshed           : false,
-            notifications,
         }
+    }
+
+    componentWillMount() {
+        this.props.getNotifications( this.props.lang , this.props.user.token )
+    }
+
+    deleteNotify(notify_id){
+        this.props.deleteNotifications( this.props.lang , notify_id , this.props.user.token )
     }
 
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item , index) => {
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('product')} style={[styles.position_R, styles.Width_95, {marginTop:15}, styles.marginHorizontal_10, styles.SelfCenter]}>
+            <TouchableOpacity style={[styles.position_R, styles.Width_95, {marginTop:15}, styles.marginHorizontal_10, styles.SelfCenter]}>
                 <View style={[styles.lightOverlay, styles.Border]}></View>
                 <View style={[styles.position_R, styles.Width_100, styles.overHidden, styles.bg_White,styles.bgFullWidth,styles.paddingHorizontal_7 , styles.paddingVertical_7
                 , { borderWidth: 1, borderTopColor : COLORS.lightWhite ,borderBottomColor : COLORS.lightWhite ,borderRightColor : COLORS.lightWhite , borderLeftWidth:5 ,
                         borderLeftColor: item.index % 2 === 0 ? COLORS.orange : COLORS.black}]}>
                     <View style={[styles.directionColumn , {flex:1}]}>
                         <View style={[styles.directionRow ]}>
-                            <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>{item.item.name}</Text>
+                            <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>{item.item.title}</Text>
+                            <TouchableOpacity
+                                style           = {[{width:22 , height:22}, styles.flexCenter, styles.bg_red, styles.borderLightOran, styles.Radius_60]}
+                                onPress         = {() => this.deleteNotify(item.item.id)}
+                            >
+                                <Icon style     = {[styles.text_White, styles.textSize_12]} type="AntDesign" name='close' />
+                            </TouchableOpacity>
                         </View>
                         <View style={[styles.directionRowSpace]}>
-                            <Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_12, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>{item.item.location}</Text>
-                            <Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_14, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>3:00</Text>
+                            <Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_12, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>{item.item.body}</Text>
+                            <Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_14, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>{item.item.time}</Text>
                         </View>
                     </View>
                 </View>
@@ -70,7 +75,7 @@ class Notifications extends Component {
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                        <View style={[styles.paddingHorizontal_10]}>
                            <FlatList
-                               data={this.state.notifications}
+                               data={this.props.notifications}
                                renderItem={(item) => this.renderItems(item)}
                                numColumns={1}
                                keyExtractor={this._keyExtractor}
@@ -85,9 +90,11 @@ class Notifications extends Component {
 }
 
 
-const mapStateToProps = ({ lang }) => {
+const mapStateToProps = ({ lang , notifications , profile}) => {
     return {
-        lang        : lang.lang,
+        lang                    : lang.lang,
+        user                    : profile.user,
+        notifications           : notifications.notifications,
     };
 };
-export default connect(mapStateToProps, {})(Notifications);
+export default connect(mapStateToProps, {getNotifications , deleteNotifications})(Notifications);
