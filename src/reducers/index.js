@@ -21,6 +21,7 @@ import cartList from './CartListReducer';
 import cartProducts from './CartProductsReducer';
 import notifications from './NotificationsReducer';
 import userOrders from './UserOrdersReducer';
+import orderDetails from './OrderDetailsReducer';
 
 export default combineReducers({
     lang,
@@ -45,5 +46,6 @@ export default combineReducers({
     cartProducts,
     notifications,
     userOrders,
+    orderDetails,
 });
 

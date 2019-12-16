@@ -15,3 +15,4 @@ export * from './FavoriteAction';
 export * from './CartListAction';
 export * from './CartProductsAction';
 export * from './UserOrdersAction';
+export * from './OrderDetailsAction';
