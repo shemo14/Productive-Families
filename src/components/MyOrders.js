@@ -36,7 +36,7 @@ class MyOrders extends Component {
     renderNoData(){
         if (this.props.notifications && (this.props.notifications).length <= 0){
             return(
-                <View style={[styles.directionColumnCenter , {height:'100%'}]}>
+                <View style={[styles.directionColumnCenter , {height:'95%'}]}>
                     <Image source={require('../../assets/images/no-data.png')} resizeMode={'contain'} style={{ alignSelf: 'center', width: 200, height: 200 }} />
                 </View>
             );

@@ -11,78 +11,40 @@ import Swiper from 'react-native-swiper';
 import StarRating from 'react-native-star-rating';
 import Modal from "react-native-modal";
 
-var isHidden = true;
-const comments=[
-    {id:1 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:2 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:3 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:4 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:1 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:2 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:3 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:4 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:1 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:2 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:3 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:4 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:1 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:2 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-    {id:3 , name:'اماني قاسم', location:'نص التعليق نص التعليق', image:require('../../assets/images/img_product.png')},
-]
+import {NavigationEvents} from "react-navigation";
+import { productDetails, favorite, addCart , addComment } from '../actions';
+
 class Product extends Component {
     constructor(props){
         super(props);
 
         this.state={
-            status              : null,
-            isFav               : false,
-            desc                : '',
-            starCount           : 3,
-            comments,
-            value               :1,
-            value2               :1,
-            isModalVisible: false,
-            bounceValue         : new Animated.Value(400),  //This is the initial position of the subview
-
+            desc                    : '',
+            starCount               : '',
+            value                   : 1,
+            value2                  : 1,
+            status                  : null,
+            isFav                   : 0,
+            isHidden                : true,
+            fading                  : false,
+            isModalVisible          : false,
+            bounceValue             : new Animated.Value(400),  //This is the initial position of the subview
         }
+    }
+
+    componentWillMount() {
+        this.props.productDetails( this.props.lang , this.props.navigation.state.params.id);
+        console.log('user =====', this.props.user);
     }
 
     toggleModal = () => {
         this.setState({ isModalVisible: !this.state.isModalVisible });
     };
 
-    _keyExtractor = (item, index) => item.id;
-
-    renderItems = (item) => {
-        return(
-            <View style={[styles.notiBlock]}>
-                <Image source={item.image} resizeMode={'cover'} style={styles.restImg}/>
-                <View style={[styles.directionColumn , {flex:1}]}>
-                    <View style={[styles.directionRowSpace ]}>
-                        <Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_14, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>{item.name}</Text>
-                        <StarRating
-                            disabled={true}
-                            maxStars={5}
-                            rating={this.state.starCount}
-                            fullStarColor={COLORS.orange}
-                            starSize={15}
-                            starStyle={styles.starStyle}
-                        />
-                    </View>
-                    <View style={[styles.directionRowSpace]}>
-                        <Text style={[styles.textRegular, styles.text_black, styles.textSize_12, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>{item.location}</Text>
-                        <Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_14, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>3:00</Text>
-                    </View>
-                </View>
-            </View>
-        );
-    }
-
-
     _toggleSubview() {
         var toValue = 400;
 
-        if(isHidden) {
+        if(this.state.isHidden) {
             toValue = 0;
         }
 
@@ -96,7 +58,10 @@ class Product extends Component {
             }
         ).start();
 
-        isHidden = !isHidden;
+        // isHidden = !isHidden;
+
+        this.setState({isHidden: !this.state.isHidden });
+
     }
 
     onShare = async () => {
@@ -119,6 +84,7 @@ class Product extends Component {
             alert(error.message);
         }
     };
+
     increment(){
         this.setState({value: this.state.value + 1 })
     }
@@ -138,10 +104,88 @@ class Product extends Component {
             this.setState({value2: this.state.value2 - 1})
     }
 
+    toggleFavorite (id){
+
+        this.setState({ isFav: ! this.state.isFav });
+        const token =  this.props.user ?  this.props.user.token : null;
+        this.props.favorite( this.props.lang, id  , token );
+
+    }
+
+    addToCart(id){
+
+        const token =  this.props.user ?  this.props.user.token : null;
+        this.props.addCart( this.props.lang, id  , token, this.state.value );
+
+    }
+
+    addComment(id){
+
+        if (this.state.desc === ''){
+
+            this.setState({fading : true});
+
+        } else {
+
+            const token =  this.props.user ?  this.props.user.token : null;
+            this.props.addComment( this.props.lang, id  , token, this.state.desc, this.state.value2 );
+            this.setState({
+                isModalVisible          : !this.state.isModalVisible,
+                desc                    : '',
+                value2                  : 1,
+            });
+
+            this.props.productDetails( this.props.lang , this.props.navigation.state.params.id);
+
+        }
+
+    }
+
+
+    _keyExtractor = (item, index) => item.id;
+
+    renderItems = (item) => {
+        return(
+            <View style={[styles.notiBlock , styles.paddingHorizontal_10]}>
+                <Image source={{ uri : item.avatar}} style={styles.restImg}/>
+                <View style={[styles.directionColumn , {flex:1}]}>
+                    <View style={[styles.directionRowSpace ]}>
+                        <Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_14, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>
+                            {item.user}
+                        </Text>
+                        <StarRating
+                            disabled            = {true}
+                            maxStars            = {5}
+                            rating              = {item.rate}
+                            fullStarColor       = {COLORS.orange}
+                            starSize            = {15}
+                            starStyle           = {styles.starStyle}
+                        />
+                    </View>
+                    <View style={[styles.directionRowSpace]}>
+                        <Text style={[styles.textRegular, styles.text_black, styles.textSize_12, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>
+                            {item.comment}
+                        </Text>
+                        <Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_14, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>
+                            {item.time}
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        );
+    };
+
+    onFocus(){
+        this.componentDidMount();
+    }
+
     render() {
 
         return (
             <Container>
+
+                <NavigationEvents onWillFocus={() => this.onFocus()} />
+
                 <Header style={styles.headerView}>
                     <Left style={styles.leftIcon}>
                         <Button style={styles.Button} transparent onPress={() => this.props.navigation.navigate('provider')}>
@@ -149,7 +193,9 @@ class Product extends Component {
                         </Button>
                     </Left>
                     <Body style={styles.bodyText}>
-                    <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>صفحة المنتج الواحد</Title>
+                    <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
+                        صفحة المنتج الواحد
+                    </Title>
                     </Body>
                     <Right style={styles.rightIcon}>
                         <Button  style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent onPress={() => this.onShare()}>
@@ -159,9 +205,10 @@ class Product extends Component {
                 </Header>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
+
                         <View style={styles.viewBlock}>
                             <Swiper
-                                containerStyle      = {[styles.Width_90, styles.marginVertical_15, styles.swiper, styles.viewBlock]}
+                                containerStyle      = {[styles.Width_95, styles.marginVertical_15, styles.swiper, styles.viewBlock]}
                                 autoplay            = {true}
                                 paginationStyle     = {{ alignSelf : "flex-end", paddingHorizontal : 30 , position:  'absolute',transform : [{ rotate: '90deg' }] , right : -330, zIndex: 999}}
                                 dotStyle            = {{ backgroundColor: '#fff' }}
@@ -170,83 +217,71 @@ class Product extends Component {
                                 loop                = {true}
                                 autoplayTimeout     = { 2 }
                             >
-                                <View style={[styles.viewBlock]}>
-                                    <Image style={[styles.Width_90, styles.swiper]} source={require('../../assets/images/img_product.png')} resizeMode={'cover'}/>
-                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
-                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                            <TouchableOpacity onPress={() => this.setState({isFav:!this.state.isFav })}>
-                                                {
-                                                    this.state.isFav?
-                                                        <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='heart' />
-                                                        :
-                                                        <Icon style={[styles.text_White , styles.textSize_20]} type="AntDesign" name='hearto' />
-                                                }
-                                            </TouchableOpacity>
+
+                                {
+                                    this.props.images.map((img) => (
+
+                                        <View style={[styles.viewBlock]}>
+                                            <Image style={[styles.Width_95, styles.swiper]} source={{ uri : img.image}} resizeMode={'cover'}/>
+                                            <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
+                                                <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                                    <TouchableOpacity onPress = {() => this.toggleFavorite(this.props.products.id)}>
+                                                        {
+                                                            this.props.products.is_fav === 1 ?
+                                                                <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='heart' />
+                                                                :
+                                                                <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='hearto' />
+                                                        }
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </Animatable.View>
                                         </View>
-                                    </Animatable.View>
-                                </View>
-                                <View style={[styles.viewBlock]}>
-                                    <Image style={[styles.Width_90, styles.swiper]} source={require('../../assets/images/img_two.png')} resizeMode={'cover'}/>
-                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
-                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                            <TouchableOpacity onPress={() => this.setState({isFav:!this.state.isFav })}>
-                                                {
-                                                    this.state.isFav?
-                                                        <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='heart' />
-                                                        :
-                                                        <Icon style={[styles.text_White , styles.textSize_20]} type="AntDesign" name='hearto' />
-                                                }
-                                            </TouchableOpacity>
-                                        </View>
-                                    </Animatable.View>
-                                </View>
-                                <View style={[styles.viewBlock]}>
-                                    <Image style={[styles.Width_90, styles.swiper]} source={require('../../assets/images/img_three.png')} resizeMode={'cover'}/>
-                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
-                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                            <TouchableOpacity onPress={() => this.setState({isFav:!this.state.isFav })}>
-                                                {
-                                                    this.state.isFav?
-                                                        <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='heart' />
-                                                        :
-                                                        <Icon style={[styles.text_White , styles.textSize_20]} type="AntDesign" name='hearto' />
-                                                }
-                                            </TouchableOpacity>
-                                        </View>
-                                    </Animatable.View>
-                                </View>
+
+                                    ))
+                                }
+
                             </Swiper>
                         </View>
 
-                        <View style={[ styles.Width_95, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter , {marginBottom:120}]}>
-                            <View style={[styles.lightOverlay, styles.Border]}></View>
+                        <View style={[ styles.Width_90, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter]}>
+                            <View style={[styles.lightOverlay, styles.Border]}/>
                             <View style={[styles.Width_100, styles.overHidden, styles.bg_White, styles.Border,styles.bgFullWidth,styles.paddingHorizontal_7 , styles.paddingVertical_7]}>
                                 <View style={[styles.overHidden]}>
                                     <View style={[styles.rowGroup]}>
-                                        <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">قهوة فرنسية</Text>
+                                        <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft, ]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                            {this.props.products.name}
+                                        </Text>
                                         <View style={{width:70}}>
                                             <StarRating
-                                                disabled={true}
-                                                maxStars={5}
-                                                rating={this.state.starCount}
-                                                fullStarColor={COLORS.orange}
-                                                starSize={15}
-                                                starStyle={styles.starStyle}
+                                                disabled        = {true}
+                                                maxStars        = {5}
+                                                rating          = {this.props.products.rates}
+                                                fullStarColor   = {COLORS.orange}
+                                                starSize        = {15}
+                                                starStyle       = {styles.starStyle}
                                             />
                                         </View>
                                     </View>
-                                    <Text style={[styles.textRegular, styles.text_bold_gray, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">حليب - بن - بندق</Text>
+                                    <Text style={[styles.textRegular, styles.text_bold_gray, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                        {this.props.products.category} - {this.props.products.sub_category}
+                                    </Text>
                                     <View style={[styles.directionRow]}>
                                         <View style={[styles.Width_93]}>
-                                            <Text style={[styles.textRegular, styles.text_black, styles.textSize_14]} numberOfLines = { 1 } prop with ellipsizeMode = "head">{i18n.t('productSpec')}</Text>
-                                            <Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_12]} >قهوة فرنسية قهوة فرنسية قهوة فرنسية قهوة فرنسية قهوة فرنسية قهوة فرنسية قهوة فرنسية قهوة فرنسية قهوة فرنسية قهوة فرنسية قهوة فرنسية قهوة فرنسية </Text>
+                                            <Text style={[styles.textRegular, styles.text_black, styles.textSize_14]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                {i18n.t('productSpec')}
+                                            </Text>
+                                            <Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_12]} >
+                                                {this.props.products.description}
+                                            </Text>
                                         </View>
                                         <View style={styles.counterParent}>
                                             <TouchableOpacity onPress={() => this.increment()} style={styles.touchPlus}>
                                                 <Icon type={'Entypo'} name={'plus'} style={styles.plus} />
                                             </TouchableOpacity>
                                             <View style={[styles.directionColumn , styles.countText ]}>
-                                                <Text style={[styles.text_orange ,styles.textRegular, styles.textSize_14]}>{this.state.value}</Text>
+                                                <Text style={[styles.text_orange ,styles.textRegular, styles.textSize_14]}>
+                                                    {this.state.value}
+                                                </Text>
                                             </View>
                                             <TouchableOpacity onPress={() => this.decrement()} style={styles.touchMinus}>
                                                 <Icon type={'Entypo'} name={'minus'} style={styles.minus} />
@@ -255,63 +290,144 @@ class Product extends Component {
                                     </View>
                                     <View style={[styles.rowGroup , styles.marginVertical_15]}>
                                         <View style={[styles.rowGroup]}>
-                                            <Text style={[styles.textRegular, styles.text_bold_gray,styles.textSize_14, styles.textLeft ]} >{i18n.t('productPrice')}</Text>
-                                            <Text style={[styles.textRegular, styles.text_black,styles.textSize_14, styles.textLeft ,{borderRightWidth:2 , borderRightColor:COLORS.orange , paddingRight:5 , marginLeft:5}]}>20 {i18n.t('RS')}</Text>
+                                            <Text style={[styles.textRegular, styles.text_bold_gray,styles.textSize_14, styles.textLeft ]} >
+                                                {i18n.t('productPrice')}
+                                            </Text>
+                                            <Text style={[styles.textRegular, styles.text_black,styles.textSize_14, styles.textLeft ,{borderRightWidth:2 , borderRightColor:COLORS.orange , paddingRight:5 , marginLeft:5}]}>
+                                                {this.props.products.price} {i18n.t('RS')}</Text>
                                         </View>
-                                        <TouchableOpacity style={[styles.cartBtn]}>
-                                            <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft ]} >{i18n.t('addToCart')}</Text>
+                                        <TouchableOpacity style={[styles.cartBtn]} onPress = {() => this.addToCart(this.props.products.id)}>
+                                            <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft ]}>{i18n.t('addToCart')}</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
                             </View>
                         </View>
 
+                        {/*<View style = {[styles.marginHorizontal_10,styles.Width_90, styles.SelfCenter, styles.marginVertical_15,]}>*/}
+                        {/*    <View style={[styles.lightOverlay, styles.Border]}/>*/}
+                        {/*    <View style={[styles.bg_White, styles.Border]}>*/}
+                                {/*<View style={[styles.rowGroup,]}>*/}
+                                {/*    <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft , styles.marginVertical_10, styles.paddingHorizontal_10]}>*/}
+                                {/*        {i18n.t('comments')}*/}
+                                {/*        <Text style={[styles.textRegular, styles.text_bold_gray,styles.textSize_14]}>*/}
+                                {/*            ( { this.props.products.comments_count } )*/}
+                                {/*        </Text>*/}
+                                {/*    </Text>*/}
+
+                                {/*    {*/}
+                                {/*        this.props.user ?*/}
+                                {/*            <TouchableOpacity onPress={() => this.toggleModal()} style={[styles.rowGroup]}>*/}
+                                {/*                <Text style={[styles.textRegular, styles.text_orange,styles.textSize_14 , {marginRight:5}]}>*/}
+                                {/*                    {i18n.t('addComment')}*/}
+                                {/*                </Text>*/}
+                                {/*                <View style={[styles.touchPlus]}>*/}
+                                {/*                    <Icon type={'Entypo'} name={'plus'} style={[styles.plus , styles.textSize_16]} />*/}
+                                {/*                </View>*/}
+                                {/*            </TouchableOpacity>*/}
+                                {/*            :*/}
+                                {/*            <View/>*/}
+                                {/*    }*/}
+
+                                {/*</View>*/}
+
+                                {/*<Animated.View*/}
+                                {/*    style={[styles.subView,styles.paddingHorizontal_7 , styles.paddingVertical_7, {transform: [{translateY: this.state.bounceValue}]}]}>*/}
+
+                                {/*</Animated.View>*/}
+
+                                {/*<View>*/}
+                                {/*    <ScrollView showsHorizontalScrollIndicator={false}>*/}
+                                {/*    <TouchableOpacity onPress={()=> {this._toggleSubview()}}>*/}
+                                {/*        <FlatList*/}
+                                {/*            data            = {this.props.comments}*/}
+                                {/*            renderItem      = {({item}) => this.renderItems(item)}*/}
+                                {/*            numColumns      = {1}*/}
+                                {/*            keyExtractor    = {this._keyExtractor}*/}
+                                {/*        />*/}
+                                {/*    </TouchableOpacity>*/}
+                                {/*    </ScrollView>*/}
+                                {/*</View>*/}
+
+                            {/*</View>*/}
+                        {/*</View>*/}
 
                     </ImageBackground>
                 </Content>
 
-                <Animated.View
-                    style={[styles.subView,styles.paddingHorizontal_7 , styles.paddingVertical_7,
-                        {transform: [{translateY: this.state.bounceValue}]}]}
-                >
-                    <View style={[styles.lightOverlay, styles.Border, {zIndex:-1}]}/>
-                    <View style={[styles.bg_White , {height:'100%'}]}>
-                        <View style={[styles.rowGroup, {marginBottom:0} ]}>
-                            <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>
-                                {i18n.t('comments')} <Text style={[styles.textRegular, styles.text_bold_gray,styles.textSize_14]}>(55)</Text>
+                <Animated.View style={[styles.subView, styles.SelfCenter, styles.Width_90, {transform: [{translateY: this.state.bounceValue}]}]}>
+                    <View style={[styles.lightOverlay, styles.Border]}/>
+                    <TouchableOpacity  onPress={()=> {this._toggleSubview()}} style={[styles.bg_White , styles.Border, styles.Width_100]}>
+                        <View style={[styles.rowGroup,]}>
+                            <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft, styles.marginVertical_10, styles.paddingHorizontal_10]}>
+                                {i18n.t('comments')}
+                                <Text style={[styles.textRegular, styles.text_bold_gray,styles.textSize_14]}>
+                                    ( { this.props.products.comments_count } )
+                                </Text>
                             </Text>
-                            <TouchableOpacity onPress={() => this.toggleModal()} style={[styles.rowGroup]}>
-                                <Text style={[styles.textRegular, styles.text_orange,styles.textSize_14 , {marginRight:5}]}>{i18n.t('addComment')}</Text>
-                                <View style={[styles.touchPlus, { height:30,
-                                    width:30,}]}>
-                                    <Icon type={'Entypo'} name={'plus'} style={[styles.plus , styles.textSize_16]} />
-                                </View>
+                            <TouchableOpacity onPress={()=> {this._toggleSubview()}} style={[styles.flexCenter, styles.width_40, styles.height_40, styles.Radius_30, styles.bg_orange, {top:-10, zIndex : 99}]}>
+                                <Icon type={'AntDesign'} name={this.state.isHidden ? 'up' : 'down'} style={[ styles.text_White , styles.textSize_16, ]} />
                             </TouchableOpacity>
+
+                            {
+                                this.props.user ?
+                                    <TouchableOpacity onPress={() => this.toggleModal()} style={[styles.rowGroup]}>
+                                        <Text style={[styles.textRegular, styles.text_orange,styles.textSize_14 , {marginRight:5}]}>
+                                            {i18n.t('addComment')}
+                                        </Text>
+                                        <View style={[styles.touchPlus]}>
+                                            <Icon type={'Entypo'} name={'plus'} style={[styles.plus , styles.textSize_16]} />
+                                        </View>
+                                    </TouchableOpacity>
+                                    :
+                                    <View/>
+                            }
+
                         </View>
                         <ScrollView showsHorizontalScrollIndicator={false}>
                             <TouchableOpacity onPress={()=> {this._toggleSubview()}}>
                                 <FlatList
-                                    data={this.state.comments}
-                                    renderItem={({item}) => this.renderItems(item)}
-                                    numColumns={1}
-                                    keyExtractor={this._keyExtractor}
+                                    data            = {this.props.comments}
+                                    renderItem      = {({item}) => this.renderItems(item)}
+                                    numColumns      = {1}
+                                    keyExtractor    = {this._keyExtractor}
                                 />
                             </TouchableOpacity>
                         </ScrollView>
-                    </View>
+                    </TouchableOpacity>
 
                 </Animated.View>
+
                 <Modal style={{}} isVisible={this.state.isModalVisible} onBackdropPress={() => this.toggleModal()}>
-                    <View style={[styles.commentModal,{padding:15 , height:250}]}>
+                    <View style={[styles.commentModal,{padding:15}]}>
                         <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>
                             {i18n.t('comment')}
                         </Text>
                         <View style={[styles.directionRow]}>
                             <View style={[styles.Width_93 , {marginTop:20}]}>
-                                <View style={[styles.lightOverlay, styles.Border]}/>
-                                <Textarea placeholder={ i18n.t('comment') } placeholderTextColor={COLORS.bold_gray} autoCapitalize='none' value={this.state.desc} onChangeText={(desc) => this.setState({desc})}
-                                          style={[styles.textarea, styles.textRegular,styles.Width_100 , styles.overHidden, styles.bg_White, styles.Border,styles.paddingHorizontal_7 , styles.paddingVertical_7]}  />
+
+                                <View style={[styles.Width_100]}>
+                                    <View style={[styles.lightOverlay, styles.Border]}/>
+                                    <Textarea
+                                        placeholder             = { i18n.t('comment') }
+                                        placeholderTextColor    = {COLORS.bold_gray}
+                                        autoCapitalize          = 'none'
+                                        value                   = {this.state.desc}
+                                        onChangeText            = {(desc) => this.setState({desc})}
+                                        style                   = {[styles.textarea, styles.textRegular,styles.Width_100 , styles.overHidden, styles.bg_White, styles.Border,styles.paddingHorizontal_7 , styles.paddingVertical_7]}
+                                    />
+                                </View>
+                                {
+                                    this.state.fading === true ?
+                                        <Text style={[styles.textRegular, styles.textCenter, styles.Width_100, styles.text_red, styles.marginVertical_10]}>
+                                            { i18n.t('addcomm') }
+                                        </Text>
+                                        :
+                                        <View/>
+                                }
+
                             </View>
+
                             <View style={styles.counterParent}>
                                 <TouchableOpacity onPress={() => this.increment2()} style={styles.touchPlus}>
                                     <Icon type={'Entypo'} name={'plus'} style={styles.plus} />
@@ -325,7 +441,7 @@ class Product extends Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <TouchableOpacity onPress={() => this.toggleModal()} style={[styles.cartBtn , styles.SelfCenter , {marginTop:20}]}>
+                        <TouchableOpacity onPress={() => this.addComment(this.props.products.id)} style={[styles.cartBtn , styles.SelfCenter , {marginTop:20}]}>
                             <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft ]} >{i18n.t('addComment')}</Text>
                         </TouchableOpacity>
                     </View>
@@ -336,10 +452,14 @@ class Product extends Component {
     }
 }
 
-
-const mapStateToProps = ({ lang }) => {
+const mapStateToProps = ({ lang , productsDetail, addComment, profile }) => {
     return {
-        lang        : lang.lang,
+        lang                : lang.lang,
+        products            : productsDetail.products,
+        images              : productsDetail.images,
+        comments            : productsDetail.comments,
+        addComments         : addComment.comment,
+        user                : profile.user
     };
 };
-export default connect(mapStateToProps, {})(Product);
+export default connect(mapStateToProps, { productDetails , favorite, addCart, addComment})(Product);

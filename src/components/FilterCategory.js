@@ -47,7 +47,7 @@ class FilterCategory extends Component {
     componentWillMount() {
 
         this.props.categoryProviders( this.props.lang , this.props.navigation.state.params.id );
-        this.props.city( this.props.lang );
+        // this.props.city( this.props.lang );
 
         if(this.props.navigation.getParam('latitude') || this.props.navigation.getParam('longitude')){
             this.state.city_name            =  this.props.navigation.getParam('city_name');

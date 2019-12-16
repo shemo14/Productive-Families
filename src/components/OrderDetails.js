@@ -19,10 +19,9 @@ import * as Animatable from 'react-native-animatable';
 import {connect} from "react-redux";
 import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
-import StarRating from 'react-native-star-rating';
 import Modal from "react-native-modal";
 import {NavigationEvents} from "react-navigation";
-import {getOrderDetails} from '../actions'
+import {getOrderDetails , getCancelOrder} from '../actions'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 
 const width = Dimensions.get('window').width;
@@ -35,7 +34,8 @@ class OrderDetails extends Component {
         this.state = {
             status: null,
             isModalVisible: false,
-            loader: true
+            loader: true,
+            reason: '',
 
         }
     }
@@ -44,6 +44,10 @@ class OrderDetails extends Component {
         this.setState({isModalVisible: !this.state.isModalVisible});
     };
 
+    cancelOrder(){
+        this.setState({isModalVisible: !this.state.isModalVisible});
+        this.props.getCancelOrder(this.props.lang, this.props.navigation.state.params.order_id , this.state.reason , this.props.user.token , this.props )
+    }
 
     componentWillReceiveProps(nextProps) {
         this.setState({loader: false});
@@ -311,12 +315,19 @@ class OrderDetails extends Component {
                                                         </View>
                                                     </View>
                                                 </View>
+                                            </View>
+                                            :
+                                            <View/>
+                                    }
 
+                                    {
+                                        this.props.navigation.state.params.orderType === 1 || this.props.navigation.state.params.orderType === 2 ?
+                                            <View>
                                                 <TouchableOpacity
-                                                    onPress={() => this.props.navigation.navigate('drawerNavigator')}
-                                                    style={[styles.cartBtn, styles.SelfCenter, {marginBottom: 20}]}>
+                                                    // onPress={() => this.props.navigation.navigate('drawerNavigator')}
+                                                    style={[styles.cartBtn, styles.SelfCenter, {marginBottom: 20 , backgroundColor:COLORS.bold_gray}]}>
                                                     <Text
-                                                        style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('finishOrder')}</Text>
+                                                        style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('hanging')}</Text>
                                                 </TouchableOpacity>
                                             </View>
                                             :
@@ -338,11 +349,11 @@ class OrderDetails extends Component {
                                 <View style={[styles.lightOverlay, styles.Border]}/>
                                 <Textarea placeholder={i18n.t('cancelOrderReason')}
                                           placeholderTextColor={COLORS.bold_gray} autoCapitalize='none'
-                                          value={this.state.desc} onChangeText={(desc) => this.setState({desc})}
+                                          value={this.state.reason} onChangeText={(reason) => this.setState({reason})}
                                           style={[styles.textarea, styles.textRegular, styles.Width_100, styles.overHidden, styles.bg_White, styles.Border, styles.paddingHorizontal_7, styles.paddingVertical_7]}/>
                             </View>
                         </View>
-                        <TouchableOpacity onPress={() => this.toggleModal()}
+                        <TouchableOpacity onPress={() => this.cancelOrder()}
                                           style={[styles.cartBtn, styles.SelfCenter, {marginTop: 20}]}>
                             <Text
                                 style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('cancelOrder')}</Text>
@@ -356,10 +367,11 @@ class OrderDetails extends Component {
 }
 
 
-const mapStateToProps = ({lang , orderDetails}) => {
+const mapStateToProps = ({lang , orderDetails , profile}) => {
     return {
         lang: lang.lang,
         orderDetails: orderDetails.orderDetails,
+        user: profile.user,
     };
 };
-export default connect(mapStateToProps, {getOrderDetails})(OrderDetails);
+export default connect(mapStateToProps, {getOrderDetails , getCancelOrder})(OrderDetails);

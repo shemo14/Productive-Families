@@ -20,7 +20,6 @@ export const deleteNotifications = (lang , notify_id, token) => {
         }).then(response => {
             Notifications(lang , token , dispatch)
         })
-
     }
 };
 

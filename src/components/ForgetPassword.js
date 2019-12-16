@@ -39,12 +39,9 @@ class ForgetPassword extends Component {
         let isError = false;
         let msg = '';
 
-        if (this.state.phone.length <= 0 || this.state.phone.length !== 10) {
-            isError = true;
-            msg = i18n.t('phoneValidation');
-        }else if (this.state.password.length <= 0) {
-            isError = true;
-            msg = i18n.t('passwordRequired');
+        if (this.state.phone.length <= 0) {
+            isError     = true;
+            msg         = i18n.t('namereq');
         }
         if (msg !== ''){
             Toast.show({

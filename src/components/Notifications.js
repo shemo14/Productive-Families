@@ -13,8 +13,6 @@ import {
 import {Container, Content, Icon, Header, Left, Button, Body, Title } from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
-import {DoubleBounce} from "react-native-loader";
-import * as Animatable from 'react-native-animatable';
 import {connect} from "react-redux";
 import COLORS from '../../src/consts/colors'
 import { getNotifications , deleteNotifications } from '../actions'
@@ -22,7 +20,6 @@ import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
-
 
 class Notifications extends Component {
     constructor(props){
@@ -84,7 +81,7 @@ class Notifications extends Component {
     renderNoData(){
         if (this.props.notifications && (this.props.notifications).length <= 0){
             return(
-                <View style={[styles.directionColumnCenter , {height:'100%'}]}>
+                <View style={[styles.directionColumnCenter , {height:'95%'}]}>
                     <Image source={require('../../assets/images/no-data.png')} resizeMode={'contain'} style={{ alignSelf: 'center', width: 200, height: 200 }} />
                 </View>
             );
@@ -184,9 +181,9 @@ class Notifications extends Component {
 
 const mapStateToProps = ({ lang , notifications , profile}) => {
     return {
-        lang        : lang.lang,
-        user        : profile.user,
-        notifications        : notifications.notifications,
+        lang                    : lang.lang,
+        user                    : profile.user,
+        notifications           : notifications.notifications,
     };
 };
 export default connect(mapStateToProps, {getNotifications , deleteNotifications})(Notifications);

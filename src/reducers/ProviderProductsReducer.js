@@ -10,13 +10,6 @@ export default (state = INITIAL_STATE, action) => {
                 loader              : action.payload.key === 1 ? false : true
             });
         }
-        case 'subCategoryProduct': {
-            return ({...state,
-                products            : action.payload.products,
-                isRefreshed         : true,
-                loader              : action.payload.key === 1 ? false : true
-            });
-        }
         default:
             return state;
     }
