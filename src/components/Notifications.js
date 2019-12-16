@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import {View, Text, Image, ImageBackground , ScrollView , TouchableOpacity , FlatList , I18nManager} from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    ImageBackground,
+    Dimensions,
+    TouchableOpacity,
+    FlatList,
+    I18nManager,
+    Animated
+} from "react-native";
 import {Container, Content, Icon, Header, Left, Button, Body, Title } from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
@@ -8,6 +18,10 @@ import * as Animatable from 'react-native-animatable';
 import {connect} from "react-redux";
 import COLORS from '../../src/consts/colors'
 import { getNotifications , deleteNotifications } from '../actions'
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 
 class Notifications extends Component {
@@ -20,11 +34,18 @@ class Notifications extends Component {
             activeType          : 0,
             isFav               : false,
             refreshed           : false,
+            loader: true
         }
     }
 
     componentWillMount() {
-        this.props.getNotifications( this.props.lang , this.props.user.token )
+        this.setState({loader: true});
+        setTimeout(() => this.props.getNotifications( this.props.lang , this.props.user.token ), 2000)
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({loader: false});
     }
 
     deleteNotify(notify_id){
@@ -60,7 +81,68 @@ class Notifications extends Component {
         );
     }
 
+    renderNoData(){
+        if (this.props.notifications && (this.props.notifications).length <= 0){
+            return(
+                <View style={[styles.directionColumnCenter , {height:'100%'}]}>
+                    <Image source={require('../../assets/images/no-data.png')} resizeMode={'contain'} style={{ alignSelf: 'center', width: 200, height: 200 }} />
+                </View>
+            );
+        }
+
+        return <View />
+    }
+
+    componentDidMount() {
+        this.runPlaceHolder();
+    }
+
+    runPlaceHolder() {
+        if (Array.isArray(this.loadingAnimated) && this.loadingAnimated.length > 0) {
+            Animated.parallel(
+                this.loadingAnimated.map(animate => {
+                    if (animate && animate.getAnimated) {
+                        return animate.getAnimated();
+                    }
+                    return null;
+                }),
+                {
+                    stopTogether: false,
+                }
+            ).start(() => {
+                this.runPlaceHolder();
+            })
+        }
+    }
+
+    _renderRows(loadingAnimated, numberRow, uniqueKey) {
+        let shimmerRows = [];
+        for (let index = 0; index < numberRow; index++) {
+            shimmerRows.push(
+                <ShimmerPlaceHolder
+                    key={`loading-${index}-${uniqueKey}`}
+                    ref={(ref) => loadingAnimated.push(ref)}
+                    style={{marginVertical:7, alignSelf: 'center'}}
+                    width={width - 20}
+                    height={100}
+                    colorShimmer={['#ffffff75', '#FEDAD075', '#ffffff75']}
+                />
+            )
+        }
+
+        return (
+            <View >
+                {shimmerRows}
+            </View>
+        )
+    }
+
+    onFocus() {
+        this.componentWillMount();
+    }
     render() {
+
+        this.loadingAnimated = [];
 
         return (
             <Container>
@@ -77,12 +159,19 @@ class Notifications extends Component {
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                        <View style={[styles.paddingHorizontal_10]}>
-                           <FlatList
-                               data={this.props.notifications}
-                               renderItem={(item) => this.renderItems(item)}
-                               numColumns={1}
-                               keyExtractor={this._keyExtractor}
-                           />
+                           {
+                               this.state.loader ?
+                                   this._renderRows(this.loadingAnimated, 5, '5rows') :
+                                  <View>
+                                      { this.renderNoData() }
+                                      <FlatList
+                                          data={this.props.notifications}
+                                          renderItem={(item) => this.renderItems(item)}
+                                          numColumns={1}
+                                          keyExtractor={this._keyExtractor}
+                                      />
+                                  </View>
+                           }
                        </View>
                     </ImageBackground>
                 </Content>

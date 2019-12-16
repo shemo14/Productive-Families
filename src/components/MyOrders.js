@@ -33,6 +33,17 @@ class MyOrders extends Component {
         drawerIcon: (<Image style={[styles.smImage]} source={require('../../assets/images/orders.png')}/>)
     });
 
+    renderNoData(){
+        if (this.props.notifications && (this.props.notifications).length <= 0){
+            return(
+                <View style={[styles.directionColumnCenter , {height:'100%'}]}>
+                    <Image source={require('../../assets/images/no-data.png')} resizeMode={'contain'} style={{ alignSelf: 'center', width: 200, height: 200 }} />
+                </View>
+            );
+        }
+
+        return <View />
+    }
 
     componentWillMount() {
         this.getOrders(0)
@@ -173,41 +184,49 @@ class MyOrders extends Component {
                             this.state.loader ?
                                 this._renderRows(this.loadingAnimated, 5, '5rows')
                                 :
-                                this.props.userOrders.map((order, i) => (
-                                    <TouchableOpacity key={i}
-                                                      onPress={() => this.props.navigation.navigate('orderDetails' , {orderType:this.state.activeType , order_id:order.order_info.order_id})}
-                                                      style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop: 20}]}>
-                                        <View style={[styles.lightOverlay, styles.Border]}></View>
-                                        <View
-                                            style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                            <View style={[styles.icImg, styles.flex_30]}>
-                                                <Image style={[styles.icImg]}
-                                                       source={{uri: order.order_provider.avatar}}/>
-                                            </View>
-                                            <View style={[styles.flex_70]}>
-                                                <View style={[styles.rowGroup]}>
-                                                    <Text
-                                                        style={[styles.textRegular, styles.text_black]}>{order.order_provider.name}</Text>
-                                                </View>
-                                                <View style={[styles.overHidden]}>
-                                                    <Text
-                                                        style={[styles.textRegular, styles.text_gray, styles.Width_100, styles.textLeft]}>{order.order_info.category}</Text>
-                                                </View>
-                                                <View style={[styles.overHidden, styles.rowGroup]}>
-                                                    <Text
-                                                        style={[styles.textRegular, styles.text_red,]}>{order.order_info.price} {i18n.t('RS')}</Text>
-                                                    <Text
-                                                        style={[styles.textRegular, styles.text_gray,]}>{order.order_info.date}</Text>
-                                                </View>
-                                            </View>
-                                            <TouchableOpacity
-                                                style={[styles.width_40, styles.height_40, styles.flexCenter, styles.bg_light_oran, styles.borderLightOran, styles.marginVertical_5, styles.position_A, styles.top_5, styles.right_0]}>
-                                                <Text
-                                                    style={[styles.textRegular, styles.text_red]}>{order.order_info.order_items}</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </TouchableOpacity>
-                                ))
+
+                               <View>
+                                   { this.renderNoData() }
+
+                                   {
+                                       this.props.userOrders.map((order, i) => (
+                                           <TouchableOpacity key={i}
+                                                             onPress={() => this.props.navigation.navigate('orderDetails' , {orderType:this.state.activeType , order_id:order.order_info.order_id})}
+                                                             style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop: 20}]}>
+                                               <View style={[styles.lightOverlay, styles.Border]}></View>
+                                               <View
+                                                   style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                                   <View style={[styles.icImg, styles.flex_30]}>
+                                                       <Image style={[styles.icImg]}
+                                                              source={{uri: order.order_provider.avatar}}/>
+                                                   </View>
+                                                   <View style={[styles.flex_70]}>
+                                                       <View style={[styles.rowGroup]}>
+                                                           <Text
+                                                               style={[styles.textRegular, styles.text_black]}>{order.order_provider.name}</Text>
+                                                       </View>
+                                                       <View style={[styles.overHidden]}>
+                                                           <Text
+                                                               style={[styles.textRegular, styles.text_gray, styles.Width_100, styles.textLeft]}>{order.order_info.category}</Text>
+                                                       </View>
+                                                       <View style={[styles.overHidden, styles.rowGroup]}>
+                                                           <Text
+                                                               style={[styles.textRegular, styles.text_red,]}>{order.order_info.price} {i18n.t('RS')}</Text>
+                                                           <Text
+                                                               style={[styles.textRegular, styles.text_gray,]}>{order.order_info.date}</Text>
+                                                       </View>
+                                                   </View>
+                                                   <TouchableOpacity
+                                                       style={[styles.width_40, styles.height_40, styles.flexCenter, styles.bg_light_oran, styles.borderLightOran, styles.marginVertical_5, styles.position_A, styles.top_5, styles.right_0]}>
+                                                       <Text
+                                                           style={[styles.textRegular, styles.text_red]}>{order.order_info.order_items}</Text>
+                                                   </TouchableOpacity>
+                                               </View>
+                                           </TouchableOpacity>
+                                       ))
+                                   }
+
+                               </View>
 
 
                         }
