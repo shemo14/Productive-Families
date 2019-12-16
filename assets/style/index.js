@@ -971,8 +971,16 @@ const styles = ({
         justifyContent      : 'center',
         alignSelf           : 'center',
     },
-
-
+    activeTabs : {
+        backgroundColor     : '#fff',
+        borderTopWidth      : 1,
+        borderTopColor      : COLORS.orange
+    },
+    noActiveTabs : {
+        backgroundColor     : COLORS.light_gray,
+        borderTopWidth      : 0,
+        borderTopColor      : 'transparent'
+    },
 
 
 
@@ -1136,9 +1144,10 @@ const styles = ({
     restImg:{
         width:50,
         height:50,
-        borderRadius:50,
+        borderRadius:25,
         marginRight:10,
-        flex:0
+        flex:0,
+        resizeMode:"cover"
     },
     commentModal:{
         width: '110%',

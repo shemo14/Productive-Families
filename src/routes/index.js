@@ -230,8 +230,8 @@ const authStack = createStackNavigator({
             header: null
         }
     },
-    ActivationCode: {
-        screen: ActivationCode,
+    ForgetPassword: {
+        screen: ForgetPassword,
         navigationOptions: {
             header: null
         }
@@ -242,20 +242,20 @@ const authStack = createStackNavigator({
             header: null
         }
     },
-    ForgetPassword: {
-        screen: ForgetPassword,
-        navigationOptions: {
-            header: null
-        }
-    },
-    Login: {
-        screen: Login,
+    ActivationCode: {
+        screen: ActivationCode,
         navigationOptions: {
             header: null
         }
     },
     Register: {
         screen: Register,
+        navigationOptions: {
+            header: null
+        }
+    },
+    Login: {
+        screen: Login,
         navigationOptions: {
             header: null
         }
@@ -287,8 +287,8 @@ const authStack = createStackNavigator({
 });
 
 const AppNavigator = createSwitchNavigator({
-    app     : appStack,
     auth    : authStack,
+    app     : appStack,
 });
 
 export default createAppContainer(AppNavigator);

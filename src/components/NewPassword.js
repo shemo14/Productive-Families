@@ -116,7 +116,7 @@ class NewPassword extends Component {
                                 <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
                                     <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
                                         <Input
-                                            placeholder             = {i18n.translate('code')}
+                                            placeholder             = {i18n.t('code')}
                                             style                   = {[ styles.input , styles.height_50 , (this.state.codeStatus === 1 ? styles.Active : styles.noActive )]}
                                             onChangeText            = {(code) => this.setState({code})}
                                             onBlur                  = {() => this.unActiveInput('code')}
