@@ -11,7 +11,7 @@ import home from './HomeReducer';
 import changePassword from './ChangePasswordReducer';
 import searchHome from './SearchHomeReducer';
 import categoryHome from './CategoryHomeReducer';
-import categoryProvider from './CategoryProviderRuducer';
+import categoryProvider from './CategoryProviderReducer';
 import SearchProvider from './SearchProvidersReducer';
 import filterProvider from './FilterProvidersReducer';
 import cities from './CitiesReducer';

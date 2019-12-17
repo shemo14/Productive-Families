@@ -68,7 +68,7 @@ class Basket extends Component {
                         {
 
                             this.props.cartList.map((cart, i) => (
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('DetailsBasket' , {provider_id:cart.id})} key={i}
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('DetailsBasket' , {provider_id:cart.id })} key={i}
                                     style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop:10}]}>
                                     <View style={[styles.lightOverlay, styles.Border]}></View>
                                     <View
@@ -109,7 +109,7 @@ class Basket extends Component {
 const mapStateToProps = ({ lang , cartList , profile}) => {
     return {
         lang        : lang.lang,
-        cartList        : cartList.cartList,
+        cartList    : cartList.cartList,
         user        : profile.user
     };
 };

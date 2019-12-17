@@ -40,7 +40,7 @@ class MapLocation extends Component {
         getCity    += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
         getCity    += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
 
-        ReactotronConfig.log(getCity);
+        // ReactotronConfig.log(getCity);
 
         try {
             const { data } = await axios.get(getCity);
@@ -141,7 +141,18 @@ class MapLocation extends Component {
                     latitude                : this.state.mapRegion.latitude,
                     longitude               : this.state.mapRegion.longitude,
                 });
-            } else if (pageName === 'Register') {
+            }
+            else if (pageName === 'DetailsBasket'){
+                console.log(this.state.city, this.state.mapRegion.latitude,  this.state.mapRegion.longitude);
+                this.props.navigation.navigate('ChoosePayment', {
+                    city_name               : this.state.city,
+                    latitude                : this.state.mapRegion.latitude,
+                    longitude               : this.state.mapRegion.longitude,
+                    provider_id             : this.props.navigation.state.params.provider_id,
+                    shipping_price          : this.props.navigation.state.params.shipping_price,
+                    address                 : this.state.city,
+                });
+            } else {
                 this.props.navigation.navigate('Register', {
                     city_name   : this.state.city,
                     latitude    : this.state.mapRegion.latitude,

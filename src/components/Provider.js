@@ -26,7 +26,7 @@ class Provider extends Component {
         }
     }
 
-    componentWillMount(id) {
+    componentWillMount() {
         this.props.providerProduct( this.props.lang , this.props.navigation.state.params.id , null);
     }
 
@@ -104,6 +104,7 @@ class Provider extends Component {
     };
 
     onFocus(){
+        // this.componentDidMount();
         this.componentWillMount();
     }
 
