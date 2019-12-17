@@ -21,3 +21,5 @@ export * from './UserOrdersAction';
 export * from './OrderDetailsAction';
 export * from './NotificationsAction';
 export * from './CancelOrderAction';
+export * from './OrderStoreAction';
+export * from './OrderAction';

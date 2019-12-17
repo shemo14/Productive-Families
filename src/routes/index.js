@@ -41,6 +41,8 @@ import Notifications            from "../components/Notifications";
 import Profile                  from "../components/Profile";
 import OrderDetails             from "../components/OrderDetails";
 import EditProfile              from "../components/EditProfile";
+import DelegateOrderDetails     from "../components/DelegateOrderDetails";
+import Confirmation             from "../components/Confirmation";
 
 
 const drawerCust = (props) => (<DrawerCustomization {...props} />);
@@ -182,8 +184,16 @@ const appStack =  createStackNavigator({
         }
     },
 
-    /// Amaany
 
+
+
+    /// Amaany
+    delegateOrderDetails: {
+        screen: DelegateOrderDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
     editProfile: {
         screen: EditProfile,
         navigationOptions: {
@@ -220,10 +230,17 @@ const appStack =  createStackNavigator({
             header: null
         }
     },
+    confirmation: {
+        screen: Confirmation,
+        navigationOptions: {
+            header: null
+        }
+    },
 
 });
 
 const authStack = createStackNavigator({
+
     InitScreen: {
         screen: InitScreen,
         navigationOptions: {
@@ -287,8 +304,8 @@ const authStack = createStackNavigator({
 });
 
 const AppNavigator = createSwitchNavigator({
-    app     : appStack,
     auth    : authStack,
+    app     : appStack,
 });
 
 export default createAppContainer(AppNavigator);

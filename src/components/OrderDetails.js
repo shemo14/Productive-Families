@@ -21,7 +21,7 @@ import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
 import Modal from "react-native-modal";
 import {NavigationEvents} from "react-navigation";
-import {getOrderDetails , getCancelOrder} from '../actions'
+import {getOrderDetails , getCancelOrder , getDeleteOrder , getAcceptOrder} from '../actions'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 
 const width = Dimensions.get('window').width;
@@ -36,6 +36,7 @@ class OrderDetails extends Component {
             isModalVisible: false,
             loader: true,
             reason: '',
+            isSubmitted: false,
 
         }
     }
@@ -49,8 +50,58 @@ class OrderDetails extends Component {
         this.props.getCancelOrder(this.props.lang, this.props.navigation.state.params.order_id , this.state.reason , this.props.user.token , this.props )
     }
 
+
+    renderDeleteOrder(){
+        if (this.state.isSubmitted){
+            return(
+                <View style={[{ justifyContent: 'center', alignItems: 'center' , marginBottom:20 }]}>
+                    <DoubleBounce size={20} color={COLORS.orange} style={{ alignSelf: 'center' }} />
+                </View>
+            )
+        }
+
+        return (
+            <TouchableOpacity
+                onPress={() => this.deleteOrder()}
+                style={[styles.cartBtn, styles.SelfCenter, {marginBottom: 20}]}>
+                <Text
+                    style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('deleteOrder')}</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    deleteOrder(){
+        this.setState({ isSubmitted: true });
+        this.props.getDeleteOrder(this.props.lang, this.props.navigation.state.params.order_id , this.props.user.token  , this.props )
+    }
+
+    renderAcceptOrder(){
+        if (this.state.isSubmitted){
+            return(
+                <View style={[{ justifyContent: 'center', alignItems: 'center' , marginBottom:20 , alignSelf:'center' }]}>
+                    <DoubleBounce size={20} color={COLORS.orange} style={{ alignSelf: 'center' }} />
+                </View>
+            )
+        }
+
+        return (
+            <TouchableOpacity
+                onPress={() => this.acceptOrder()}
+                style={[styles.cartBtn, styles.SelfCenter, {marginBottom: 20}]}>
+                <Text
+                    style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('ok')}</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    acceptOrder(){
+        this.setState({ isSubmitted: true });
+        this.props.getAcceptOrder(this.props.lang, this.props.navigation.state.params.order_id , this.props.user.token  , this.props )
+    }
+
     componentWillReceiveProps(nextProps) {
-        this.setState({loader: false});
+        this.setState({loader: false , isSubmitted: false});
+
     }
 
     componentWillMount(){
@@ -100,6 +151,57 @@ class OrderDetails extends Component {
             <View >
                 {shimmerRows}
             </View>
+        )
+    }
+
+
+    renderBtns(){
+       if(this.props.user.type === 'provider' ){
+          return(
+
+              this.props.navigation.state.params.orderType === 0  ?
+                  <View
+                      style={[styles.directionRowSpace, styles.paddingHorizontal_10, styles.marginVertical_15]}>
+
+                      {
+                          this.renderAcceptOrder()
+                      }
+
+
+                      <TouchableOpacity
+                          onPress={() => this.cancelOrder()}
+                          style={[styles.cartBtn, styles.SelfCenter, {
+                              marginBottom: 20,
+                              backgroundColor: '#8f8f8f96'
+                          }]}>
+                          <Text
+                              style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>{i18n.t('refuse')}</Text>
+                      </TouchableOpacity>
+
+                  </View>
+                  :
+
+                  this.props.navigation.state.params.orderType === 1  || this.props.navigation.state.params.orderType === 2  ?
+                      <TouchableOpacity
+                          // onPress={() => this.toggleModal()}
+                                        style={[styles.cartBtn, styles.SelfCenter, {marginBottom: 20}]}>
+                          <Text
+                              style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('finishOrder')}</Text>
+                      </TouchableOpacity>
+                      :
+                      <View/>
+          )
+       }
+
+        return(
+            this.props.navigation.state.params.orderType === 0 || this.props.navigation.state.params.orderType === 1 ?
+                <TouchableOpacity onPress={() => this.toggleModal()}
+                                  style={[styles.cartBtn, styles.SelfCenter, {marginBottom: 20}]}>
+                    <Text
+                        style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('cancelOrder')}</Text>
+                </TouchableOpacity>
+                :
+                <View/>
         )
     }
 
@@ -246,7 +348,8 @@ class OrderDetails extends Component {
                                     </View>
 
                                     {
-                                        this.props.navigation.state.params.orderType === 0 || this.props.navigation.state.params.orderType === 1 || this.props.navigation.state.params.orderType === 2 || this.props.navigation.state.params.orderType === 4 ?
+                                        this.props.navigation.state.params.orderType === 0 || this.props.navigation.state.params.orderType === 1 ||
+                                        this.props.navigation.state.params.orderType === 2 || this.props.navigation.state.params.orderType === 3 || this.props.navigation.state.params.orderType === 4 ?
                                             <View
                                                 style={[styles.position_R, styles.Width_95, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter]}>
                                                 <View style={[styles.lightOverlay, styles.Border]}></View>
@@ -273,21 +376,10 @@ class OrderDetails extends Component {
                                             :
                                             <View/>
                                     }
-                                    {
-                                        this.props.navigation.state.params.orderType === 0 || this.props.navigation.state.params.orderType === 1 ?
-                                            <TouchableOpacity onPress={() => this.toggleModal()}
-                                                              style={[styles.cartBtn, styles.SelfCenter, {marginBottom: 20}]}>
-                                                <Text
-                                                    style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('cancelOrder')}</Text>
-                                            </TouchableOpacity>
-                                            :
-                                            <View/>
-                                    }
 
 
                                     {
-                                        this.props.navigation.state.params.orderType === 2 ?
-                                            <View>
+                                        this.props.navigation.state.params.orderType === 2 || this.props.navigation.state.params.orderType === 3 ?
                                                 <View
                                                     style={[styles.position_R, styles.Width_95, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter]}>
                                                     <View style={[styles.lightOverlay, styles.Border]}></View>
@@ -315,12 +407,17 @@ class OrderDetails extends Component {
                                                         </View>
                                                     </View>
                                                 </View>
-                                            </View>
                                             :
                                             <View/>
                                     }
 
+
                                     {
+                                        this.renderBtns()
+                                    }
+
+                                    {
+                                        this.props.user.type === 'provider' ? <View/> :
                                         this.props.navigation.state.params.orderType === 1 || this.props.navigation.state.params.orderType === 2 ?
                                             <View>
                                                 <TouchableOpacity
@@ -329,6 +426,18 @@ class OrderDetails extends Component {
                                                     <Text
                                                         style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('hanging')}</Text>
                                                 </TouchableOpacity>
+                                            </View>
+                                            :
+                                            <View/>
+                                    }
+
+                                    {
+                                        this.props.navigation.state.params.orderType === 3 || this.props.navigation.state.params.orderType === 4 ?
+                                            <View>
+
+                                                {
+                                                    this.renderDeleteOrder()
+                                                }
                                             </View>
                                             :
                                             <View/>
@@ -374,4 +483,4 @@ const mapStateToProps = ({lang , orderDetails , profile}) => {
         user: profile.user,
     };
 };
-export default connect(mapStateToProps, {getOrderDetails , getCancelOrder})(OrderDetails);
+export default connect(mapStateToProps, {getOrderDetails , getCancelOrder , getDeleteOrder , getAcceptOrder})(OrderDetails);

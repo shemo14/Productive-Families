@@ -8,7 +8,7 @@ import {NavigationEvents} from "react-navigation";
 import i18n from "../../locale/i18n";
 import * as Animatable from "react-native-animatable";
 
-class ConfirmPayment extends Component {
+class Confirmation extends Component {
     constructor(props){
         super(props);
 
@@ -47,9 +47,9 @@ class ConfirmPayment extends Component {
                         </Button>
                     </Left>
                     <Body style={styles.bodyText}>
-                        <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
-                            { i18n.t('confirmpayment') }
-                        </Title>
+                    <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
+                        { i18n.t('confirmation') }
+                    </Title>
                     </Body>
                 </Header>
                 <Content  contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
@@ -67,7 +67,7 @@ class ConfirmPayment extends Component {
 
                             <View style={[styles.overHidden, styles.flexCenter, styles.marginVertical_25, styles.Width_80]}>
                                 <Text style={[styles.textRegular , styles.textSize_18, styles.text_black, styles.textCenter]}>
-                                    تم تآكيد الدفع عبر الفيزا وسيتم التواصل معكم في حين ظهور آي مشكله
+                                    { i18n.t('confirmationText') }
                                 </Text>
                             </View>
 
@@ -99,4 +99,4 @@ const mapStateToProps = ({ lang }) => {
         lang        : lang.lang,
     };
 };
-export default connect(mapStateToProps, { })(ConfirmPayment);
+export default connect(mapStateToProps, { })(Confirmation);
