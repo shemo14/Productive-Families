@@ -2,14 +2,14 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 import CONST from '../consts';
 
-export const userLogin = ({phone, password, deviceId, type}, lang) => {
+export const userLogin = ({phone, password, deviceId }, lang) => {
     return (dispatch) => {
 
         dispatch({type: 'login_user'});
 
         axios.post(
             CONST.url + 'login',
-            {phone, password, type, lang, device_id: deviceId})
+            {phone, password, lang, device_id: deviceId})
             .then(
                 response => handelLogin(dispatch, response.data)
             )
@@ -26,7 +26,7 @@ export const tempAuth = () => {
 };
 
 const handelLogin = (dispatch, data) => {
-    if (!data.success){
+    if (!data.key){
         loginFailed(dispatch, data)
     }else{
         loginSuccess(dispatch, data)

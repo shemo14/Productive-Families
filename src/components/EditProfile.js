@@ -1,20 +1,6 @@
 import React, { Component } from "react";
-import {View, Text, Image, ImageBackground , ScrollView , TouchableOpacity , KeyboardAvoidingView , I18nManager} from "react-native";
-import {
-    Container,
-    Content,
-    Icon,
-    Header,
-    Left,
-    Button,
-    Body,
-    Title,
-    Form,
-    Item,
-    Input,
-    Right,
-    Textarea, Picker
-} from 'native-base'
+import {View, Text, Image, ImageBackground  , TouchableOpacity , KeyboardAvoidingView } from "react-native";
+import {Container, Content, Icon, Header, Left, Button, Body, Title, Form, Item, Input, Right, Picker} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
 import {DoubleBounce} from "react-native-loader";
@@ -40,15 +26,16 @@ class EditProfile extends Component {
             latitude            : '',
             longitude           : '',
             city_name           : this.props.user.address,
-            userImage: this.props.user.avatar,
-            base64: null,
-            isSubmitted: false,
+            userImage           : this.props.user.avatar,
+            base64              : null,
+            isSubmitted         : false,
         }
     }
 
     componentWillMount() {
         this.props.getCities( this.props.lang )
     }
+
     renderEditProfile(){
         if (this.state.username == '' || this.state.phone == ''){
             return (
@@ -76,17 +63,17 @@ class EditProfile extends Component {
 
     onUpdateProfile(){
         const data = {
-            name: this.state.username,
-            phone: this.state.phone,
-            city_id:this.state.country,
-            lat:this.state.latitude,
-            lng:this.state.longitude,
-            address:this.state.city_name,
-            avatar: this.state.base64,
-            category_id: null,
-            lang: this.props.lang,
-            token: this.props.user.token,
-            props: this.props,
+            name        : this.state.username,
+            phone       : this.state.phone,
+            city_id     : this.state.country,
+            lat         : this.state.latitude,
+            lng         : this.state.longitude,
+            address     : this.state.city_name,
+            avatar      : this.state.base64,
+            category_id : null,
+            lang        : this.props.lang,
+            token       : this.props.user.token,
+            props       : this.props,
         };
 
         this.setState({ isSubmitted: true });

@@ -135,15 +135,13 @@ class MapLocation extends Component {
                     latitude    : this.state.mapRegion.latitude,
                     longitude   : this.state.mapRegion.longitude,
                 });
-            }
-            else if (pageName === 'editProfile'){
-                console.log(this.state.city, this.state.mapRegion.latitude,  this.state.mapRegion.longitude);
+            } else if (pageName === 'editProfile'){
                 this.props.navigation.navigate('editProfile', {
                     city_name               : this.state.city,
                     latitude                : this.state.mapRegion.latitude,
                     longitude               : this.state.mapRegion.longitude,
                 });
-            } else {
+            } else if (pageName === 'Register') {
                 this.props.navigation.navigate('Register', {
                     city_name   : this.state.city,
                     latitude    : this.state.mapRegion.latitude,

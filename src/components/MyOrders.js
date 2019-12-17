@@ -2,10 +2,8 @@ import React, {Component} from "react";
 import {View, Text, Image, TouchableOpacity, ImageBackground, Animated, Dimensions} from "react-native";
 import {Container, Content, Header, Button, Left, Icon, Body, Title} from 'native-base'
 import styles from '../../assets/style'
-import {DoubleBounce} from 'react-native-loader';
 import {connect} from "react-redux";
 import {NavigationEvents} from "react-navigation";
-import * as Animatable from 'react-native-animatable';
 import COLORS from '../../src/consts/colors'
 import i18n from "../../locale/i18n";
 import {getUserOrders} from '../actions'

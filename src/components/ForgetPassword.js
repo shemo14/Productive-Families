@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground, AsyncStorage,} from "react-native";
-import {Container, Content, Form, Item, Input, Button, Toast, Icon} from 'native-base'
+import {View, Text, Image, TouchableOpacity, ImageBackground,} from "react-native";
+import {Container, Content, Form, Item, Input, Toast, Icon} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
-import {DoubleBounce} from "react-native-loader";
-import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
+import { forgetPass } from "../actions";
+import Spinner from "react-native-loading-spinner-overlay";
 
 
 class ForgetPassword extends Component {
@@ -15,6 +15,7 @@ class ForgetPassword extends Component {
         this.state = {
             phone		        : '',
             phoneStatus         : 0,
+            spinner             : false,
         }
     }
 
@@ -54,15 +55,15 @@ class ForgetPassword extends Component {
     };
 
     onLoginPressed() {
+        this.setState({spinner: true});
         const err = this.validate();
         if (!err){
-            const {phone} = this.state;
-            this.props.userLogin({ phone }, this.props.lang);
+            const { phone } = this.state;
+            this.props.forgetPass({ phone }, this.props.lang, this.props);
+            this.setState({spinner: false});
+        }else {
+            this.setState({spinner: false});
         }
-    }
-
-    onFocus(){
-        this.componentWillMount()
     }
 
     render() {
@@ -70,8 +71,9 @@ class ForgetPassword extends Component {
 
             <Container>
 
-                <NavigationEvents onWillFocus={() => this.onFocus()} />
-
+                <Spinner
+                    visible           = { this.state.spinner }
+                />
                 <Content contentContainerStyle={styles.bgFullWidth}>
                     <ImageBackground source={require('../../assets/images/background.png')} style={[styles.bgFullWidth]}>
                         <View style={[styles.position_R, styles.bgFullWidth, styles.marginVertical_15, styles.SelfCenter, styles.Width_100]}>
@@ -127,4 +129,4 @@ const mapStateToProps = ({ lang }) => {
         lang		: lang.lang
     };
 };
-export default connect(mapStateToProps, {  })(ForgetPassword);
+export default connect(mapStateToProps, { forgetPass })(ForgetPassword);

@@ -65,6 +65,9 @@ const styles = ({
     fontSpacing: {
         letterSpacing       : 1,
     },
+    textSize_11 : {
+        fontSize            : 11,
+    },
     textSize_12 : {
         fontSize            : 12,
     },
@@ -603,7 +606,7 @@ const styles = ({
     },
     noActive : {
         borderWidth           : 1,
-        borderColor           : COLORS.black,
+        borderColor           : COLORS.bold_gray,
         paddingRight          : 20,
         paddingLeft           : 20,
     },
@@ -892,7 +895,7 @@ const styles = ({
         position                : 'absolute',
         zIndex                  : 999,
         left                    : 0,
-        top                     : 40,
+        top                     : 20,
         backgroundColor         : "rgba(0,0,0,0.5)",
     },
     paginationStyle : {
@@ -1015,8 +1018,8 @@ const styles = ({
         borderTopWidth: 2
     },
     scrollImg:{
-        width:17,
-        height:17,
+        width:25,
+        height:25,
     },
     prodImg:{
         width:'100%',

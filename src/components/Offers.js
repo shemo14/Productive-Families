@@ -5,9 +5,11 @@ import styles from '../../assets/style'
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {NavigationEvents} from "react-navigation";
-import * as Animatable from 'react-native-animatable';
 import i18n from "../../locale/i18n";
 const isIOS = Platform.OS === 'ios';
+import { offers, favorite } from '../actions';
+import * as Animatable from "react-native-animatable";
+import StarRating from "react-native-star-rating";
 
 class Offers extends Component {
     constructor(props){
@@ -18,15 +20,8 @@ class Offers extends Component {
         }
     }
 
-    incrementCount(){
-        this.setState({count: this.state.count + 1});
-    }
-
-    DecrementCount(){
-        this.setState({count: this.state.count - 1});
-    }
-
     componentWillMount() {
+        this.props.offers( this.props.lang );
     }
 
     static navigationOptions = () => ({
@@ -45,13 +40,64 @@ class Offers extends Component {
         }
     }
 
+    toggleFavorite (id){
+
+        this.setState({ isFav: ! this.state.isFav, activeType : id });
+        const token =  this.props.user ?  this.props.user.token : null;
+        this.props.favorite( this.props.lang, id  , token );
+
+    }
+
+    _keyExtractor = (item, index) => item.id;
+
+    renderItems = (item, key) => {
+        return(
+            <TouchableOpacity
+                style       = {[styles.position_R , styles.flex_45, styles.marginVertical_15, styles.height_200, styles.marginHorizontal_10]}
+                key         = { key }
+                onPress     = {() => this.props.navigation.navigate('product', { id : item.id })}
+            >
+                <View style={[styles.lightOverlay, styles.Border]}></View>
+                <View style={[styles.bg_White, styles.Border]}>
+                    <View style={[styles.rowGroup, styles.paddingHorizontal_5 , styles.paddingVertical_5]}>
+                        <View style={[styles.flex_100, styles.position_R]}>
+                            <Image style={[styles.Width_100 , styles.height_100, styles.flexCenter]} source={{ uri : item.thumbnail }} resizeMode={'cover'}/>
+                            <Text style={[styles.overlay_black, styles.text_White, styles.textRegular, styles.position_A, styles.top_5, styles.left_0, styles.paddingHorizontal_5]}>
+                                { item.discount } %
+                             </Text>
+                        </View>
+                    </View>
+                    <View style={[styles.overHidden, styles.paddingHorizontal_10, styles.marginVertical_5,]}>
+                        <Text style={[styles.text_gray, styles.textSize_16, styles.textRegular, styles.Width_100, styles.textLeft, styles.width_80]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                            { item.name }
+                        </Text>
+                        <Text style={[styles.text_light_gray, styles.textSize_12, styles.textRegular, styles.Width_100, styles.textLeft]}>
+                            { item.category } - { item.sub_category }
+                        </Text>
+                        <View style={[styles.rowGroup]}>
+                            <Text style={[styles.text_red, styles.textSize_12, styles.textRegular,styles.textLeft, styles.borderText, styles.paddingHorizontal_5]}>
+                                { item.price } {i18n.t('RS')}
+                            </Text>
+                            <TouchableOpacity onPress = {() => this.toggleFavorite(item.id)}>
+                                <Text>
+                                    <Icon style={[styles.text_red, styles.textSize_18]} type="AntDesign" name={this.state.isFav === 1 ? 'heart' : 'hearto'} />
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
+    };
+
+    onFocus(){
+        this.componentWillMount();
+    }
 
     render() {
 
         return (
             <Container>
-
-                { this.renderLoader() }
 
                 <NavigationEvents onWillFocus={() => this.onFocus()} />
 
@@ -71,88 +117,17 @@ class Offers extends Component {
                     { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
-                        <View style={[ styles.rowGroup , styles.marginVertical_15 , styles.paddingHorizontal_20]}>
-                            <TouchableOpacity style={[styles.position_R , styles.flex_45, styles.marginVertical_15, styles.height_200]}>
-                                <View style={[styles.lightOverlay, styles.Border]}></View>
-                                <View style={[styles.bg_White, styles.Border]}>
-                                    <View style={[styles.rowGroup, styles.paddingHorizontal_5 , styles.paddingVertical_5]}>
-                                        <View style={[styles.flex_100, styles.position_R]}>
-                                            <Image style={[styles.Width_100 , styles.height_100, styles.flexCenter]} source={require('../../assets/images/coffee_img.png')} resizeMode={'cover'}/>
-                                            <Text style={[styles.overlay_black, styles.text_White, styles.textRegular, styles.position_A, styles.top_5, styles.left_0, styles.paddingHorizontal_5]}>30%</Text>
-                                        </View>
-                                    </View>
-                                    <View style={[styles.overHidden, styles.paddingHorizontal_10, styles.marginVertical_5]}>
-                                        <Text style={[styles.text_gray, styles.textSize_16, styles.textRegular, styles.Width_100, styles.textLeft]}>
-                                            جزر المالديف
-                                        </Text>
-                                        <Text style={[styles.text_light_gray, styles.textSize_14, styles.textRegular, styles.Width_100, styles.textLeft]}>
-                                            حليب - بندق
-                                        </Text>
-                                        <View style={[styles.rowGroup]}>
-                                            <Text style={[styles.text_red, styles.textSize_14, styles.textRegular,styles.textLeft, styles.borderText]}>
-                                                50 ر.س
-                                            </Text>
-                                            <TouchableOpacity>
-                                                <Text><Icon style={[styles.text_red, styles.textSize_20]} type="AntDesign" name='heart' /></Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[styles.position_R , styles.flex_45, styles.marginVertical_15, styles.height_200]}>
-                                <View style={[styles.lightOverlay, styles.Border]}></View>
-                                <View style={[styles.bg_White, styles.Border]}>
-                                    <View style={[styles.rowGroup, styles.paddingHorizontal_5 , styles.paddingVertical_5]}>
-                                        <View style={[styles.flex_100, styles.position_R]}>
-                                            <Image style={[styles.Width_100 , styles.height_100, styles.flexCenter]} source={require('../../assets/images/coffee_img.png')} resizeMode={'cover'}/>
-                                            <Text style={[styles.overlay_black, styles.text_White, styles.textRegular, styles.position_A, styles.top_5, styles.left_0, styles.paddingHorizontal_5]}>30%</Text>
-                                        </View>
-                                    </View>
-                                    <View style={[styles.overHidden, styles.paddingHorizontal_10, styles.marginVertical_5]}>
-                                        <Text style={[styles.text_gray, styles.textSize_16, styles.textRegular, styles.Width_100, styles.textLeft]}>
-                                            جزر المالديف
-                                        </Text>
-                                        <Text style={[styles.text_light_gray, styles.textSize_14, styles.textRegular, styles.Width_100, styles.textLeft]}>
-                                            حليب - بندق
-                                        </Text>
-                                        <View style={[styles.rowGroup]}>
-                                            <Text style={[styles.text_red, styles.textSize_14, styles.textRegular,styles.textLeft, styles.borderText]}>
-                                                50 ر.س
-                                            </Text>
-                                            <TouchableOpacity>
-                                                <Text><Icon style={[styles.text_red, styles.textSize_22]} type="AntDesign" name='heart' /></Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[styles.position_R , styles.flex_45, styles.marginVertical_15, styles.height_200]}>
-                                <View style={[styles.lightOverlay, styles.Border]}></View>
-                                <View style={[styles.bg_White, styles.Border]}>
-                                    <View style={[styles.rowGroup, styles.paddingHorizontal_5 , styles.paddingVertical_5]}>
-                                        <View style={[styles.flex_100, styles.position_R]}>
-                                            <Image style={[styles.Width_100 , styles.height_100, styles.flexCenter]} source={require('../../assets/images/coffee_img.png')} resizeMode={'cover'}/>
-                                            <Text style={[styles.overlay_black, styles.text_White, styles.textRegular, styles.position_A, styles.top_5, styles.left_0, styles.paddingHorizontal_5]}>30%</Text>
-                                        </View>
-                                    </View>
-                                    <View style={[styles.overHidden, styles.paddingHorizontal_10, styles.marginVertical_5]}>
-                                        <Text style={[styles.text_gray, styles.textSize_16, styles.textRegular, styles.Width_100, styles.textLeft]}>
-                                            جزر المالديف
-                                        </Text>
-                                        <Text style={[styles.text_light_gray, styles.textSize_14, styles.textRegular, styles.Width_100, styles.textLeft]}>
-                                            حليب - بندق
-                                        </Text>
-                                        <View style={[styles.rowGroup]}>
-                                            <Text style={[styles.text_red, styles.textSize_14, styles.textRegular,styles.textLeft, styles.borderText]}>
-                                                50 ر.س
-                                            </Text>
-                                            <TouchableOpacity>
-                                                <Text><Icon style={[styles.text_red, styles.textSize_22]} type="AntDesign" name='heart' /></Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
+                        <View style={[styles.marginVertical_5 , styles.paddingHorizontal_5]}>
+
+                                <FlatList
+                                    data                    = {this.props.offer}
+                                    renderItem              = {({item}) => this.renderItems(item)}
+                                    numColumns              = {2}
+                                    keyExtractor            = {this._keyExtractor}
+                                    // extraData               = {this.props.categoryProviders}
+                                    onEndReachedThreshold   = {isIOS ? .01 : 1}
+                                />
+
                         </View>
 
                     </ImageBackground>
@@ -163,9 +138,10 @@ class Offers extends Component {
     }
 }
 
-const mapStateToProps = ({ lang }) => {
+const mapStateToProps = ({ lang, offers }) => {
     return {
         lang        : lang.lang,
+        offer       : offers.offers
     };
 };
-export default connect(mapStateToProps, { })(Offers);
+export default connect(mapStateToProps, { offers , favorite})(Offers);

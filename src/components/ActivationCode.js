@@ -1,12 +1,14 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground, AsyncStorage,} from "react-native";
-import {Container, Content, Form, Item, Input, Button, Toast, Icon} from 'native-base'
+import {View, Text, Image, TouchableOpacity, ImageBackground,} from "react-native";
+import {Container, Content, Form, Item, Input, Toast, Icon} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
-import {DoubleBounce} from "react-native-loader";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
+import { activeCode, profile, userLogin } from "../actions";
+import Spinner from "react-native-loading-spinner-overlay";
+import activationCode from "../reducers/ActivationCodeReducer";
 
 
 class ActivationCode extends Component {
@@ -14,8 +16,19 @@ class ActivationCode extends Component {
         super(props);
         this.state = {
             code		        : '',
-            codeStatus          : 0,
+            userId              : null,
+            spinner             : false,
+            type				: 0,
+            activeKey           : 0
         }
+    }
+
+    componentWillMount() {
+
+        const code  = this.props.navigation.state.params.code;
+        alert(code);
+        this.setState({ userId: null });
+
     }
 
     activeInput(type){
@@ -55,18 +68,82 @@ class ActivationCode extends Component {
     };
 
     onLoginPressed() {
+
+        this.setState({ spinner: true });
+        const { password, phone, deviceId } = this.props.navigation.state.params;
+
         const err = this.validate();
         if (!err){
-            const {code} = this.state;
-            this.props.userLogin({ code }, this.props.lang);
+            const {code , type} = this.state;
+            const activeCode  = this.props.navigation.state.params.code;
+            if (activeCode == code){
+                this.props.activeCode({ code, password, phone, deviceId }, this.props , this.props.lang);
+            } else {
+                Toast.show({
+                    text		: i18n.t('notInvalidCode'),
+                    type		: "danger",
+                    duration	: 3000,
+                    textStyle     : {
+                        color           : "white",
+                        fontFamily      : 'cairo',
+                        textAlign       : 'center',
+                    }
+                });
+            }
+
         }
+
+    }
+
+    componentWillReceiveProps(newProps){
+
+        console.log('props auth ...PPP', newProps, newProps.activeKey);
+
+        if (this.state.activeKey == 0){
+            const { password, phone, deviceId } = this.props.navigation.state.params;
+            this.props.userLogin({ phone, password, deviceId }, this.props.lang);
+
+            this.setState({ activeKey: newProps.activeKey })
+        }
+
+        if (newProps.auth !== null && newProps.auth.key === 1 && this.state.activeKey != 0){
+
+            if (this.state.userId === null){
+                this.setState({ userId: newProps.auth.data.id });
+                this.props.profile(newProps.auth.data.token);
+            }
+
+            this.props.navigation.navigate('drawerNavigator');
+
+        }
+
+        if (newProps.auth !== null) {
+            this.setState({spinner: false});
+            Toast.show({
+                text		: newProps.auth.msg,
+                type		: newProps.auth.key === 1 ? "success" : "danger",
+                duration	: 3000,
+                textStyle     : {
+                    color           : "white",
+                    fontFamily      : 'cairo',
+                    textAlign       : 'center',
+                }
+            });
+        }
+
+    }
+
+    onFocus(){
+        this.componentWillMount();
     }
 
     render() {
         return (
 
             <Container>
+
                 <NavigationEvents onWillFocus={() => this.onFocus()} />
+
                 <Content contentContainerStyle={styles.bgFullWidth}>
                     <ImageBackground source={require('../../assets/images/background.png')} style={[styles.bgFullWidth]}>
                         <View style={[styles.position_R, styles.bgFullWidth, styles.marginVertical_15, styles.SelfCenter, styles.Width_100]}>
@@ -80,7 +157,7 @@ class ActivationCode extends Component {
                                 <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
                                     <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
                                         <Input
-                                            placeholder             = {i18n.translate('actcode')}
+                                            placeholder             = {i18n.t('actcode')}
                                             style                   = {[ styles.input , styles.height_50 , (this.state.codeStatus === 1 ? styles.Active : styles.noActive )]}
                                             onChangeText            = {(code) => this.setState({code})}
                                             onBlur                  = {() => this.unActiveInput('code')}
@@ -117,9 +194,13 @@ class ActivationCode extends Component {
 }
 
 
-const mapStateToProps = ({ lang }) => {
+const mapStateToProps = ({ lang, profile, auth, activationCode }) => {
     return {
-        lang		: lang.lang
+        lang		: lang.lang,
+        auth        : auth.user,
+        user        : profile.user,
+        activeKey   : activationCode.activeKey,
+        activeUser  : activationCode.user
     };
 };
-export default connect(mapStateToProps, {  })(ActivationCode);
+export default connect(mapStateToProps, { activeCode, profile, userLogin })(ActivationCode);

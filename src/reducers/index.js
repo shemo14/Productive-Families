@@ -24,6 +24,16 @@ import cartProducts from './CartProductsReducer';
 import notifications from './NotificationsReducer';
 import userOrders from './UserOrdersReducer';
 import orderDetails from './OrderDetailsReducer';
+import register from './RegisterReducer';
+import activeCode from './ActivationCodeReducer';
+import forgetPassword from './ForgetPasswordReducer';
+import newPassword from './NewPasswordReducer';
+import offers from './OffersReducer';
+import activationCode from './ActivationCodeReducer';
+import homeProvider from './HomeProviderReducer';
+import homeDelegate from './HomeDelegateReducer';
+import addProduct from './AddProductReducer';
+import subCate from './SubCategoriesReducer';
 
 export default combineReducers({
     lang,
@@ -51,5 +61,15 @@ export default combineReducers({
     notifications,
     userOrders,
     orderDetails,
+    register,
+    activeCode,
+    forgetPassword,
+    newPassword,
+    offers,
+    activationCode,
+    homeProvider,
+    homeDelegate,
+    addProduct,
+    subCate
 });
 

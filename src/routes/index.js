@@ -29,7 +29,7 @@ import Offers                   from "../components/Offers";
 import Favorite                 from "../components/Favorite";
 import OpenCamera               from "../components/OpenCamera";
 import EditShop                 from "../components/EditShop";
-import AddProducer              from "../components/AddProducer";
+import AddProduct               from "../components/AddProduct";
 import SearchHome               from "../components/SearchHome";
 import DrawerCustomization      from "./DrawerCustomization";
 
@@ -72,9 +72,14 @@ const drawerNavigator = createDrawerNavigator({
 const appStack =  createStackNavigator({
 
     // Sh3wza
-
     drawerNavigator: {
         screen: drawerNavigator,
+        navigationOptions: {
+            header: null
+        }
+    },
+    AddProduct : {
+        screen: AddProduct,
         navigationOptions: {
             header: null
         }
@@ -87,12 +92,6 @@ const appStack =  createStackNavigator({
     },
     SearchHome: {
         screen: SearchHome,
-        navigationOptions: {
-            header: null
-        }
-    },
-    AddProducer : {
-        screen: AddProducer,
         navigationOptions: {
             header: null
         }
@@ -224,8 +223,8 @@ const appStack =  createStackNavigator({
 });
 
 const authStack = createStackNavigator({
-    InitScreen: {
-        screen: InitScreen,
+    Login: {
+        screen: Login,
         navigationOptions: {
             header: null
         }
@@ -254,18 +253,6 @@ const authStack = createStackNavigator({
             header: null
         }
     },
-    Login: {
-        screen: Login,
-        navigationOptions: {
-            header: null
-        }
-    },
-    initScreen: {
-        screen: InitScreen,
-        navigationOptions: {
-            header: null
-        }
-    },
     Terms: {
         screen: Terms,
         navigationOptions: {
@@ -287,6 +274,12 @@ const authStack = createStackNavigator({
 });
 
 const AppNavigator = createSwitchNavigator({
+    InitScreen: {
+        screen: InitScreen,
+        navigationOptions: {
+            header: null
+        }
+    },
     app     : appStack,
     auth    : authStack,
 });
