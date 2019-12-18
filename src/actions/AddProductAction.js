@@ -16,12 +16,16 @@ export const addProduct = (data, props, lang, token) => {
                 price			        : data.pricePro,
                 discount		        : data.discount,
                 description_ar		    : data.info,
-                images			        : data.image,
+                images			        : data.base64,
                 lang
             }
         }).then(response => {
 
             dispatch({type: 'addProduct', payload: response.data});
+
+            if (response.data.key === 1){
+                props.navigation.navigate('drawerNavigator');
+            }
 
             Toast.show({
                 text        	: response.data.msg,

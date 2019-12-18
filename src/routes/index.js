@@ -74,6 +74,7 @@ const drawerNavigator = createDrawerNavigator({
 const appStack =  createStackNavigator({
 
     // Sh3wza
+
     drawerNavigator: {
         screen: drawerNavigator,
         navigationOptions: {

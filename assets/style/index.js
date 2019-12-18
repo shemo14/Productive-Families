@@ -746,6 +746,12 @@ const styles = ({
         width               : 50,
         height              : 40
     },
+    rotatTouch : {
+        transform           : [{ rotate: '50deg' }],
+    },
+    rotatIcon : {
+        transform           : [{ rotate: '-50deg' }],
+    },
 
     // Style position
 
@@ -1018,8 +1024,8 @@ const styles = ({
         borderTopWidth: 2
     },
     scrollImg:{
-        width:25,
-        height:25,
+        width:35,
+        height:35,
     },
     prodImg:{
         width:'100%',

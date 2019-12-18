@@ -34,6 +34,7 @@ import homeProvider from './HomeProviderReducer';
 import homeDelegate from './HomeDelegateReducer';
 import addProduct from './AddProductReducer';
 import subCate from './SubCategoriesReducer';
+import deletProduct from './DeletProductReducer';
 
 export default combineReducers({
     lang,
@@ -70,6 +71,7 @@ export default combineReducers({
     homeProvider,
     homeDelegate,
     addProduct,
-    subCate
+    subCate,
+    deletProduct
 });
 

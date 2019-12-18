@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, ImageBackground , TouchableOpacity , KeyboardAvoidingView, ImageEditor, ImageStore } from "react-native";
+import {View, Text, Image, ImageBackground , TouchableOpacity , KeyboardAvoidingView, ImageEditor, ImageStore, FlatList } from "react-native";
 import {Container, Content, Icon, Header, Left, Button, Body, Title, Form, Item, Input, Textarea, Picker, Toast} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
@@ -7,6 +7,7 @@ import * as Animatable from 'react-native-animatable';
 import {connect} from "react-redux";
 import {profile , addProduct, subCate} from '../actions';
 import {NavigationEvents} from "react-navigation";
+import Spinner from "react-native-loading-spinner-overlay";
 
 import {ImageBrowser,CameraBrowser} from 'expo-multiple-imagepicker';
 import * as Permissions from 'expo-permissions';
@@ -25,9 +26,10 @@ class AddProduct extends Component {
             kindPro	            : null,
             imageBrowserOpen    : false,
             cameraBrowserOpen   : false,
-            photos: [],
-            imageId: null,
-            refreshed: false,
+            photos              : [],
+            imageId             : null,
+            refreshed           : false,
+            spinner             : false,
         }
     }
 
@@ -54,10 +56,10 @@ class AddProduct extends Component {
             isError     = true;
             msg         = i18n.t('kindpro');
         }
-        // else if (this.state.kindPro === null){
-        //     isError     = true;
-        //     msg         = i18n.t('infoimage');
-        // }
+        else if (this.state.photos.length <= 0){
+            isError     = true;
+            msg         = i18n.t('infoimage');
+        }
 
         if (msg !== ''){
             Toast.show({
@@ -87,8 +89,8 @@ class AddProduct extends Component {
 
         if (!err){
 
-            const { namePro, pricePro, discount, info,kindPro } = this.state;
-            const data = { namePro, pricePro, discount, info,kindPro };
+            const { namePro, pricePro, discount, info, kindPro } = this.state;
+            const data = { namePro, pricePro, discount, info, kindPro , base64};
 
             this.props.addProduct(data, this.props, this.props.lang, this.props.user.token);
             this.setState({ spinner: false });
@@ -102,16 +104,23 @@ class AddProduct extends Component {
         }
     }
 
-    renderItems = (item, imageId) => {
+    imgItems = (item, imageId) => {
         return(
-            <View style={{ margin: 2, flex: 1 }}>
-                <TouchableOpacity onPress={() => this.deleteImage(item)} style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)', position: 'absolute', zIndex: 999, height: imageId === item.md5 ? 100 : 0, width: '100%', alignItems: 'center', justifyContent: 'center', borderRadius: 3 }}>
-                    <Icon type={'EvilIcons'} name={'close'} style={{ fontSize: imageId === item.md5 ? 35 : 0, color: '#fff', textAlign: 'center', width: 30, opacity: 1 }} />
+            <View style={[ styles.flex_45, styles.position_R , styles.marginHorizontal_5, styles.marginVertical_10]}>
+                <View style={[styles.lightOverlay, styles.Border , {top:-5 , left:-5}]}/>
+                <TouchableOpacity
+                    onPress     = {() => this.deleteImage(item)}
+                    style       = {[styles.position_A , styles.bg_overlay, styles.Width_100, styles.heightFull, styles.flexCenter]}
+                >
+                    <Icon type={'EvilIcons'} name={'close'} style={[styles.text_red, styles.textSize_20]} />
                 </TouchableOpacity>
-                <TouchableOpacity style={{ height: 100 }} onPress={() => this.selectImage(item.md5)}>
+                <TouchableOpacity
+                    style       = {[ styles.height_60 , styles.Width_100,  styles.Radius_5]}
+                    onPress     = {() => this.selectImage(item.md5)}
+                >
                     <Image
-                        style={{ height: 100, width: '100%', borderRadius: 3 }}
-                        source={{uri: item.file}}
+                        style   = {[ styles.height_60 , styles.Width_100 , styles.Radius_5]}
+                        source  = {{uri: item.file}}
                     />
                 </TouchableOpacity>
             </View>
@@ -121,11 +130,8 @@ class AddProduct extends Component {
 
     deleteImage(item){
         let index = this.state.photos.indexOf(item);
-        console.log('this is item ....', index);
-
         let photos = this.state.photos;
         photos.splice(index, 1);
-        console.log('this is photos ....', photos);
         this.setState({ photos, refreshed: !this.state.refreshed, imageId: null })
     }
 
@@ -179,14 +185,17 @@ class AddProduct extends Component {
 
     render() {
         if (this.state.imageBrowserOpen) {
-            return(<ImageBrowser base64={true} max={10} callback={this.imageBrowserCallback}/>);
+            return(<ImageBrowser base64={true} max={5} callback={this.imageBrowserCallback}/>);
         }else if (this.state.cameraBrowserOpen) {
-            return(<CameraBrowser base64={true} max={10} callback={this.imageBrowserCallback}/>);
+            return(<CameraBrowser base64={true} max={5} callback={this.imageBrowserCallback}/>);
         }
 
         return (
             <Container>
 
+                <Spinner
+                    visible           = { this.state.spinner }
+                />
                 <NavigationEvents onWillFocus={() => this.onFocus()} />
 
                 <Header style={styles.headerView}>
@@ -204,9 +213,9 @@ class AddProduct extends Component {
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
-                        <View style={[styles.rowGroup, styles.paddingHorizontal_10, styles.marginVertical_10]}>
-                            <View style={[styles.position_R, styles.marginHorizontal_10, styles.flex_45]}>
-                                <View style={[styles.lightOverlay, styles.Border , {top:10 , left:10}]}/>
+                        <View style={[styles.rowGroup, styles.marginVertical_10]}>
+                            <View style={[styles.position_R, styles.flex_45,]}>
+                                <View style={[styles.lightOverlay, styles.Border , styles.height_150 , {top:10 , left:10}]}/>
                                 <View style={[styles.position_R, styles.Width_100, styles.overHidden, styles.bg_White, styles.height_150]}>
                                     <View style={[styles.lightOverlay, styles.Border, {top:0 , left:0}]}/>
                                     <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
@@ -218,8 +227,16 @@ class AddProduct extends Component {
                                     </Animatable.View>
                                 </View>
                             </View>
-                            <View style={[styles.flex_45]}>
-
+                            <View style={[styles.flex_45, {left : -10}]}>
+                                <View style={[ styles.rowGroup ]}>
+                                    <FlatList
+                                        data            = {this.state.photos}
+                                        renderItem      = {({item}) => this.imgItems(item, this.state.imageId)}
+                                        numColumns      = {2}
+                                        keyExtractor    = {this._keyExtractor}
+                                        extraData       = {this.state.refreshed}
+                                    />
+                                </View>
                             </View>
                         </View>
 
@@ -267,6 +284,7 @@ class AddProduct extends Component {
                                             placeholder             = {i18n.t('monyproducer')}
                                             style                   = {[ styles.input , styles.height_50 , styles.borderBlack, styles.paddingHorizontal_20]}
                                             onChangeText            = {(pricePro) => this.setState({pricePro})}
+                                            keyboardType            = {'number-pad'}
                                         />
                                     </Item>
                                 </View>
@@ -277,6 +295,7 @@ class AddProduct extends Component {
                                             placeholder             = {i18n.t('sallproducer')}
                                             style                   = {[ styles.input , styles.height_50 , styles.borderBlack, styles.paddingHorizontal_20]}
                                             onChangeText            = {(discount) => this.setState({discount})}
+                                            keyboardType            = {'number-pad'}
                                         />
                                     </Item>
                                 </View>

@@ -10,6 +10,7 @@ import {sliderHome, categoryHome, searchHome, homeProvider , homeDelegate} from 
 import i18n from "../../locale/i18n";
 import StarRating from "react-native-star-rating";
 import COLORS from "../consts/colors";
+import Spinner from "react-native-loading-spinner-overlay";
 
 const isIOS = Platform.OS === 'ios';
 
@@ -23,11 +24,13 @@ class Home extends Component {
             refreshed           : false,
             active              : true,
             loader              : true,
-            status              : 1
+            status              : 1,
+            spinner             : true,
         }
     }
 
     componentWillMount() {
+
         if (this.props.auth === null || this.props.auth.data.type === 'user') {
             this.props.sliderHome(this.props.lang);
             this.props.categoryHome(this.props.lang);
@@ -36,6 +39,10 @@ class Home extends Component {
         } else if (this.props.auth.data.type === 'delegate') {
             this.props.homeDelegate(this.props.lang, this.state.status, this.props.auth.data.token);
         }
+
+
+        this.setState({ spinner: false });
+
     }
 
 
@@ -170,6 +177,9 @@ class Home extends Component {
         return (
             <Container>
 
+                <Spinner
+                    visible           = { this.state.spinner }
+                />
 				<NavigationEvents onWillFocus={() => this.onFocus()} />
 
                 <Header style={styles.headerView}>
@@ -280,12 +290,18 @@ class Home extends Component {
                             this.props.user != null && this.props.user.type === 'provider' ?
                                 <View style={[styles.homeProvider]}>
 
-                                    <View style={[styles.viewBlock, styles.bg_White , styles.borderGray, styles.Width_90]}>
-                                        <Image style={[styles.Width_90, styles.swiper]} source={{ uri : provider_info.avatar }} resizeMode={'cover'}/>
+                                    <View style={[styles.viewBlock, styles.bg_White , styles.borderGray, styles.Width_90, styles.position_R]}>
+                                        <TouchableOpacity
+                                            style       = {[styles.width_40 , styles.height_40 , styles.flexCenter, styles.overlay_black, styles.position_A, styles.top_10, styles.right_0]}
+                                            onPress     = {() => this.props.navigation.navigate('EditShop', {data : provider_info})}
+                                        >
+                                            <Icon style={[styles.text_White, styles.textSize_18]} type="AntDesign" name='edit' />
+                                        </TouchableOpacity>
+                                        <Image style={[styles.Width_100, styles.swiper]} source={{ uri : provider_info.avatar }} resizeMode={'cover'}/>
                                         <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
                                             <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                                <Text style={[styles.textBold, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
-                                                    {provider_info.details}
+                                                <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                    {provider_info.name}
                                                 </Text>
                                                 <View style={{width:70}}>
                                                     <StarRating
@@ -297,8 +313,8 @@ class Home extends Component {
                                                         starStyle       = {styles.starStyle}
                                                     />
                                                 </View>
-                                                <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
-                                                    {provider_info.name}
+                                                <Text style={[styles.textBold, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                    {provider_info.details}
                                                 </Text>
                                                 <View style={[styles.locationView]}>
                                                     <Icon style={[styles.text_White , styles.textSize_12 ,{marginRight:5}]} type="Feather" name='map-pin' />
@@ -361,7 +377,7 @@ class Home extends Component {
                                             <TouchableOpacity
                                                 onPress     = {() => this.props.navigation.navigate('product', { id : order.id })}
                                                 key         = { i }
-                                                style       = {[styles.position_R, styles.flexCenter, styles.Width_90, styles.marginVertical_25]}
+                                                style       = {[styles.position_R, styles.flexCenter, styles.Width_90, styles.marginVertical_10]}
                                             >
                                                 <View style={[styles.lightOverlay, styles.Border]}></View>
                                                 <View style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
@@ -398,13 +414,24 @@ class Home extends Component {
 
                     </ImageBackground>
                 </Content>
+                {
+                    this.props.user != null && this.props.user.type === 'provider' ?
+                        <TouchableOpacity
+                            style       = {[styles.rotatTouch ,styles.width_50 , styles.height_50 , styles.flexCenter, styles.bg_red, styles.position_A, styles.bottom_30]}
+                            onPress     = {() => this.props.navigation.navigate('AddProduct')}
+                            >
+                            <Icon style={[styles.text_White, styles.textSize_22, styles.rotatIcon]} type="AntDesign" name='plus' />
+                        </TouchableOpacity>
+                        :
+                        <View/>
+                }
             </Container>
 
         );
     }
 }
 
-const mapStateToProps = ({ lang, home, searchHome, categoryHome, homeProvider, profile , homeDelegate, auth}) => {
+const mapStateToProps = ({ lang, home, categoryHome, homeProvider, profile , homeDelegate, auth}) => {
     return {
         lang                : lang.lang,
         slider              : home.slider,
