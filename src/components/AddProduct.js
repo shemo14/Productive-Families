@@ -19,17 +19,17 @@ class AddProduct extends Component {
         super(props);
 
         this.state={
-            namePro		        : '',
-            pricePro            : '',
-            discount            : '',
-            info	            : '',
-            kindPro	            : null,
-            imageBrowserOpen    : false,
-            cameraBrowserOpen   : false,
-            photos              : [],
-            imageId             : null,
-            refreshed           : false,
-            spinner             : false,
+            namePro		            : '',
+            pricePro                : '',
+            discount                : '',
+            info	                : '',
+            kindPro	                : null,
+            imageBrowserOpen        : false,
+            cameraBrowserOpen       : false,
+            photos                  : [],
+            imageId                 : null,
+            refreshed               : false,
+            spinner                 : false,
         }
     }
 
@@ -77,8 +77,10 @@ class AddProduct extends Component {
     };
 
     async componentDidMount() {
+
         await Permissions.askAsync(Permissions.CAMERA);
         await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
     }
 
     onAddproduct() {
@@ -95,13 +97,33 @@ class AddProduct extends Component {
             this.props.addProduct(data, this.props, this.props.lang, this.props.user.token);
             this.setState({ spinner: false });
 
-            console.log('data', data);
+        }else {
+
+            this.setState({ spinner: false });
+
+        }
+    }
+
+    onChangeProudct(){
+
+        this.setState({ spinner: true });
+
+        const err = this.validate();
+
+        if (!err){
+
+            const { namePro, pricePro, discount, info, kindPro } = this.state;
+            const data = { namePro, pricePro, discount, info, kindPro , base64};
+
+            this.props.updateProduct(data, this.props, this.props.lang, this.props.user.token);
+            this.setState({ spinner: false });
 
         }else {
 
             this.setState({ spinner: false });
 
         }
+
     }
 
     imgItems = (item, imageId) => {
@@ -177,6 +199,19 @@ class AddProduct extends Component {
 
         this.props.subCate( this.props.lang, this.props.user.token);
 
+        if(this.props.navigation.state.params !== undefined){
+
+            this.setState({
+                namePro             : this.props.navigation.state.params.data.name,
+                pricePro            : this.props.navigation.state.params.data.price,
+                discount            : this.props.navigation.state.params.data.discount_price,
+                info                : this.props.navigation.state.params.data.description,
+                kindPro             : this.props.navigation.state.params.data.category_id,
+                photos              : this.props.navigation.state.params.data.images,
+            });
+
+        }
+
     }
 
     onFocus(){
@@ -249,6 +284,7 @@ class AddProduct extends Component {
                                             placeholder             = {i18n.t('nameproducer')}
                                             style                   = {[ styles.input , styles.height_50 , styles.borderBlack, styles.paddingHorizontal_20]}
                                             onChangeText            = {(namePro) => this.setState({namePro})}
+                                            value                   = {this.state.namePro}
                                         />
                                     </Item>
                                 </View>
@@ -285,6 +321,7 @@ class AddProduct extends Component {
                                             style                   = {[ styles.input , styles.height_50 , styles.borderBlack, styles.paddingHorizontal_20]}
                                             onChangeText            = {(pricePro) => this.setState({pricePro})}
                                             keyboardType            = {'number-pad'}
+                                            value                   = {this.state.pricePro}
                                         />
                                     </Item>
                                 </View>
@@ -296,6 +333,7 @@ class AddProduct extends Component {
                                             style                   = {[ styles.input , styles.height_50 , styles.borderBlack, styles.paddingHorizontal_20]}
                                             onChangeText            = {(discount) => this.setState({discount})}
                                             keyboardType            = {'number-pad'}
+                                            value                   = {this.state.discount}
                                         />
                                     </Item>
                                 </View>
@@ -308,20 +346,33 @@ class AddProduct extends Component {
                                             placeholder                     = {i18n.t('massmtger')}
                                             style                           = {[ styles.textArea , styles.borderBlack, styles.paddingHorizontal_20]}
                                             onChangeText                    = {(info) => this.setState({info})}
+                                            value                           = {this.state.info}
                                         />
                                     </Item>
                                 </View>
 
                             </Form>
 
-                            <TouchableOpacity
-                                onPress         = {() => this.onAddproduct()}
-                                style           = {[styles.cartBtn , styles.SelfCenter , {marginBottom:20}]}
-                            >
-                                <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft ]} >
-                                    {i18n.t('confirm')}
-                                </Text>
-                            </TouchableOpacity>
+                            {
+                                this.props.navigation.state.params !== undefined ?
+                                    <TouchableOpacity
+                                        onPress         = {() => this.onChangeProudct()}
+                                        style           = {[styles.cartBtn , styles.SelfCenter , {marginBottom:20}]}
+                                    >
+                                        <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft ]} >
+                                            {i18n.t('save')}
+                                        </Text>
+                                    </TouchableOpacity>
+                                    :
+                                    <TouchableOpacity
+                                        onPress         = {() => this.onAddproduct()}
+                                        style           = {[styles.cartBtn , styles.SelfCenter , {marginBottom:20}]}
+                                    >
+                                        <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft ]} >
+                                            {i18n.t('confirm')}
+                                        </Text>
+                                    </TouchableOpacity>
+                            }
 
                         </KeyboardAvoidingView>
                     </ImageBackground>

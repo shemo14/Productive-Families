@@ -33,3 +33,4 @@ export * from './CancelOrderAction';
 export * from './OrderStoreAction';
 export * from './OrderAction';
 export * from './DeletProductAction';
+export * from './UpdateProductsAction';

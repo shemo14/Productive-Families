@@ -22,9 +22,9 @@ export const updateProfile = (data) => {
     return (dispatch) => {
         axios({
             url: CONST.url + 'update-profile',
-            method: 'POST',
-            headers: {Authorization: data.token },
-            data: {
+            method      : 'POST',
+            headers     : {Authorization: data.token },
+            data        : {
                 name                : data.name,
                 phone               : data.phone,
                 city_id             : data.city_id,
@@ -36,6 +36,7 @@ export const updateProfile = (data) => {
                 provider_details    : data.provider_details,
                 lang                : data.lang,
             }}).then(response => {
+
             if (response.data.key == 1) {
 
                 data.props.navigation.navigate('profile');
@@ -43,6 +44,7 @@ export const updateProfile = (data) => {
                 dispatch({type: 'update_profile', data:response.data.data});
 
             }
+
             Toast.show({
                 text        : response.data.msg,
                 type        : response.data.key == 1 ? "success" : "danger",
@@ -53,6 +55,7 @@ export const updateProfile = (data) => {
                     textAlign       : 'center'
                 }
             });
+
         })
     }
 }

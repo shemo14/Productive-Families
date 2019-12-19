@@ -939,7 +939,7 @@ const styles = ({
 
     clickLogin : {
         bottom                  : 100,
-        right                   : -55,
+        right                   : -57,
         transform               : [{ rotate: '90deg' }] ,
     },
     drawerItemStyle: {
@@ -1024,8 +1024,8 @@ const styles = ({
         borderTopWidth: 2
     },
     scrollImg:{
-        width:35,
-        height:35,
+        width:25,
+        height:25,
     },
     prodImg:{
         width:'100%',
