@@ -2,7 +2,7 @@ import axios from "axios";
 import CONST from "../consts";
 import {Toast} from "native-base";
 
-export const deletProduct = ( lang , product_id, token ) => {
+export const deletProduct = ( lang , product_id, token, props ) => {
     return (dispatch) => {
         axios({
             url         : CONST.url + 'products/delete',
@@ -11,7 +11,7 @@ export const deletProduct = ( lang , product_id, token ) => {
             data        : { lang , product_id }
         }).then(response => {
 
-            dispatch({type: 'deletProduct', payload : response.data.data});
+            dispatch({type: 'deletProduct', payload : response.data});
 
             if (response.data.key === 1){
                 props.navigation.navigate('drawerNavigator');

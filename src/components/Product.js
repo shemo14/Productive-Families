@@ -41,7 +41,7 @@ class Product extends Component {
     };
 
     deletProduct(){
-        this.props.deletProduct( this.props.lang , this.props.navigation.state.params.id, this.props.user.token);
+        this.props.deletProduct( this.props.lang , this.props.navigation.state.params.id, this.props.user.token, this.props);
     }
 
     _toggleSubview() {
@@ -54,10 +54,10 @@ class Product extends Component {
         Animated.spring(
             this.state.bounceValue,
             {
-                toValue: toValue,
-                velocity: 3,
-                tension: 2,
-                friction: 8,
+                toValue     : toValue,
+                velocity    : 3,
+                tension     : 2,
+                friction    : 8,
             }
         ).start();
 
@@ -72,7 +72,7 @@ class Product extends Component {
             const result = await Share.share({
                 message:
                     'Chifz App',
-            })
+            });
 
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {
@@ -120,6 +120,10 @@ class Product extends Component {
         const token =  this.props.user ?  this.props.user.token : null;
         this.props.addCart( this.props.lang, id  , token, this.state.value );
 
+    }
+
+    editProdect(){
+        this.props.navigation.navigate('AddProduct', {data : this.props.products});
     }
 
     addComment(id){
@@ -247,7 +251,7 @@ class Product extends Component {
                                                 this.props.user == null || this.props.user.type === 'provider' ?
                                                     <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent, styles.top_5, styles.marginVertical_10]}>
                                                         <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                                            <TouchableOpacity onPress = {() => this.editProdect(this.props.products.id)}>
+                                                            <TouchableOpacity onPress = {() => this.editProdect()}>
                                                                 <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='edit' />
                                                             </TouchableOpacity>
                                                         </View>
@@ -325,6 +329,7 @@ class Product extends Component {
                                                 :
                                                 <View/>
                                         }
+
                                     </View>
                                     <View style={[styles.rowGroup , styles.marginVertical_15]}>
                                         <View style={[styles.rowGroup]}>
@@ -346,52 +351,56 @@ class Product extends Component {
                                 </View>
                             </View>
                         </View>
-
                     </ImageBackground>
                 </Content>
 
-                <Animated.View style={[styles.subView, styles.SelfCenter, styles.Width_90, {transform: [{translateY: this.state.bounceValue}]}]}>
-                    <View style={[styles.lightOverlay, styles.Border]}/>
-                    <TouchableOpacity  onPress={()=> {this._toggleSubview()}} style={[styles.bg_White , styles.Border, styles.Width_100]}>
-                        <View style={[styles.rowGroup,]}>
-                            <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft, styles.marginVertical_10, styles.paddingHorizontal_10]}>
-                                {i18n.t('comments')}
-                                <Text style={[styles.textRegular, styles.text_bold_gray,styles.textSize_14]}>
-                                    ( { this.props.products.comments_count } )
-                                </Text>
-                            </Text>
-                            <TouchableOpacity onPress={()=> {this._toggleSubview()}} style={[styles.flexCenter, styles.width_40, styles.height_40, styles.Radius_30, styles.bg_orange, {top:-10, zIndex : 99}]}>
-                                <Icon type={'AntDesign'} name={this.state.isHidden ? 'up' : 'down'} style={[ styles.text_White , styles.textSize_16, ]} />
-                            </TouchableOpacity>
-
-                            {
-                                this.props.user ?
-                                    <TouchableOpacity onPress={() => this.toggleModal()} style={[styles.rowGroup]}>
-                                        <Text style={[styles.textRegular, styles.text_orange,styles.textSize_14 , {marginRight:5}]}>
-                                            {i18n.t('addComment')}
+                {
+                    this.props.comments.length !== 0 ?
+                        <Animated.View style={[styles.subView, styles.SelfCenter, styles.Width_90, {transform: [{translateY: this.state.bounceValue}]}]}>
+                            <View style={[styles.lightOverlay, styles.Border]}/>
+                            <TouchableOpacity  onPress={()=> {this._toggleSubview()}} style={[styles.bg_White , styles.Border, styles.Width_100]}>
+                                <View style={[styles.rowGroup,]}>
+                                    <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft, styles.marginVertical_10, styles.paddingHorizontal_10]}>
+                                        {i18n.t('comments')}
+                                        <Text style={[styles.textRegular, styles.text_bold_gray,styles.textSize_14]}>
+                                            ( { this.props.products.comments_count } )
                                         </Text>
-                                        <View style={[styles.touchPlus]}>
-                                            <Icon type={'Entypo'} name={'plus'} style={[styles.plus , styles.textSize_16]} />
-                                        </View>
+                                    </Text>
+                                    <TouchableOpacity onPress={()=> {this._toggleSubview()}} style={[styles.flexCenter, styles.width_40, styles.height_40, styles.Radius_30, styles.bg_orange, {top:-10, zIndex : 99}]}>
+                                        <Icon type={'AntDesign'} name={this.state.isHidden ? 'up' : 'down'} style={[ styles.text_White , styles.textSize_16, ]} />
                                     </TouchableOpacity>
-                                    :
-                                    <View/>
-                            }
 
-                        </View>
-                        <ScrollView showsHorizontalScrollIndicator={false}>
-                            <TouchableOpacity onPress={()=> {this._toggleSubview()}}>
-                                <FlatList
-                                    data            = {this.props.comments}
-                                    renderItem      = {({item}) => this.renderItems(item)}
-                                    numColumns      = {1}
-                                    keyExtractor    = {this._keyExtractor}
-                                />
+                                    {
+                                        this.props.user ?
+                                            <TouchableOpacity onPress={() => this.toggleModal()} style={[styles.rowGroup]}>
+                                                <Text style={[styles.textRegular, styles.text_orange,styles.textSize_14 , {marginRight:5}]}>
+                                                    {i18n.t('addComment')}
+                                                </Text>
+                                                <View style={[styles.touchPlus]}>
+                                                    <Icon type={'Entypo'} name={'plus'} style={[styles.plus , styles.textSize_16]} />
+                                                </View>
+                                            </TouchableOpacity>
+                                            :
+                                            <View/>
+                                    }
+
+                                </View>
+                                <ScrollView showsHorizontalScrollIndicator={false}>
+                                    <TouchableOpacity onPress={()=> {this._toggleSubview()}}>
+                                        <FlatList
+                                            data            = {this.props.comments}
+                                            renderItem      = {({item}) => this.renderItems(item)}
+                                            numColumns      = {1}
+                                            keyExtractor    = {this._keyExtractor}
+                                        />
+                                    </TouchableOpacity>
+                                </ScrollView>
                             </TouchableOpacity>
-                        </ScrollView>
-                    </TouchableOpacity>
 
-                </Animated.View>
+                        </Animated.View>
+                        :
+                        <View/>
+                }
 
                 <Modal style={{}} isVisible={this.state.isModalVisible} onBackdropPress={() => this.toggleModal()}>
                     <View style={[styles.commentModal,{padding:15}]}>
@@ -420,7 +429,6 @@ class Product extends Component {
                                         :
                                         <View/>
                                 }
-
                             </View>
 
                             <View style={styles.counterParent}>

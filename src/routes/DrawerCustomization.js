@@ -42,9 +42,9 @@ class DrawerCustomization extends Component {
             <Container>
                 <Content contentContainerStyle={styles.bgFullWidth}>
 
-                    <View style={[styles.bg_light_oran, styles.width_40, styles.heightFull, styles.position_A, styles.bg_before, styles.zIndexDown]}></View>
+                    <View style={[styles.bg_light_oran, styles.width_40, styles.heightFull, styles.position_A, styles.bg_before, styles.zIndexDown]}/>
 
-                    <Image style={[styles.imageMask,]} source={require('../../assets/images/MaskGro.png')}/>
+                    <Image style={[styles.imageMask]} source={require('../../assets/images/MaskGro.png')}/>
 
                     <TouchableOpacity
                         style       = {[styles.width_40 , styles.height_40 , styles.bg_light_oran, styles.position_A, styles.centerContext, styles.top_30, styles.SelfRight]}
@@ -56,9 +56,9 @@ class DrawerCustomization extends Component {
                     <View style={[styles.marginVertical_10, styles.SelfLeft]}>
 
                         <View style={[styles.viewUser, styles.SelfLeft, styles.justifyCenter]}>
-                            <View style={[styles.bg_red, styles.width_150, styles.height_70, styles.position_A, styles.zIndexDown]}></View>
+                            <View style={[styles.bg_red, styles.width_150, styles.height_70, styles.position_A, styles.zIndexDown]}/>
                             <TouchableOpacity style={[styles.position_R, styles.flexCenter, styles.zIndexUp, styles.Width_100, styles.marginHorizontal_25, styles.top_30]}>
-                                <Image style={[styles.width_90, styles.height_90]} source={{ uri: user.avatar }}/>
+                                <Image style={[styles.width_90, styles.height_90, styles.Radius_5]} source={{ uri: user.avatar }}/>
                                 <View style={styles.nameUser} onPress={() => this.props.navigation.navigate('profile')}>
                                     <Text style={[styles.textRegular, styles.textSize_16, styles.text_red]}>{ user.name }</Text>
                                 </View>
@@ -70,7 +70,7 @@ class DrawerCustomization extends Component {
                     <View style={[styles.marginVertical_25]}>
                         <DrawerItems {...this.props}
                                      onItemPress={
-                                         (route, focused) => {
+                                         (route) => {
                                              if (route.route.key === 'logout') {
                                                  this.logout()
                                              }else {

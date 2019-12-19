@@ -46,7 +46,6 @@ class MyOrders extends Component {
 
 	componentWillMount() {
 		this.getOrders(this.state.activeType)
-
 	}
 
 	componentWillReceiveProps(nextProps) {

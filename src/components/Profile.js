@@ -29,7 +29,8 @@ class Profile extends Component {
             passwordStatus                  : 0,
             newPasswordStatus               : 0,
             confirmNewPasswordStatus        : 0,
-            isSubmitted                     : false
+            isSubmitted                     : false,
+            messageError                    : ''
         }
     }
 
@@ -39,49 +40,51 @@ class Profile extends Component {
         drawerIcon  : ( <Icon style={[styles.text_black , styles.textSize_20]} type="AntDesign" name="user" /> )
     });
 
+    componentWillMount() {
+        this.setState({ messageError: '', isSubmitted: false });
+    }
 
     renderSubmit(){
         if (this.state.password == '' || this.state.newPassword == '' || this.state.confirmNewPassword == '') {
             return (
-                <TouchableOpacity style={[styles.cartBtn , styles.SelfCenter , {marginTop:20}]}>
-                    <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft]}>{ i18n.t('confirm') }</Text>
-                </TouchableOpacity>
+                <View style={[styles.Width_100,]}>
+                    <TouchableOpacity style={[styles.cartBtn , styles.SelfCenter , {margin:20}]}>
+                        <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft]}>{ i18n.t('confirm') }</Text>
+                    </TouchableOpacity>
+                </View>
             );
         }
         if (this.state.isSubmitted) {
             return (
-                <View style={[{justifyContent: 'center', alignItems: 'center' , marginTop:20}]}>
+                <View style={[{justifyContent: 'center', alignItems: 'center' , margin:20}]}>
                     <DoubleBounce size={20} color={COLORS.orange} style={{alignSelf: 'center'}}/>
                 </View>
             )
         }
         return (
-            <TouchableOpacity onPress={() => this.changePass()} style={[styles.cartBtn , styles.SelfCenter , {marginTop:20}]}>
-                <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft]}>{i18n.t('confirm')}</Text>
-            </TouchableOpacity>
+            <View style={[styles.Width_100,]}>
+                <TouchableOpacity onPress={() => this.changePass()} style={[styles.cartBtn , styles.SelfCenter , {margin:20}]}>
+                    <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft]}>{i18n.t('confirm')}</Text>
+                </TouchableOpacity>
+            </View>
 
         );
     }
 
     changePass(){
+
+        this.setState({ massegeError : this.props.massage });
+
         if (this.state.newPassword.length < 6){
-            Toast.show({
-                text: i18n.t('passwordLength'),
-                type: "danger",
-                duration: 3000
-            });
+            this.setState({ messageError    : i18n.t('passreq') });
             return false
         }
-        if(this.state.newPassword != this.state.confirmNewPassword){
-            Toast.show({
-                text: i18n.t('verifyPassword'),
-                type: "danger",
-                duration: 3000
-            });
+        if(this.state.newPassword !== this.state.confirmNewPassword){
+            this.setState({ messageError    : i18n.t('passError') });
             return false
         }
 
-        this.setState({ isSubmitted: true });
+        this.setState({ isSubmitted: true, });
         this.props.getChangePassword( this.props.lang ,
             this.state.password,
             this.state.newPassword,
@@ -90,13 +93,24 @@ class Profile extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        this.setState({ messageError: nextProps.message, isSubmitted: false });
+
         if (nextProps.changePassword) {
-            this.setState({isSubmitted: false , isModalVisible:false});
+            this.setState({isSubmitted: false , isModalVisible:false, messageError: ''});
         }
     }
 
     toggleModal = () => {
-        this.setState({ isModalVisible: !this.state.isModalVisible , password : '' , newPassword : '', confirmNewPassword : ''});
+        this.setState({
+            isModalVisible                  : !this.state.isModalVisible ,
+            password                        : '' ,
+            newPassword                     : '',
+            confirmNewPassword              : '',
+            messageError                    : '',
+            passwordStatus                  : 0,
+            newPasswordStatus               : 0,
+            confirmNewPasswordStatus        : 0,
+        });
     };
 
     toggleModalInfo = () => {
@@ -134,7 +148,6 @@ class Profile extends Component {
     }
 
     render() {
-
         return (
             <Container>
                 <Header style={styles.headerView}>
@@ -156,7 +169,7 @@ class Profile extends Component {
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
                         <View style={[styles.position_R, styles.Width_90, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter,{right:20}]}>
-                            <View style={[styles.blackOverlay, styles.Border , {top:10 , left:10}]}></View>
+                            <View style={[styles.blackOverlay, styles.Border , {top:10 , left:10}]}/>
                             <View style={[styles.position_R, styles.Width_100, styles.overHidden, styles.bg_White,styles.bgFullWidth]}>
                                 <Image style={[styles.Width_100, styles.swiper]} source={{uri: this.props.user.avatar}} resizeMode={'cover'}/>
                             </View>
@@ -356,9 +369,14 @@ class Profile extends Component {
                             </View>
                         </View>
 
+                        <Text style={[styles.textRegular, styles.textCenter, styles.Width_100, styles.text_red, styles.marginVertical_10]}>
+                            { this.state.messageError }
+                        </Text>
+
                         {
                             this.renderSubmit()
                         }
+
                     </View>
                 </Modal>
             </Container>
@@ -370,9 +388,10 @@ class Profile extends Component {
 
 const mapStateToProps = ({ lang , changePassword , profile }) => {
     return {
-        lang        : lang.lang,
-        user        : profile.user,
-        changePassword        : changePassword.changePassword
+        lang                    : lang.lang,
+        user                    : profile.user,
+        changePassword          : changePassword.changePassword,
+        message                 : changePassword.message
     };
 };
 export default connect(mapStateToProps, {getChangePassword})(Profile);

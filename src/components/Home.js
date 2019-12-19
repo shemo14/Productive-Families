@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground, Linking, FlatList, Platform, Dimensions, Animated, ScrollView} from "react-native";
-import {Container, Content, Header, Button, Left, Icon, Body, Title, Right, Item, Input, Picker,} from 'native-base'
+import {View, Text, Image, TouchableOpacity, ImageBackground, Linking, FlatList, Platform, ScrollView} from "react-native";
+import {Container, Content, Header, Button, Left, Icon, Body, Title, Right, Item, Input,} from 'native-base'
 import styles from '../../assets/style'
 import {connect} from "react-redux";
 import {NavigationEvents} from "react-navigation";
@@ -48,7 +48,7 @@ class Home extends Component {
 
     onSubCategories ( id ){
 
-        this.setState({spinner: true, active : id });
+        this.setState({active : id });
         this.props.homeProvider( this.props.lang , id ,this.props.user.token );
 
     }
@@ -193,36 +193,50 @@ class Home extends Component {
                             { i18n.t('home') }
                         </Title>
                     </Body>
-                    <Right style={styles.rightIcon}>
-                        <Button onPress={() => this.props.navigation.navigate('notifications')} style={[styles.text_gray]} transparent>
-                            <Image style={[styles.ionImage]} source={require('../../assets/images/alarm.png')}/>
-                        </Button>
-                        <Button  onPress={() => this.props.navigation.navigate('Basket')} style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent>
-                            <Image style={[styles.ionImage]} source={require('../../assets/images/basket.png')}/>
-                        </Button>
-                    </Right>
+                    {
+                        this.props.user == null || this.props.user.type === 'user' ?
+                            <Right style={styles.rightIcon}>
+                                <Button onPress={() => this.props.navigation.navigate('notifications')} style={[styles.text_gray]} transparent>
+                                    <Image style={[styles.ionImage]} source={require('../../assets/images/alarm.png')}/>
+                                </Button>
+                                <Button  onPress={() => this.props.navigation.navigate('Basket')} style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent>
+                                    <Image style={[styles.ionImage]} source={require('../../assets/images/basket.png')}/>
+                                </Button>
+                            </Right>
+                            :
+                            <Right style={styles.rightIcon}>
+                                <Button  onPress={() => this.props.navigation.navigate('notifications')} style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent>
+                                    <Image style={[styles.ionImage]} source={require('../../assets/images/alarm.png')}/>
+                                </Button>
+                            </Right>
+                    }
                 </Header>
                 <Content  contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
-
-                        <Animatable.View animation="fadeInLeft" easing="ease-out" delay={500}>
-                            <View style={[styles.position_R , styles.Width_60, styles.SelfRight]}>
-                                <Item floatingLabel style={styles.item}>
-                                    <Input
-                                        placeholder             = {i18n.translate('searchCat')}
-                                        style                   = {[styles.input, styles.height_40, styles.bg_light_gray]}
-                                        autoCapitalize          = 'none'
-                                        onChangeText            = {(categorySearch) => this.setState({categorySearch})}
-                                    />
-                                </Item>
-                                <TouchableOpacity
-                                    style       = {[styles.position_A, styles.iconSearch, styles.width_50, styles.height_40, styles.flexCenter,]}
-                                    onPress     = {() => this.onSearch()}
-                                >
-                                    <Icon style={[styles.text_gray, styles.textSize_20]} type="AntDesign" name='search1' />
-                                </TouchableOpacity>
-                            </View>
-                        </Animatable.View>
+                        {
+                            this.props.user == null || this.props.user.type !== 'delegate' ?
+                                <Animatable.View animation="fadeInLeft" easing="ease-out" delay={500}>
+                                    <View style={[styles.position_R, styles.Width_60, styles.SelfRight]}>
+                                        <Item floatingLabel style={styles.item}>
+                                            <Input
+                                                placeholder={i18n.translate('searchCat')}
+                                                style={[styles.input, styles.height_40, styles.bg_light_gray]}
+                                                autoCapitalize='none'
+                                                onChangeText={(categorySearch) => this.setState({categorySearch})}
+                                            />
+                                        </Item>
+                                        <TouchableOpacity
+                                            style={[styles.position_A, styles.iconSearch, styles.width_50, styles.height_40, styles.flexCenter,]}
+                                            onPress={() => this.onSearch()}
+                                        >
+                                            <Icon style={[styles.text_gray, styles.textSize_20]} type="AntDesign"
+                                                  name='search1'/>
+                                        </TouchableOpacity>
+                                    </View>
+                                </Animatable.View>
+                                :
+                                <View/>
+                        }
 
                         {
                             this.props.user == null || this.props.user.type === 'user' ?
@@ -334,9 +348,9 @@ class Home extends Component {
 
                                                     <View style={{flexDirection:'column' , justifyContent:'center' , alignItems:'center', alignSelf : 'center'}}>
                                                         <TouchableOpacity
-                                                            onPress        = {() => this.onSubCategories(pro.id)}
-                                                            style          = { this.state.active === pro.id ? styles.activeTabs : styles.noActiveTabs }>
-                                                            <Image source={{ uri : pro.image }} style={[styles.scrollImg]} resizeMode={'contain'} />
+                                                            onPress         = {() => this.onSubCategories(pro.id)}
+                                                            style           = {[ styles.paddingHorizontal_5 , styles.paddingVertical_5 , this.state.active === pro.id ? styles.activeTabs : styles.noActiveTabs]}>
+                                                            <Image source   = {{ uri : pro.image }} style={[styles.scrollImg, styles.Radius_5]} resizeMode={'cover'} />
                                                         </TouchableOpacity>
                                                         <Text style={[styles.textRegular, styles.textSize_11 , { color : this.state.active === pro.id ? COLORS.black : 'transparent' }]} >
                                                             {pro.name}
@@ -369,7 +383,7 @@ class Home extends Component {
 
                         {
                             this.props.user != null && this.props.user.type === 'delegate' ?
-                                <View style={[styles.homeDelegat]}>
+                                <View style={[styles.homeDelegat, styles.paddingVertical_10]}>
 
                                     {
                                         this.props.orders.map((order, i) => (

@@ -45,24 +45,25 @@ class EditShop extends Component {
     }
 
     onUpdateStore(){
+        console.log('token', this.props.user);
         const data = {
             name                : this.state.nameStore,
             provider_details    : this.state.info,
             address             : this.state.city_name,
             avatar              : this.state.base64,
             lang                : this.props.lang,
-            token               : this.props.user.token,
             props               : this.props,
             phone               : this.props.user.phone,
             city_id             : this.props.user.city_id,
             lat                 : this.state.latitude,
             lng                 : this.state.longitude,
+            token               : this.props.user.token,
             category_id         : this.props.user.category_id,
         };
 
             this.setState({ isSubmitted: true });
             this.props.updateProfile(data);
-        };
+    };
 
 
     askPermissionsAsync = async () => {
@@ -190,18 +191,6 @@ class EditShop extends Component {
                                         <Icon style = {[styles.text_orange, styles.textSize_22]} type="AntDesign" name='user' />
                                     </View>
                                 </View>
-
-                                {/*<TouchableOpacity*/}
-                                {/*    style           = {[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}*/}
-                                {/*    onPress         = {() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})}*/}
-                                {/*>*/}
-                                {/*    <Text style={[styles.textRegular , styles.text_black, styles.width_150]} numberOfLines = { 1 } prop with ellipsizeMode = "head">*/}
-                                {/*        { this.state.cityName }*/}
-                                {/*    </Text>*/}
-                                {/*    <View style={[styles.overHidden]}>*/}
-                                {/*        <Icon style={[styles.text_black, styles.textSize_16]} type="Feather" name='map-pin' />*/}
-                                {/*    </View>*/}
-                                {/*</TouchableOpacity>*/}
 
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})}  style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
                                     <Item onPress={() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})} floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
