@@ -11,12 +11,14 @@ import home from './HomeReducer';
 import changePassword from './ChangePasswordReducer';
 import searchHome from './SearchHomeReducer';
 import categoryHome from './CategoryHomeReducer';
-import categoryProvider from './CategoryProviderRuducer';
+import categoryProvider from './CategoryProviderReducer';
 import SearchProvider from './SearchProvidersReducer';
 import filterProvider from './FilterProvidersReducer';
 import cities from './CitiesReducer';
 import providerProducts from './ProviderProductsReducer';
 import favorite from './FavoriteReducer';
+import productsDetail from './ProductsDetailsReducer';
+import addComment from './AddCommentReducer';
 import cartList from './CartListReducer';
 import cartProducts from './CartProductsReducer';
 import notifications from './NotificationsReducer';
@@ -42,6 +44,8 @@ export default combineReducers({
     filterProvider,
     providerProducts,
     favorite,
+    productsDetail,
+    addComment,
     cartList,
     cartProducts,
     notifications,

@@ -98,6 +98,7 @@ const ar = {
     'searchcom'                 : 'آكتب شئ ف البحث',
     'nopro'                     : 'لا يوجد مزود خدمه',
     'nodata'                    : 'لا يوجد شئ للعرض',
+    'addcomm'                   : 'آضف محتوي التعليق',
 
 
 
@@ -133,6 +134,9 @@ const ar = {
     'passwordLength'            : 'كلمة السر اقل من 6 احرف',
     'phoneValidation'           : 'رقم الهاتف غير صحيح',
     'verifyPassword'            : 'كلمة المرور و تأكيد كلمة المرور غير متطابقين',
+    'orderStatus'               : 'حالة الطلب',
+    'aboutDelegate'             : 'عن المندوب',
+    'hanging'                   : 'معلق',
 };
 
 export default ar;

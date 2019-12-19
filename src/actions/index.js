@@ -12,7 +12,16 @@ export * from './ChangePasswordAction';
 export * from './CategoryProvidersAction';
 export * from './ProviderProductsAction';
 export * from './FavoriteAction';
+export * from './ProductsDetailsAction';
+export * from './AddToCartAction';
+export * from './AddCommentAction';
 export * from './CartListAction';
 export * from './CartProductsAction';
 export * from './UserOrdersAction';
+<<<<<<< HEAD
 export * from './OrderDetailsAction';
+=======
+export * from './OrderDetailsAction';
+export * from './NotificationsAction';
+export * from './CancelOrderAction';
+>>>>>>> 2b7ec57139087ccf839c386e597d2f93d56a6157

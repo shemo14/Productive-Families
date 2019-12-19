@@ -163,7 +163,7 @@ class Register extends Component {
         return (
             <Container>
 
-                { this.renderLoader() }
+                {/*{ this.renderLoader() }*/}
                 <NavigationEvents onWillFocus={() => this.onFocus()} />
 
                 <Content contentContainerStyle={styles.bgFullWidth}>
@@ -179,7 +179,7 @@ class Register extends Component {
                                 <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
                                     <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
                                         <Input
-                                            placeholder             = {i18n.translate('userName')}
+                                            placeholder             = {i18n.t('userName')}
                                             style                   = {[ styles.input , styles.height_50 , (this.state.usernameStatus === 1 ? styles.Active : styles.noActive )]}
                                             onChangeText            = {(username) => this.setState({username})}
                                             onBlur                  = {() => this.unActiveInput('username')}
@@ -194,7 +194,7 @@ class Register extends Component {
                                 <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
                                     <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
                                         <Input
-                                            placeholder             = {i18n.translate('phone')}
+                                            placeholder             = {i18n.t('phone')}
                                             style                   = {[ styles.input , styles.height_50 , (this.state.phoneStatus === 1 ? styles.Active : styles.noActive )]}
                                             onChangeText            = {(phone) => this.setState({phone})}
                                             onBlur                  = {() => this.unActiveInput('phone')}
@@ -240,7 +240,7 @@ class Register extends Component {
                                             selectedValue           = {this.state.country}
                                             onValueChange           = {this.onValueCountry.bind(this)}
                                             textStyle               = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl', width : '100%', }]}
-                                            placeholder             = {i18n.translate('city')}
+                                            placeholder             = {i18n.t('city')}
                                             itemTextStyle           = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl', width : '100%', }]}
                                         >
                                             <Picker.Item style={[styles.Width_100]} label={i18n.t('city')} value={null} />
@@ -265,7 +265,7 @@ class Register extends Component {
                                 <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
                                     <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
                                         <Input
-                                            placeholder             = {i18n.translate('password')}
+                                            placeholder             = {i18n.t('password')}
                                             style                   = {[ styles.input , styles.height_50 , (this.state.passwordStatus === 1 ? styles.Active : styles.noActive )]}
                                             onChangeText            = {(password) => this.setState({password})}
                                             onBlur                  = {() => this.unActiveInput('password')}
@@ -281,7 +281,7 @@ class Register extends Component {
                                 <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
                                     <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
                                         <Input
-                                            placeholder             = {i18n.translate('password')}
+                                            placeholder             = {i18n.t('password')}
                                             style                   = {[ styles.input , styles.height_50 , (this.state.rePasswordStatus === 1 ? styles.Active : styles.noActive )]}
                                             onChangeText            = {(confirmpassword) => this.setState({confirmpassword})}
                                             onBlur                  = {() => this.unActiveInput('rePasswordStatus')}
@@ -306,7 +306,7 @@ class Register extends Component {
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Terms')}>
                                         <Text style={[styles.textRegular , styles.text_black, styles.textSize_16, styles.paddingHorizontal_15, styles.textDecoration]}>
-                                            {i18n.translate('agreTe')}
+                                            {i18n.t('agreTe')}
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
@@ -321,7 +321,7 @@ class Register extends Component {
                                     ]}
                                     onPress={() => this.onRegisterPressed()}>
                                     <Text style={[styles.textRegular , styles.textSize_14, styles.text_White]}>
-                                        {i18n.translate('doHaveAcc')}
+                                        {i18n.t('doHaveAcc')}
                                     </Text>
                                 </TouchableOpacity>
 
@@ -331,7 +331,7 @@ class Register extends Component {
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}
                                                   style={[styles.bg_light_oran, styles.paddingHorizontal_10, styles.height_40, styles.centerContext]}>
                                     <Text style={[styles.textRegular, styles.textSize_14, styles.text_red]}>
-                                        {i18n.translate('login')}
+                                        {i18n.t('login')}
                                     </Text>
                                 </TouchableOpacity>
                             </View>

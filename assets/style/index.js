@@ -971,12 +971,21 @@ const styles = ({
         justifyContent      : 'center',
         alignSelf           : 'center',
     },
-
-
+    activeTabs : {
+        backgroundColor     : '#fff',
+        borderTopWidth      : 1,
+        borderTopColor      : COLORS.orange
+    },
+    noActiveTabs : {
+        backgroundColor     : COLORS.light_gray,
+        borderTopWidth      : 0,
+        borderTopColor      : 'transparent'
+    },
 
 
 
     //// amaaaaaaany
+
     starStyle:{
         color: COLORS.orange,
         marginHorizontal:0,
@@ -1093,12 +1102,9 @@ const styles = ({
     subView: {
         position: "absolute",
         bottom: 0,
-        left: 8,
-        right: 8,
         backgroundColor: "#fff",
         height: 490,
         zIndex:100,
-        alignSelf:'center'
     },
     notiBlock:{
         flexDirection:'row',
@@ -1136,9 +1142,12 @@ const styles = ({
     restImg:{
         width:50,
         height:50,
-        borderRadius:50,
+        borderRadius:25,
         marginRight:10,
-        flex:0
+        flex:0,
+        resizeMode:"cover",
+        borderWidth:1,
+        borderColor:COLORS.orange
     },
     commentModal:{
         width: '110%',
@@ -1154,6 +1163,9 @@ const styles = ({
         width:'100%',
         height: null,
         flex: 1,
+    },
+    writing:{
+        writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'
     },
 });
 

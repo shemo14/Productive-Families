@@ -4799,6 +4799,10 @@ react-native-safe-area-view@^0.14.1:
   dependencies:
     debounce "^1.2.0"
 
+"react-native-shimmer-placeholder@git+https://github.com/tomzaku/react-native-shimmer-placeholder.git#expo":
+  version "1.0.31"
+  resolved "git+https://github.com/tomzaku/react-native-shimmer-placeholder.git#8c9ed6b7cfdc1a582b6ffd8ca4921d8251e1fc55"
+
 react-native-star-rating@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/react-native-star-rating/-/react-native-star-rating-1.1.0.tgz#57fcd023c63e947427c4dbbd1c8f4cc49e5c48ce"
