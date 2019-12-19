@@ -29,7 +29,7 @@ import Offers                   from "../components/Offers";
 import Favorite                 from "../components/Favorite";
 import OpenCamera               from "../components/OpenCamera";
 import EditShop                 from "../components/EditShop";
-import AddProducer              from "../components/AddProducer";
+import AddProduct               from "../components/AddProduct";
 import SearchHome               from "../components/SearchHome";
 import DrawerCustomization      from "./DrawerCustomization";
 
@@ -41,6 +41,8 @@ import Notifications            from "../components/Notifications";
 import Profile                  from "../components/Profile";
 import OrderDetails             from "../components/OrderDetails";
 import EditProfile              from "../components/EditProfile";
+import DelegateOrderDetails     from "../components/DelegateOrderDetails";
+import Confirmation             from "../components/Confirmation";
 
 
 const drawerCust = (props) => (<DrawerCustomization {...props} />);
@@ -79,6 +81,12 @@ const appStack =  createStackNavigator({
             header: null
         }
     },
+    AddProduct : {
+        screen: AddProduct,
+        navigationOptions: {
+            header: null
+        }
+    },
     Basket: {
         screen: Basket,
         navigationOptions: {
@@ -87,12 +95,6 @@ const appStack =  createStackNavigator({
     },
     SearchHome: {
         screen: SearchHome,
-        navigationOptions: {
-            header: null
-        }
-    },
-    AddProducer : {
-        screen: AddProducer,
         navigationOptions: {
             header: null
         }
@@ -182,8 +184,16 @@ const appStack =  createStackNavigator({
         }
     },
 
-    /// Amaany
 
+
+
+    /// Amaany
+    delegateOrderDetails: {
+        screen: DelegateOrderDetails,
+        navigationOptions: {
+            header: null
+        }
+    },
     editProfile: {
         screen: EditProfile,
         navigationOptions: {
@@ -220,75 +230,76 @@ const appStack =  createStackNavigator({
             header: null
         }
     },
+    confirmation: {
+        screen: Confirmation,
+        navigationOptions: {
+            header: null
+        }
+    },
 
 });
 
 const authStack = createStackNavigator({
+        Login: {
+            screen: Login,
+            navigationOptions: {
+                header: null
+            }
+        },
+        ForgetPassword: {
+            screen: ForgetPassword,
+            navigationOptions: {
+                header: null
+            }
+        },
+        NewPassword: {
+            screen: NewPassword,
+            navigationOptions: {
+                header: null
+            }
+        },
+        ActivationCode: {
+            screen: ActivationCode,
+            navigationOptions: {
+                header: null
+            }
+        },
+        Register: {
+            screen: Register,
+            navigationOptions: {
+                header: null
+            }
+        },
+        Terms: {
+            screen: Terms,
+            navigationOptions: {
+                header: null
+            }
+        },
+        faq: {
+            screen: Faq,
+            navigationOptions: {
+                header: null
+            }
+        },
+        aboutApp: {
+            screen: AboutApp,
+            navigationOptions: {
+                header: null
+            }
+        },
+    }
+);
+
+const AppNavigator = createSwitchNavigator({
     InitScreen: {
         screen: InitScreen,
         navigationOptions: {
             header: null
         }
     },
-    ForgetPassword: {
-        screen: ForgetPassword,
-        navigationOptions: {
-            header: null
-        }
-    },
-    NewPassword: {
-        screen: NewPassword,
-        navigationOptions: {
-            header: null
-        }
-    },
-    ActivationCode: {
-        screen: ActivationCode,
-        navigationOptions: {
-            header: null
-        }
-    },
-    Register: {
-        screen: Register,
-        navigationOptions: {
-            header: null
-        }
-    },
-    Login: {
-        screen: Login,
-        navigationOptions: {
-            header: null
-        }
-    },
-    initScreen: {
-        screen: InitScreen,
-        navigationOptions: {
-            header: null
-        }
-    },
-    Terms: {
-        screen: Terms,
-        navigationOptions: {
-            header: null
-        }
-    },
-    faq: {
-        screen: Faq,
-        navigationOptions: {
-            header: null
-        }
-    },
-    aboutApp: {
-        screen: AboutApp,
-        navigationOptions: {
-            header: null
-        }
-    },
-});
-
-const AppNavigator = createSwitchNavigator({
-    app     : appStack,
     auth    : authStack,
+    app     : appStack,
 });
 
 export default createAppContainer(AppNavigator);

@@ -1,20 +1,6 @@
 import React, { Component } from "react";
-import {View, Text, Image, ImageBackground , ScrollView , TouchableOpacity , FlatList , I18nManager} from "react-native";
-import {
-    Container,
-    Content,
-    Icon,
-    Header,
-    Left,
-    Button,
-    Body,
-    Title,
-    Form,
-    Item,
-    Input,
-    Right,
-    Textarea, Toast
-} from 'native-base'
+import {View, Text, Image, ImageBackground ,TouchableOpacity } from "react-native";
+import {Container, Content, Icon, Header, Left, Button, Body, Title, Form, Item, Input, Right , Toast} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
 import {DoubleBounce} from "react-native-loader";
@@ -36,13 +22,14 @@ class Profile extends Component {
             city	                        : 'الرياض',
             location	                    : 'الرياض التخصصي',
             isModalVisible                  : false,
+            isModalInfo                     : false,
             password	                    : '',
             newPassword	                    : '',
             confirmNewPassword	            : '',
             passwordStatus                  : 0,
             newPasswordStatus               : 0,
             confirmNewPasswordStatus        : 0,
-            isSubmitted: false
+            isSubmitted                     : false
         }
     }
 
@@ -112,6 +99,10 @@ class Profile extends Component {
         this.setState({ isModalVisible: !this.state.isModalVisible , password : '' , newPassword : '', confirmNewPassword : ''});
     };
 
+    toggleModalInfo = () => {
+        this.setState({ isModalInfo: !this.state.isModalInfo});
+    };
+
     activeInput(type){
         if (type === 'password' || this.state.password !== ''){
             this.setState({ passwordStatus: 1 })
@@ -179,7 +170,6 @@ class Profile extends Component {
                                         placeholder             = {i18n.translate('userName')}
                                         style                   = {[ styles.input , styles.height_50 , styles.Active]}
                                         value                   = { this.props.user.name }
-                                        // onChangeText            = {(username) => this.setState({username})}
                                         disabled
                                     />
                                 </Item>
@@ -193,7 +183,6 @@ class Profile extends Component {
                                         placeholder             = {i18n.translate('phone')}
                                         style                   = {[ styles.input , styles.height_50, styles.Active ]}
                                         value                   = { this.props.user.phone }
-                                        // onChangeText            = {(phone) => this.setState({phone})}
                                         disabled
                                     />
                                 </Item>
@@ -207,7 +196,6 @@ class Profile extends Component {
                                         placeholder             = {i18n.translate('city')}
                                         style                   = {[ styles.input , styles.height_50 , styles.Active]}
                                         value                   = {this.props.user.city_name}
-                                        // onChangeText            = {(city) => this.setState({city})}
                                         disabled
                                     />
                                 </Item>
@@ -215,13 +203,13 @@ class Profile extends Component {
                                     <Icon style = {[styles.text_orange, styles.textSize_22]} type="MaterialCommunityIcons" name='flag' />
                                 </View>
                             </View>
+
                             <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
                                 <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
                                     <Input
                                         placeholder             = {i18n.translate('map')}
                                         style                   = {[ styles.input , styles.height_50 , styles.Active]}
                                         value                   = {this.props.user.address}
-                                        // onChangeText            = {(location) => this.setState({location})}
                                         disabled
                                     />
                                 </Item>
@@ -230,14 +218,87 @@ class Profile extends Component {
                                 </View>
                             </View>
 
+                            {
+                                this.props.user != null && this.props.user.type === 'provider' ?
+                                    <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
+                                        <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
+                                            <Input
+                                                placeholder             = {i18n.translate('namecategory')}
+                                                style                   = {[ styles.input , styles.height_50 , styles.Active]}
+                                                value                   = {this.props.user.category}
+                                                disabled
+                                            />
+                                        </Item>
+                                        <View style = {[ styles.position_A , styles.bg_light_oran, styles.flexCenter, styles.iconInput, styles.left_0 ]}>
+                                            <Icon style = {[styles.text_orange, styles.textSize_22]} type="FontAwesome5" name='pencil-alt' />
+                                        </View>
+                                    </View>
+                                    :
+                                    <View/>
+                            }
+
                         </Form>
-                        <TouchableOpacity onPress={() => this.toggleModal()} style={styles.SelfCenter} >
+
+                        {
+                            this.props.user != null && this.props.user.type === 'delegate' ?
+                                <TouchableOpacity onPress={() => this.toggleModalInfo()} style={[styles.SelfCenter, styles.marginVertical_25]} >
+                                    <Text style={[styles.textRegular , styles.text_black, styles.textSize_16, styles.paddingHorizontal_15, styles.textDecoration]}>
+                                        {i18n.translate('moreinfo')}
+                                    </Text>
+                                </TouchableOpacity>
+                                :
+                                <View/>
+                        }
+
+                        <TouchableOpacity onPress={() => this.toggleModal()} style={[styles.SelfCenter, styles.marginVertical_10]} >
                             <Text style={[styles.textRegular , styles.text_orange, styles.textSize_16, styles.paddingHorizontal_15, styles.textDecoration]}>
                                 {i18n.translate('changepass')}
                             </Text>
                         </TouchableOpacity>
+
                     </ImageBackground>
                 </Content>
+
+                <Modal style={{}} isVisible={this.state.isModalInfo} onBackdropPress={() => this.toggleModalInfo()}>
+                    <View style={[styles.commentModal,{padding:15}]}>
+                        <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft , styles.SelfCenter]}>
+                            {i18n.t('serinfo')}
+                        </Text>
+
+                        <View style={[styles.rowGroup , styles.paddingHorizontal_5 , styles.marginVertical_10, styles.position_R]}>
+                            <View style={[styles.marginVertical_10, styles.position_R, styles.flex_45 , ]}>
+                                <View style={[styles.lightOverlay, styles.Border, styles.height_100, {top:-5 , left:-5}]}/>
+                                <View style={[styles.Width_100 , styles.height_100]}>
+                                    <Image style={[styles.Width_100 , styles.height_100, styles.Border, styles.bg_White]} source={{ uri : this.props.user.identity_image}}/>
+                                </View>
+                                <Text style={[styles.textRegular, styles.text_gray, styles.textSize_14, styles.textLeft , styles.SelfCenter]}>
+                                    {i18n.t('PhotoID')}
+                                </Text>
+                            </View>
+                            <View style={[ styles.marginVertical_10, styles.position_R, styles.flex_45 , ]}>
+                                <View style={[styles.lightOverlay, styles.Border, styles.height_100, {top:-5 , left:-5}]}/>
+                                <View style={[styles.Width_100 , styles.height_100]}>
+                                    <Image style={[styles.Width_100 , styles.height_100, styles.Border, styles.bg_White]} source={{ uri : this.props.user.licence_image}}/>
+                                </View>
+                                <Text style={[styles.textRegular, styles.text_gray, styles.textSize_14, styles.SelfCenter]}>
+                                    {i18n.t('PhotoLicense')}
+                                </Text>
+                            </View>
+                            <View style={[styles.marginVertical_10, styles.position_R, styles.flex_45 , ]}>
+                                <View style={[styles.lightOverlay, styles.Border, styles.height_100, {top:-5 , left:-5}]}/>
+                                <View style={[styles.Width_100 , styles.height_100]}>
+                                    <Image style={[styles.Width_100 , styles.height_100, styles.Border, styles.bg_White]} source={{ uri : this.props.user.car_image}}/>
+                                </View>
+                                <Text style={[styles.textRegular, styles.text_gray, styles.textSize_14, styles.SelfCenter]}>
+                                    {i18n.t('PhotoCar')}
+                                </Text>
+                            </View>
+                        </View>
+
+                    </View>
+                </Modal>
+
+
                 <Modal style={{}} isVisible={this.state.isModalVisible} onBackdropPress={() => this.toggleModal()}>
                     <View style={[styles.commentModal,{padding:15 , height:350}]}>
                         <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft , styles.SelfCenter]}>

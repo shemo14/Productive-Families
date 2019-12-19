@@ -18,10 +18,19 @@ export * from './AddCommentAction';
 export * from './CartListAction';
 export * from './CartProductsAction';
 export * from './UserOrdersAction';
-<<<<<<< HEAD
 export * from './OrderDetailsAction';
-=======
 export * from './OrderDetailsAction';
 export * from './NotificationsAction';
+export * from './RegisterAction';
+export * from './ActivationCodeAction';
+export * from './ForgetPasswordAction';
+export * from './NewPasswordAction';
+export * from './OffersAction';
+export * from './HomeProviderAction';
+export * from './HomeDelegateAction';
+export * from './AddProductAction';
+export * from './SubCategoriesAction';
 export * from './CancelOrderAction';
->>>>>>> 2b7ec57139087ccf839c386e597d2f93d56a6157
+export * from './OrderStoreAction';
+export * from './OrderAction';
+export * from './DeletProductAction';

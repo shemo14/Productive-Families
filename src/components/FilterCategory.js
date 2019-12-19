@@ -1,20 +1,6 @@
 import React, { Component } from "react";
 import {View, Text, Image, TouchableOpacity, ImageBackground, Platform, FlatList} from "react-native";
-import {
-    Container,
-    Content,
-    Header,
-    Button,
-    Left,
-    Icon,
-    Body,
-    Title,
-    Right,
-    Item,
-    Picker,
-    CheckBox,
-    Input,
-} from 'native-base'
+import {Container, Content, Header, Button, Left, Icon, Body, Title, Right, Item, Picker, CheckBox, Input,} from 'native-base'
 import styles from '../../assets/style'
 import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
@@ -24,6 +10,7 @@ import StarRating from 'react-native-star-rating';
 import Modal from "react-native-modal";
 import * as Animatable from 'react-native-animatable';
 import {categoryProviders, searchProviders, filterProviders, getCities} from '../actions';
+import cities from "../reducers/CitiesReducer";
 
 const isIOS = Platform.OS === 'ios';
 
@@ -47,7 +34,7 @@ class FilterCategory extends Component {
     componentWillMount() {
 
         this.props.categoryProviders( this.props.lang , this.props.navigation.state.params.id );
-        // this.props.city( this.props.lang );
+        this.props.getCities( this.props.lang );
 
         if(this.props.navigation.getParam('latitude') || this.props.navigation.getParam('longitude')){
             this.state.city_name            =  this.props.navigation.getParam('city_name');
@@ -122,43 +109,46 @@ class FilterCategory extends Component {
 
     renderItems = (item, key) => {
         return(
-            <TouchableOpacity
-                onPress     = {() => this.props.navigation.navigate('provider', { id : item.id, name : item.name })}
-                style       = {[styles.position_R, styles.flexCenter, styles.Width_90, styles.marginVertical_15]}
-                key         = { key }
-            >
-                <View style={[styles.lightOverlay, styles.Border]}></View>
-                <View style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                    <View style={[styles.icImg, styles.flex_30]}>
-                        <Image style={styles.icImg} source={{ uri: item.avatar }} resizeMode={'cover'}/>
+
+            <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
+                <TouchableOpacity
+                    onPress     = {() => this.props.navigation.navigate('provider', { id : item.id, name : item.name })}
+                    style       = {[styles.position_R, styles.flexCenter, styles.Width_90, styles.marginVertical_15]}
+                    key         = { key }
+                >
+                    <View style={[styles.lightOverlay, styles.Border]}></View>
+                    <View style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                        <View style={[styles.icImg, styles.flex_30]}>
+                            <Image style={styles.icImg} source={{ uri: item.avatar }} resizeMode={'cover'}/>
+                        </View>
+                        <View style={[styles.flex_70]}>
+                            <View style={[styles.rowGroup]}>
+                                <Text style={[styles.textRegular , styles.text_red]}>
+                                    {item.category}
+                                </Text>
+                                <StarRating
+                                    disabled        = {true}
+                                    maxStars        = {5}
+                                    rating          = {item.rate}
+                                    fullStarColor   = {'red'}
+                                    starStyle       = { [styles.textSize_16, {marginHorizontal : 2}] }
+                                />
+                            </View>
+                            <View style={[styles.overHidden]}>
+                                <Text style={[styles.textRegular , styles.text_gray, styles.Width_100, styles.textLeft]}>
+                                    {item.name}
+                                </Text>
+                            </View>
+                            <View style={[styles.overHidden, styles.rowRight]}>
+                                <Icon style={[styles.text_gray, styles.textSize_14]} type="Feather" name='map-pin' />
+                                <Text style={[styles.textRegular , styles.text_gray, styles.marginHorizontal_5]}>
+                                    {item.address}
+                                </Text>
+                            </View>
+                        </View>
                     </View>
-                    <View style={[styles.flex_70]}>
-                        <View style={[styles.rowGroup]}>
-                            <Text style={[styles.textRegular , styles.text_red]}>
-                                {item.category}
-                            </Text>
-                            <StarRating
-                                disabled        = {true}
-                                maxStars        = {5}
-                                rating          = {item.rate}
-                                fullStarColor   = {'red'}
-                                starStyle       = { [styles.textSize_16, {marginHorizontal : 2}] }
-                            />
-                        </View>
-                        <View style={[styles.overHidden]}>
-                            <Text style={[styles.textRegular , styles.text_gray, styles.Width_100, styles.textLeft]}>
-                                {item.name}
-                            </Text>
-                        </View>
-                        <View style={[styles.overHidden, styles.rowRight]}>
-                            <Icon style={[styles.text_gray, styles.textSize_14]} type="Feather" name='map-pin' />
-                            <Text style={[styles.textRegular , styles.text_gray, styles.marginHorizontal_5]}>
-                                {item.address}
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </Animatable.View>
         );
     };
 
@@ -207,7 +197,7 @@ class FilterCategory extends Component {
                             </TouchableOpacity>
                         </View>
 
-                        <View style={[styles.marginVertical_5]}>
+                        <View style={[styles.marginVertical_5, styles.overHidden]}>
 
                             <FlatList
                                 data                    = {this.props.providers}
@@ -266,7 +256,7 @@ class FilterCategory extends Component {
 
                                                             <Picker.Item style={[styles.Width_100]} label={i18n.t('city')} value={null} />
                                                             {
-                                                                this.props.cities.map((city, i) => (
+                                                                this.props.citys.map((city, i) => (
                                                                     <Picker.Item style={styles.Width_100} key={i} label={city.name} value={city.id} />
                                                                 ))
                                                             }
@@ -275,18 +265,6 @@ class FilterCategory extends Component {
                                                     </Item>
                                                     <Icon style={styles.iconPicker} type="AntDesign" name='down' />
                                                 </View>
-
-                                                {/*<TouchableOpacity*/}
-                                                {/*    style       = {[styles.marginVertical_10, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10, styles.bg_White]}*/}
-                                                {/*    onPress     = {() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})}*/}
-                                                {/*>*/}
-                                                {/*    <Text style={[styles.textRegular , styles.text_black,]}>*/}
-                                                {/*        { this.state.city_name }*/}
-                                                {/*    </Text>*/}
-                                                {/*    <View style={[styles.overHidden]}>*/}
-                                                {/*        <Icon style={[styles.text_black, styles.textSize_16]} type="Feather" name='map-pin' />*/}
-                                                {/*    </View>*/}
-                                                {/*</TouchableOpacity>*/}
 
                                                 <TouchableOpacity
                                                     style       = {[styles.marginVertical_10, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10, styles.bg_White]}
@@ -395,7 +373,7 @@ const mapStateToProps = ({ lang, categoryProvider , SearchProvider , cities}) =>
         lang            : lang.lang,
         providers       : categoryProvider.categoryProviders,
         search          : SearchProvider.searchProviders,
-        cities          : cities.cities,
+        citys           : cities.cities,
     };
 };
 export default connect(mapStateToProps, { categoryProviders , searchProviders, filterProviders , getCities })(FilterCategory);

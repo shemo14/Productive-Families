@@ -12,7 +12,7 @@ import StarRating from 'react-native-star-rating';
 import Modal from "react-native-modal";
 
 import {NavigationEvents} from "react-navigation";
-import { productDetails, favorite, addCart , addComment } from '../actions';
+import { productDetails, favorite, addCart , addComment, deletProduct } from '../actions';
 
 class Product extends Component {
     constructor(props){
@@ -34,12 +34,15 @@ class Product extends Component {
 
     componentWillMount() {
         this.props.productDetails( this.props.lang , this.props.navigation.state.params.id);
-        console.log('user =====', this.props.user);
     }
 
     toggleModal = () => {
         this.setState({ isModalVisible: !this.state.isModalVisible });
     };
+
+    deletProduct(){
+        this.props.deletProduct( this.props.lang , this.props.navigation.state.params.id, this.props.user.token);
+    }
 
     _toggleSubview() {
         var toValue = 400;
@@ -223,18 +226,47 @@ class Product extends Component {
 
                                         <View style={[styles.viewBlock]}>
                                             <Image style={[styles.Width_95, styles.swiper]} source={{ uri : img.image}} resizeMode={'cover'}/>
-                                            <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
-                                                <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                                    <TouchableOpacity onPress = {() => this.toggleFavorite(this.props.products.id)}>
-                                                        {
-                                                            this.props.products.is_fav === 1 ?
-                                                                <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='heart' />
-                                                                :
-                                                                <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='hearto' />
-                                                        }
-                                                    </TouchableOpacity>
-                                                </View>
-                                            </Animatable.View>
+                                            {
+                                                this.props.user == null || this.props.user.type === 'user' ?
+                                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
+                                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                                            <TouchableOpacity onPress = {() => this.toggleFavorite(this.props.products.id)}>
+                                                                {
+                                                                    this.props.products.is_fav === 1 ?
+                                                                        <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='heart' />
+                                                                        :
+                                                                        <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='hearto' />
+                                                                }
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    </Animatable.View>
+                                                    :
+                                                    <View/>
+                                            }
+                                            {
+                                                this.props.user == null || this.props.user.type === 'provider' ?
+                                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent, styles.top_5, styles.marginVertical_10]}>
+                                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                                            <TouchableOpacity onPress = {() => this.editProdect(this.props.products.id)}>
+                                                                <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='edit' />
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    </Animatable.View>
+                                                    :
+                                                    <View/>
+                                            }
+                                            {
+                                                this.props.user == null || this.props.user.type === 'provider' ?
+                                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent , styles.top_35, styles.marginVertical_25]}>
+                                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                                            <TouchableOpacity onPress = {() => this.deletProduct()}>
+                                                                <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='close' />
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                    </Animatable.View>
+                                                    :
+                                                    <View/>
+                                            }
                                         </View>
 
                                     ))
@@ -274,19 +306,25 @@ class Product extends Component {
                                                 {this.props.products.description}
                                             </Text>
                                         </View>
-                                        <View style={styles.counterParent}>
-                                            <TouchableOpacity onPress={() => this.increment()} style={styles.touchPlus}>
-                                                <Icon type={'Entypo'} name={'plus'} style={styles.plus} />
-                                            </TouchableOpacity>
-                                            <View style={[styles.directionColumn , styles.countText ]}>
-                                                <Text style={[styles.text_orange ,styles.textRegular, styles.textSize_14]}>
-                                                    {this.state.value}
-                                                </Text>
-                                            </View>
-                                            <TouchableOpacity onPress={() => this.decrement()} style={styles.touchMinus}>
-                                                <Icon type={'Entypo'} name={'minus'} style={styles.minus} />
-                                            </TouchableOpacity>
-                                        </View>
+
+                                        {
+                                            this.props.user == null || this.props.user.type === 'user' ?
+                                                <View style={styles.counterParent}>
+                                                    <TouchableOpacity onPress={() => this.increment()} style={styles.touchPlus}>
+                                                        <Icon type={'Entypo'} name={'plus'} style={styles.plus} />
+                                                    </TouchableOpacity>
+                                                    <View style={[styles.directionColumn , styles.countText ]}>
+                                                        <Text style={[styles.text_orange ,styles.textRegular, styles.textSize_14]}>
+                                                            {this.state.value}
+                                                        </Text>
+                                                    </View>
+                                                    <TouchableOpacity onPress={() => this.decrement()} style={styles.touchMinus}>
+                                                        <Icon type={'Entypo'} name={'minus'} style={styles.minus} />
+                                                    </TouchableOpacity>
+                                                </View>
+                                                :
+                                                <View/>
+                                        }
                                     </View>
                                     <View style={[styles.rowGroup , styles.marginVertical_15]}>
                                         <View style={[styles.rowGroup]}>
@@ -296,61 +334,18 @@ class Product extends Component {
                                             <Text style={[styles.textRegular, styles.text_black,styles.textSize_14, styles.textLeft ,{borderRightWidth:2 , borderRightColor:COLORS.orange , paddingRight:5 , marginLeft:5}]}>
                                                 {this.props.products.price} {i18n.t('RS')}</Text>
                                         </View>
-                                        <TouchableOpacity style={[styles.cartBtn]} onPress = {() => this.addToCart(this.props.products.id)}>
-                                            <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft ]}>{i18n.t('addToCart')}</Text>
-                                        </TouchableOpacity>
+                                        {
+                                            this.props.user == null || this.props.user.type === 'user' ?
+                                                <TouchableOpacity style={[styles.cartBtn]} onPress = {() => this.addToCart(this.props.products.id)}>
+                                                    <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft ]}>{i18n.t('addToCart')}</Text>
+                                                </TouchableOpacity>
+                                                :
+                                                <View/>
+                                        }
                                     </View>
                                 </View>
                             </View>
                         </View>
-
-                        {/*<View style = {[styles.marginHorizontal_10,styles.Width_90, styles.SelfCenter, styles.marginVertical_15,]}>*/}
-                        {/*    <View style={[styles.lightOverlay, styles.Border]}/>*/}
-                        {/*    <View style={[styles.bg_White, styles.Border]}>*/}
-                                {/*<View style={[styles.rowGroup,]}>*/}
-                                {/*    <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft , styles.marginVertical_10, styles.paddingHorizontal_10]}>*/}
-                                {/*        {i18n.t('comments')}*/}
-                                {/*        <Text style={[styles.textRegular, styles.text_bold_gray,styles.textSize_14]}>*/}
-                                {/*            ( { this.props.products.comments_count } )*/}
-                                {/*        </Text>*/}
-                                {/*    </Text>*/}
-
-                                {/*    {*/}
-                                {/*        this.props.user ?*/}
-                                {/*            <TouchableOpacity onPress={() => this.toggleModal()} style={[styles.rowGroup]}>*/}
-                                {/*                <Text style={[styles.textRegular, styles.text_orange,styles.textSize_14 , {marginRight:5}]}>*/}
-                                {/*                    {i18n.t('addComment')}*/}
-                                {/*                </Text>*/}
-                                {/*                <View style={[styles.touchPlus]}>*/}
-                                {/*                    <Icon type={'Entypo'} name={'plus'} style={[styles.plus , styles.textSize_16]} />*/}
-                                {/*                </View>*/}
-                                {/*            </TouchableOpacity>*/}
-                                {/*            :*/}
-                                {/*            <View/>*/}
-                                {/*    }*/}
-
-                                {/*</View>*/}
-
-                                {/*<Animated.View*/}
-                                {/*    style={[styles.subView,styles.paddingHorizontal_7 , styles.paddingVertical_7, {transform: [{translateY: this.state.bounceValue}]}]}>*/}
-
-                                {/*</Animated.View>*/}
-
-                                {/*<View>*/}
-                                {/*    <ScrollView showsHorizontalScrollIndicator={false}>*/}
-                                {/*    <TouchableOpacity onPress={()=> {this._toggleSubview()}}>*/}
-                                {/*        <FlatList*/}
-                                {/*            data            = {this.props.comments}*/}
-                                {/*            renderItem      = {({item}) => this.renderItems(item)}*/}
-                                {/*            numColumns      = {1}*/}
-                                {/*            keyExtractor    = {this._keyExtractor}*/}
-                                {/*        />*/}
-                                {/*    </TouchableOpacity>*/}
-                                {/*    </ScrollView>*/}
-                                {/*</View>*/}
-
-                            {/*</View>*/}
-                        {/*</View>*/}
 
                     </ImageBackground>
                 </Content>
@@ -462,4 +457,4 @@ const mapStateToProps = ({ lang , productsDetail, addComment, profile }) => {
         user                : profile.user
     };
 };
-export default connect(mapStateToProps, { productDetails , favorite, addCart, addComment})(Product);
+export default connect(mapStateToProps, { productDetails , favorite, addCart, addComment, deletProduct})(Product);

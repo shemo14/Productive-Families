@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, ImageBackground, ScrollView, TouchableOpacity, FlatList, Platform, AsyncStorage} from "react-native";
+import {View, Text, Image, ImageBackground, ScrollView, TouchableOpacity, FlatList, Platform, Animated,Dimensions} from "react-native";
 import {Container, Content, Icon, Header, Left, Button, Body, Title} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
@@ -22,6 +22,7 @@ class Provider extends Component {
             isFav               : 0,
             refreshed           : false,
             active              : true,
+            loader              : true
         }
     }
 
@@ -31,7 +32,7 @@ class Provider extends Component {
 
     onSubCategories ( id ){
 
-        this.setState({spinner: true, active : id ? true : false});
+        this.setState({spinner: true, active : id });
         this.props.providerProduct( this.props.lang , this.props.navigation.state.params.id ,id);
 
     }
@@ -80,8 +81,7 @@ class Provider extends Component {
                     <Text
                         style           = {[styles.text_gray, styles.textSize_14, styles.textRegular, styles.Width_100, styles.textLeft]}
                         numberOfLines   = { 1 } prop with
-                        ellipsizeMode   = "head"
-                    >
+                        ellipsizeMode   = "head">
                         {item.name}
                     </Text>
                     <Text style={[styles.text_light_gray, styles.textSize_13, styles.textRegular, styles.Width_100, styles.textLeft]}>
@@ -100,7 +100,6 @@ class Provider extends Component {
                 </View>
             </View>
         </TouchableOpacity>
-
         );
     };
 
@@ -162,7 +161,7 @@ class Provider extends Component {
                             </Animatable.View>
                         </View>
                         <View style={styles.mainScroll}>
-                            <ScrollView style={[styles.Width_100]} horizontal={true} showsHorizontalScrollIndicator={false}>
+                            <ScrollView style={[styles.Width_100, styles.paddingHorizontal_10]} horizontal={true} showsHorizontalScrollIndicator={false}>
 
                                 {
                                     this.props.sub_categories.map((pro) => (
@@ -170,13 +169,10 @@ class Provider extends Component {
                                         <View style={{flexDirection:'column' , justifyContent:'center' , alignItems:'center', alignSelf : 'center'}}>
                                             <TouchableOpacity
                                                 onPress        = {() => this.onSubCategories(pro.id)}
-                                                // style       = { pro.id === this.state.activeType ? styles.activeTabs : styles.noActiveTabs }
-                                                // style       = { pro.id === this.state.activeType ? styles.activeTabs : styles.noActiveTabs }
-                                                // style       = {[styles.scrollView, {backgroundColor : this.state.activeType === pro.id ? '#fff' : COLORS.light_gray , borderTopColor : this.state.activeType === pro.id ? COLORS.orange : 'transparent'}]}
                                                 style          = { this.state.active === pro.id ? styles.activeTabs : styles.noActiveTabs }>
                                                 <Image source={{ uri : pro.image }} style={[styles.scrollImg]} resizeMode={'contain'} />
                                             </TouchableOpacity>
-                                            <Text style={[styles.textRegular, styles.textSize_12 , { color : this.state.activeType === pro.id ? COLORS.black : 'transparent' }]} >
+                                            <Text style={[styles.textRegular, styles.textSize_11 , { color : this.state.active === pro.id ? COLORS.black : 'transparent' }]} >
                                                 {pro.name}
                                             </Text>
                                         </View>

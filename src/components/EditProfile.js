@@ -1,26 +1,12 @@
 import React, { Component } from "react";
-import {View, Text, Image, ImageBackground , ScrollView , TouchableOpacity , KeyboardAvoidingView , I18nManager} from "react-native";
-import {
-    Container,
-    Content,
-    Icon,
-    Header,
-    Left,
-    Button,
-    Body,
-    Title,
-    Form,
-    Item,
-    Input,
-    Right,
-    Textarea, Picker
-} from 'native-base'
+import {View, Text, Image, ImageBackground  , TouchableOpacity , KeyboardAvoidingView } from "react-native";
+import {Container, Content, Icon, Header, Left, Button, Body, Title, Form, Item, Input, Right, Picker} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
 import {DoubleBounce} from "react-native-loader";
 import * as Animatable from 'react-native-animatable';
 import {connect} from "react-redux";
-import { getCities , updateProfile } from '../actions'
+import {categoryHome, getCities, updateProfile} from '../actions'
 import COLORS from '../../src/consts/colors'
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -40,15 +26,25 @@ class EditProfile extends Component {
             latitude            : '',
             longitude           : '',
             city_name           : this.props.user.address,
-            userImage: this.props.user.avatar,
-            base64: null,
-            isSubmitted: false,
+            userImage           : this.props.user.avatar,
+            base64              : null,
+            isSubmitted         : false,
+            category_id	        : this.props.user.category_id,
         }
     }
 
     componentWillMount() {
-        this.props.getCities( this.props.lang )
+
+        this.props.getCities( this.props.lang );
+
+        if(this.props.user != null && this.props.user.type === 'provider'){
+
+            this.props.categoryHome( this.props.lang );
+
+        }
+
     }
+
     renderEditProfile(){
         if (this.state.username == '' || this.state.phone == ''){
             return (
@@ -76,17 +72,18 @@ class EditProfile extends Component {
 
     onUpdateProfile(){
         const data = {
-            name: this.state.username,
-            phone: this.state.phone,
-            city_id:this.state.country,
-            lat:this.state.latitude,
-            lng:this.state.longitude,
-            address:this.state.city_name,
-            avatar: this.state.base64,
-            category_id: null,
-            lang: this.props.lang,
-            token: this.props.user.token,
-            props: this.props,
+            name                : this.state.username,
+            phone               : this.state.phone,
+            city_id             : this.state.country,
+            lat                 : this.state.latitude,
+            lng                 : this.state.longitude,
+            address             : this.state.city_name,
+            avatar              : this.state.base64,
+            category_id         : this.props.user != null && this.props.user.type === 'provider' ? this.state.category_id : null,
+            lang                : this.props.lang,
+            token               : this.props.user.token,
+            provider_details    : null,
+            props               : this.props,
         };
 
         this.setState({ isSubmitted: true });
@@ -94,10 +91,9 @@ class EditProfile extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ isSubmitted: false })
-        console.log('oooooo', this.props.navigation.state.params)
+        this.setState({ isSubmitted: false });
         if( nextProps.navigation.state.params != undefined ||  nextProps.navigation.state.params  != undefined){
-            this.state.city_name            =   nextProps.navigation.state.params.city_name;
+            this.state.city_name            = nextProps.navigation.state.params.city_name;
             this.setState({latitude   : nextProps.navigation.state.params.latitude});
             this.setState({longitude  : nextProps.navigation.state.params.longitude});
         }else{
@@ -123,7 +119,6 @@ class EditProfile extends Component {
 
         console.log(result);
 
-        // check if there is image then set it and make button not disabled
         if (!result.cancelled) {
             this.setState({ userImage: result.uri ,base64:result.base64});
         }
@@ -131,6 +126,8 @@ class EditProfile extends Component {
 
 
     onValueCountry      (value) {this.setState({country: value});}
+
+    onValueCategory     (value) {this.setState({category_id: value});}
 
     activeInput(type){
         if (type === 'username' || this.state.username !== ''){
@@ -172,11 +169,12 @@ class EditProfile extends Component {
     render() {
 
         let image = this.state.userImage;
+
         return (
             <Container>
                 <Header style={styles.headerView}>
                     <Left style={styles.leftIcon}>
-                        <Button style={styles.Button} transparent onPress={() => this.props.navigation.navigate('profile')}>
+                        <Button style={styles.Button} transparent onPress={() => this.props.navigation.goBack()}>
                             <Icon style={[styles.text_black, styles.textSize_22]} type="AntDesign" name='right' />
                         </Button>
                     </Left>
@@ -194,7 +192,7 @@ class EditProfile extends Component {
 
 
 
-                        {image != null?
+                        { image != null ?
 
                             <View style={[styles.position_R, styles.Width_90, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter,{right:20}]}>
                                 <View style={[styles.blackOverlay, styles.Border , {top:10 , left:10}]}/>
@@ -263,6 +261,41 @@ class EditProfile extends Component {
                                     </View>
                                 </View>
 
+                                {
+                                    this.props.user != null && this.props.user.type === 'provider' ?
+
+                                        <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15,styles.Width_100, styles.Active,]}>
+                                            <Item style={styles.itemPiker} regular>
+                                                <Picker
+                                                    mode                    = "dropdown"
+                                                    style                   = {styles.Picker}
+                                                    placeholderStyle        = {[styles.textRegular,{ color: "#7C7C7C", writingDirection: 'rtl', width : '100%', fontSize : 14 }]}
+                                                    selectedValue           = {this.state.category_id}
+                                                    onValueChange           = {this.onValueCategory.bind(this)}
+                                                    textStyle               = {[styles.textRegular,{ color: "#7C7C7C", writingDirection: 'rtl', width : '100%', }]}
+                                                    placeholder             = {i18n.translate('category')}
+                                                    itemTextStyle           = {[styles.textRegular,{ color: "#7C7C7C", writingDirection: 'rtl', width : '100%', }]}
+                                                >
+
+                                                    <Picker.Item style={[styles.Width_100]} label={i18n.t('category')} value={null} />
+                                                    {
+                                                        this.props.categories.map((cate, i) => (
+                                                            <Picker.Item style={styles.Width_100} key={i} label={cate.name} value={cate.id} />
+                                                        ))
+                                                    }
+
+                                                </Picker>
+                                            </Item>
+                                            <Icon style={styles.iconPicker} type="AntDesign" name='down' />
+                                            <View style = {[ styles.position_A , styles.bg_light_oran, styles.flexCenter, styles.iconInput, styles.left_0 , {top:-1, left:-1}]}>
+                                                <Icon style = {[styles.text_orange, styles.textSize_22]} type="FontAwesome5" name='pencil-alt' />
+                                            </View>
+                                        </View>
+
+                                        :
+                                        <View/>
+                                }
+
                                 <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15,styles.Width_100, styles.Active,]}>
                                     <Item style={styles.itemPiker} regular>
                                         <Picker
@@ -330,11 +363,12 @@ class EditProfile extends Component {
 }
 
 
-const mapStateToProps = ({ lang , cities , profile}) => {
+const mapStateToProps = ({ lang , cities , profile, categoryHome}) => {
     return {
-        lang        : lang.lang,
-        cities      : cities.cities,
-        user        : profile.user
+        lang            : lang.lang,
+        cities          : cities.cities,
+        user            : profile.user,
+        categories      : categoryHome.categories,
     };
 };
-export default connect(mapStateToProps, {getCities , updateProfile})(EditProfile);
+export default connect(mapStateToProps, {getCities , updateProfile, categoryHome})(EditProfile);

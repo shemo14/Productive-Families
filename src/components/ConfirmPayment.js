@@ -30,7 +30,9 @@ class ConfirmPayment extends Component {
         }
     }
 
-
+    onFocus(){
+        this.componentDidMount();
+    }
     render() {
 
         return (
@@ -77,7 +79,7 @@ class ConfirmPayment extends Component {
                                     styles.marginVertical_15,
                                     styles.height_40
                                 ]}
-                                onPress={() => this.onLoginPressed()}>
+                                onPress={() => this.props.navigation.navigate('drawerNavigator')}>
                                 <Text style={[styles.textBold , styles.textSize_14, styles.text_White]}>
                                     {i18n.translate('gohome')}
                                 </Text>

@@ -1,3 +1,5 @@
+import i18n from "./i18n";
+
 const ar = {
     'language'                  : 'إختيار اللغة',
     'login'                     : 'تسجيل دخول',
@@ -59,10 +61,8 @@ const ar = {
     'entername'                 : 'ادخل اسم المستخدم',
     'city'                      : 'المدينه',
     'choosecity'                : 'إختر المدينه',
-
-
-
-
+    'moreinfo'                  : 'بيانات آخري',
+    'serinfo'                   : 'بيانات آخري لا يمكن التعديل عليها',
     'FAQs'                      : 'اسئله متكرره',
     'suggest'                   : 'إبلاغ آو إقتراح',
     'myorder'                   : 'طلباتي',
@@ -77,7 +77,7 @@ const ar = {
     'basket'                    : 'السله',
     'user'                      : 'عميل',
     'provider'                  : 'مقدم خدمه',
-    'gest'                      : 'زائر',
+    'delegat'                   : 'مندوب',
     'viewgest'                  : 'إختيار المسجل',
     'map'                       : 'الموقع',
     'sallary'                   : 'الآكثر مبيعا',
@@ -99,8 +99,18 @@ const ar = {
     'nopro'                     : 'لا يوجد مزود خدمه',
     'nodata'                    : 'لا يوجد شئ للعرض',
     'addcomm'                   : 'آضف محتوي التعليق',
-
-
+    'PhotoID'                   : 'صوره الهويه',
+    'PhotoCar'                  : 'صوره السياره',
+    'PhotoLicense'              : 'صوره الرخصه',
+    'category'                  : 'القسم',
+    'namecategory'              : 'اسم القسم',
+    'namepro'                   : 'يجب إدخال اسم المنتج',
+    'kindpro'                   : 'يجب إختيار نوع المنتج',
+    'monypro'                   : 'يجب إدخال سعر للمنتج',
+    'discount'                  : 'إدخل نسبه خصم للمنتج',
+    'info'                      : 'يجب إدخال وصف للمنتج',
+    'infoimage'                 : 'يجب إختيار صور المنتج',
+    'namestore'                 : 'اسم المتجر',
 
 
 
@@ -115,6 +125,7 @@ const ar = {
     'myAcc'                     : 'حسابي',
     'priceprod'                 : 'سعر المنتجات',
     'deliveryprice'             : 'سعر التوصيل',
+    'productsprice'             : 'سعر المنتجات',
     'totalprice'                : 'السعر الإجمالي',
     'Location'                  : 'تحديد الموقع',
     'pay'                       : 'الدفع',
@@ -136,7 +147,25 @@ const ar = {
     'verifyPassword'            : 'كلمة المرور و تأكيد كلمة المرور غير متطابقين',
     'orderStatus'               : 'حالة الطلب',
     'aboutDelegate'             : 'عن المندوب',
+    'aboutClient'               : 'عن العميل',
     'hanging'                   : 'معلق',
+    'deleteOrder'               : 'حذف الطلب',
+    'payMethod'                 : 'طريقة الدفع',
+    'ok'                        : 'موافقة',
+    'refuse'                    : 'رفض',
+    'accNum'                    : 'رقم الحساب',
+    'finishDate'                : 'تاريخ الانتهاء',
+    'confirmCode'               : 'كود التأكيد',
+    'cash'                      : 'كاش',
+    'visa'                      : 'فيزا/ماستر كارد',
+    'payPal'                    : 'باي بال',
+    'sdad'                      : 'سداد',
+    'underProssess'             : 'تحت التاكيد',
+    'accepted'                  : 'تمت الموافقه',
+    'done'                      : 'منفذه',
+    'canceled'                  : 'ملغاه',
+    'confirmation'              : 'تاكيد الموافقة',
+    'confirmationText'          : 'تم تأكيد الموافقة وسيتم ارسال اشعار للعميل بالموافقة وتنفيذ الطلب',
 };
 
 export default ar;

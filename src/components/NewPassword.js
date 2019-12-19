@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground, AsyncStorage,} from "react-native";
-import {Container, Content, Form, Item, Input, Button, Toast, Icon} from 'native-base'
+import {View, Text, Image, TouchableOpacity, ImageBackground,} from "react-native";
+import {Container, Content, Form, Item, Input, Toast, Icon} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
-import {DoubleBounce} from "react-native-loader";
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
+import { newPass } from "../actions";
 
 
 class NewPassword extends Component {
@@ -20,6 +20,13 @@ class NewPassword extends Component {
             rePasswordStatus    : 0,
             codeStatus          : 0,
         }
+    }
+
+    componentWillMount() {
+
+        const code  = this.props.navigation.state.params.code;
+        alert(code);
+
     }
 
     activeInput(type){
@@ -88,8 +95,8 @@ class NewPassword extends Component {
     onLoginPressed() {
         const err = this.validate();
         if (!err){
-            const {code , password , confirmpassword} = this.state;
-            this.props.userLogin({ code , password , confirmpassword }, this.props.lang);
+            const { code , password } = this.state;
+            this.props.newPass({ code , password }, this.props.lang, this.props);
         }
     }
 
@@ -190,4 +197,4 @@ const mapStateToProps = ({ lang }) => {
         lang		: lang.lang
     };
 };
-export default connect(mapStateToProps, {  })(NewPassword);
+export default connect(mapStateToProps, { newPass })(NewPassword);

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground, Linking} from "react-native";
+import {View, Text, Image, TouchableOpacity, ImageBackground, Linking, Animated, Dimensions} from "react-native";
 import {Container, Content, Header, Button, Left, Icon, Body, Title, Right} from 'native-base'
 import styles from '../../assets/style'
 import { DoubleBounce } from 'react-native-loader';
@@ -8,6 +8,10 @@ import { getCartList } from '../actions'
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 import i18n from "../../locale/i18n";
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 
 class Basket extends Component {
@@ -15,7 +19,8 @@ class Basket extends Component {
         super(props);
 
         this.state={
-            starCount: 3.5
+            starCount: 3.5,
+			loader: true
         }
     }
 
@@ -29,21 +34,61 @@ class Basket extends Component {
         drawerIcon  : ( <Icon style={styles.icon} type="SimpleLineIcons" name="home" /> )
     });
 
-    renderLoader(){
-        if (this.props.loader){
-            return(
-                <View style={[styles.loading, styles.flexCenter]}>
-                    <DoubleBounce size={20} />
-                </View>
-            );
-        }
-    }
+	componentWillReceiveProps(nextProps) {
+		this.setState({loader: false});
+	}
+
+	runPlaceHolder() {
+		if (Array.isArray(this.loadingAnimated) && this.loadingAnimated.length > 0) {
+			Animated.parallel(
+				this.loadingAnimated.map(animate => {
+					if (animate && animate.getAnimated) {
+						return animate.getAnimated();
+					}
+					return null;
+				}),
+				{
+					stopTogether: false,
+				}
+			).start(() => {
+				this.runPlaceHolder();
+			})
+		}
+	}
+
+	_renderRows(loadingAnimated, numberRow, uniqueKey) {
+		let shimmerRows = [];
+		for (let index = 0; index < numberRow; index++) {
+			shimmerRows.push(
+				<ShimmerPlaceHolder
+					key={`loading-${index}-${uniqueKey}`}
+					ref={(ref) => loadingAnimated.push(ref)}
+					style={{marginBottom: 7, alignSelf: 'center'}}
+					width={width - 20}
+					height={100}
+					colorShimmer={['#ffffff75', '#FEDAD075', '#ffffff75']}
+				/>
+			)
+		}
+
+		return (
+			<View style={{position: 'absolute', zIndex: 10, height: height - 175, bottom: 0, alignSelf: 'center'}}>
+				<ImageBackground source={require('../../assets/images/bg_img.png')}
+					style={[styles.bgFullWidth, {height: '100%', flex: 1}]}>
+					{shimmerRows}
+				</ImageBackground>
+			</View>
+		)
+	}
+
 
     onFocus(){
         this.componentDidMount();
     }
 
     render() {
+
+		this.loadingAnimated = [];
 
         return (
             <Container>
@@ -63,39 +108,45 @@ class Basket extends Component {
                     </Body>
                 </Header>
                 <Content  contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
-                    { this.renderLoader() }
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                         {
+							this.state.loader ?
+								this._renderRows(this.loadingAnimated, 5, '5rows')
+								:
 
-                            this.props.cartList.map((cart, i) => (
-                                <TouchableOpacity onPress={() => this.props.navigation.navigate('DetailsBasket' , {provider_id:cart.id})} key={i}
-                                    style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop:10}]}>
-                                    <View style={[styles.lightOverlay, styles.Border]}></View>
-                                    <View
-                                        style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                        <View style={[styles.icImg, styles.flex_30]}>
-                                            <Image style={[styles.icImg]}
-                                                   source={{ uri: cart.avatar }}
-                                                   resizeMode={'cover'}/>
-                                        </View>
-                                        <View style={[styles.flex_70]}>
-                                            <View style={[styles.rowGroup]}>
-                                                <Text style={[styles.textRegular, styles.text_orange]}>{cart.name}</Text>
-                                            </View>
-                                            <View style={[styles.overHidden]}>
-                                                <Text
-                                                    style={[styles.textRegular, styles.text_gray, styles.Width_100, styles.textLeft]}>{cart.category}</Text>
-                                            </View>
-                                            <View style={[styles.overHidden, styles.rowRight]}>
-                                                <Icon style={[styles.text_gray, styles.textSize_14]} type="Feather"
-                                                      name='map-pin'/>
-                                                <Text
-                                                    style={[styles.textRegular, styles.text_gray, styles.marginHorizontal_5]}>{cart.address}</Text>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-                            ))
+                                <View>
+									{this.renderNoData()}
+
+									this.props.cartList.map((cart, i) => (
+									<TouchableOpacity onPress={() => this.props.navigation.navigate('DetailsBasket' , {provider_id:cart.id })} key={i}
+										style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop:10}]}>
+										<View style={[styles.lightOverlay, styles.Border]}></View>
+										<View
+											style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+											<View style={[styles.icImg, styles.flex_30]}>
+												<Image style={[styles.icImg]}
+													source={{ uri: cart.avatar }}
+													resizeMode={'cover'}/>
+											</View>
+											<View style={[styles.flex_70]}>
+												<View style={[styles.rowGroup]}>
+													<Text style={[styles.textRegular, styles.text_orange]}>{cart.name}</Text>
+												</View>
+												<View style={[styles.overHidden]}>
+													<Text
+														style={[styles.textRegular, styles.text_gray, styles.Width_100, styles.textLeft]}>{cart.category}</Text>
+												</View>
+												<View style={[styles.overHidden, styles.rowRight]}>
+													<Icon style={[styles.text_gray, styles.textSize_14]} type="Feather"
+														name='map-pin'/>
+													<Text
+														style={[styles.textRegular, styles.text_gray, styles.marginHorizontal_5]}>{cart.address}</Text>
+												</View>
+											</View>
+										</View>
+									</TouchableOpacity>
+									))
+                                </View>
                         }
 
                     </ImageBackground>
@@ -109,7 +160,7 @@ class Basket extends Component {
 const mapStateToProps = ({ lang , cartList , profile}) => {
     return {
         lang        : lang.lang,
-        cartList        : cartList.cartList,
+        cartList    : cartList.cartList,
         user        : profile.user
     };
 };

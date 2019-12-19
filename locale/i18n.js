@@ -12,8 +12,8 @@ I18n.translations = {
 
 I18n.locale = 'ar';
 
-// AsyncStorage.getItem('lang').then(lang => {
-//     I18n.locale = lang;
-// });
+AsyncStorage.getItem('lang').then(lang => {
+    I18n.locale = lang;
+});
 
 export default I18n;

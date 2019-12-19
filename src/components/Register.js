@@ -3,11 +3,14 @@ import {View, Text, Image, TouchableOpacity, ImageBackground,} from "react-nativ
 import {Container, Content, Form, Item, Input, Toast, CheckBox, Picker, Icon} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
-import {DoubleBounce} from "react-native-loader";
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 import {NavigationEvents} from "react-navigation";
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+import { getCities , register, categoryHome} from "../actions";
 
+import Spinner from "react-native-loading-spinner-overlay";
 
 class Register extends Component {
     constructor(props){
@@ -22,15 +25,23 @@ class Register extends Component {
             latitude            : '',
             longitude           : '',
             city_name           : '',
-            type		        : 0,
             usernameStatus      : 0,
             phoneStatus         : 0,
             passwordStatus      : 0,
             rePasswordStatus    : 0,
+            type		        : 0,
             userId		        : null,
             country	            : null,
             chooseUser	        : null,
+            category_id	        : null,
             checked             : false,
+            PhotoID             : i18n.t('PhotoID'),
+            PhotoCar            : i18n.t('PhotoCar'),
+            PhotoLicense        : i18n.t('PhotoLicense'),
+            IDbase64            : null,
+            Carbase64           : null,
+            Licensebase64       : null,
+            spinner             : false,
         }
     }
 
@@ -44,10 +55,13 @@ class Register extends Component {
             this.setState({city_name  : i18n.t('mapname')});
         }
 
+        this.props.categoryHome( this.props.lang );
+        this.props.getCities( this.props.lang );
+
     }
 
     onFocus(){
-        this.componentDidMount();
+        this.componentWillMount();
     }
 
     activeInput(type){
@@ -90,6 +104,8 @@ class Register extends Component {
     onValueUser         (value) {this.setState({chooseUser: value});}
 
     onValueCountry      (value) {this.setState({country: value});}
+
+    onValueCategory     (value) {this.setState({category_id: value});}
 
 
     validate = () => {
@@ -138,6 +154,49 @@ class Register extends Component {
         return isError;
     };
 
+    askPermissionsAsync = async () => {
+        await Permissions.askAsync(Permissions.CAMERA);
+        await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+    };
+
+    _pickImage = async (key) => {
+
+        this.askPermissionsAsync();
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [4, 3],
+            base64:true
+        });
+
+        let localUri = result.uri;
+        let filename = localUri.split('/').pop();
+        console.log(result);
+
+        if (!result.cancelled) {
+            if (key === 'ID'){
+                this.setState({
+                    idImage             : result.uri ,
+                    IDbase64            : result.base64 ,
+                    PhotoID             : filename ,
+                });
+            }else if(key === 'Car'){
+                this.setState({
+                    carImage            : result.uri ,
+                    Carbase64           : result.base64 ,
+                    PhotoCar            : filename ,
+                });
+            }else if(key === 'License'){
+                this.setState({
+                    licenseImage        : result.uri ,
+                    Licensebase64       : result.base64 ,
+                    PhotoLicense        : filename ,
+                });
+            }
+        }
+    };
+
     onRegisterPressed() {
 
         this.setState({ spinner: true });
@@ -145,17 +204,13 @@ class Register extends Component {
         const err = this.validate();
 
         if (!err){
+            const { username, chooseUser, phone, category_id, latitude, longitude, city_name, country, IDbase64, Carbase64, Licensebase64, password } = this.state;
+            const data = { username, chooseUser, phone, category_id, latitude, longitude, city_name, country, IDbase64, Carbase64, Licensebase64, password };
 
+            this.props.register(data, this.props, this.props.lang);
             this.setState({ spinner: false });
-
-            const { fullName, email, phone, password, NationalNnm } = this.state;
-            const data = {fullName, email, phone, password, NationalNnm, lang: this.props.lang,};
-
-            this.props.register(data, this.props);
         }else {
-
             this.setState({ spinner: false });
-
         }
     }
 
@@ -163,7 +218,10 @@ class Register extends Component {
         return (
             <Container>
 
-                {/*{ this.renderLoader() }*/}
+                <Spinner
+                    visible           = { this.state.spinner }
+                />
+
                 <NavigationEvents onWillFocus={() => this.onFocus()} />
 
                 <Content contentContainerStyle={styles.bgFullWidth}>
@@ -207,53 +265,90 @@ class Register extends Component {
                                     </View>
                                 </View>
 
-                                <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15,styles.Width_100, styles.borderBlack]}>
+                                <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15,styles.Width_100, styles.borderBold]}>
                                     <Item style={styles.itemPiker} regular>
                                         <Picker
                                             mode                    = "dropdown"
                                             style                   = {styles.Picker}
-                                            placeholderStyle        = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl', width : '100%', fontSize : 14 }]}
+                                            placeholderStyle        = {[styles.textRegular,{ color: "#7C7C7C", writingDirection: 'rtl', width : '100%', fontSize : 14 }]}
                                             selectedValue           = {this.state.chooseUser}
                                             onValueChange           = {this.onValueUser.bind(this)}
-                                            textStyle               = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl' }]}
+                                            textStyle               = {[styles.textRegular,{ color: "#7C7C7C", writingDirection: 'rtl' }]}
                                             placeholder             = {i18n.t('viewgest')}
-                                            itemTextStyle           = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl' }]}
+                                            itemTextStyle           = {[styles.textRegular,{ color: "#7C7C7C", writingDirection: 'rtl' }]}
                                         >
 
                                             <Picker.Item style={[styles.Width_100]} label={i18n.t('viewgest')} value={null} />
 
                                             <Picker.Item style={[styles.Width_100]} label={i18n.t('user')} value="user" />
                                             <Picker.Item style={[styles.Width_100]} label={i18n.t('provider')} value="provider" />
-                                            <Picker.Item style={[styles.Width_100]} label={i18n.t('gest')} value="gest" />
+                                            <Picker.Item style={[styles.Width_100]} label={i18n.t('delegat')} value="delegate" />
 
                                         </Picker>
                                     </Item>
                                     <Icon style={styles.iconPicker} type="AntDesign" name='down' />
                                 </View>
 
-                                <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15,styles.Width_100, styles.borderBlack]}>
+                                <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15, styles.Width_100, styles.borderBold]}>
                                     <Item style={styles.itemPiker} regular>
                                         <Picker
                                             mode                    = "dropdown"
                                             style                   = {styles.Picker}
-                                            placeholderStyle        = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl', width : '100%', fontSize : 14 }]}
+                                            placeholderStyle        = {[styles.textRegular,{ color: "#7C7C7C", writingDirection: 'rtl', width : '100%', fontSize : 14 }]}
                                             selectedValue           = {this.state.country}
                                             onValueChange           = {this.onValueCountry.bind(this)}
-                                            textStyle               = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl', width : '100%', }]}
-                                            placeholder             = {i18n.t('city')}
-                                            itemTextStyle           = {[styles.textRegular,{ color: "#636363", writingDirection: 'rtl', width : '100%', }]}
+                                            textStyle               = {[styles.textRegular,{ color: "#7C7C7C", writingDirection: 'rtl', width : '100%', }]}
+                                            placeholder             = {i18n.translate('city')}
+                                            itemTextStyle           = {[styles.textRegular,{ color: "#7C7C7C", writingDirection: 'rtl', width : '100%', }]}
                                         >
+
                                             <Picker.Item style={[styles.Width_100]} label={i18n.t('city')} value={null} />
+                                            {
+                                                this.props.citys.map((city, i) => (
+                                                    <Picker.Item style={styles.Width_100} key={i} label={city.name} value={city.id} />
+                                                ))
+                                            }
 
                                         </Picker>
                                     </Item>
                                     <Icon style={styles.iconPicker} type="AntDesign" name='down' />
                                 </View>
 
+                                {
+                                    this.state.chooseUser === 'provider' ?
+
+                                        <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15, styles.Width_100, styles.borderBold]}>
+                                            <Item style={styles.itemPiker} regular>
+                                                <Picker
+                                                    mode                    = "dropdown"
+                                                    style                   = {styles.Picker}
+                                                    placeholderStyle        = {[styles.textRegular,{ color: "#7C7C7C", writingDirection: 'rtl', width : '100%', fontSize : 14 }]}
+                                                    selectedValue           = {this.state.category_id}
+                                                    onValueChange           = {this.onValueCategory.bind(this)}
+                                                    textStyle               = {[styles.textRegular,{ color: "#7C7C7C", writingDirection: 'rtl', width : '100%', }]}
+                                                    placeholder             = {i18n.translate('category')}
+                                                    itemTextStyle           = {[styles.textRegular,{ color: "#7C7C7C", writingDirection: 'rtl', width : '100%', }]}
+                                                >
+
+                                                    <Picker.Item style={[styles.Width_100]} label={i18n.t('category')} value={null} />
+                                                    {
+                                                        this.props.categories.map((cate, i) => (
+                                                            <Picker.Item style={styles.Width_100} key={i} label={cate.name} value={cate.id} />
+                                                        ))
+                                                    }
+
+                                                </Picker>
+                                            </Item>
+                                            <Icon style={styles.iconPicker} type="AntDesign" name='down' />
+                                        </View>
+
+                                        :
+                                        <View/>
+                                }
+
                                 <TouchableOpacity
                                     style           = {[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}
-                                    onPress={() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})}
-                                >
+                                    onPress         = {() => this.props.navigation.navigate('MapLocation', {pageName : this.props.navigation.state.routeName})}>
                                     <Text style={[styles.textRegular , styles.text_black, styles.width_150]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
                                         { this.state.city_name }
                                     </Text>
@@ -261,6 +356,60 @@ class Register extends Component {
                                         <Icon style={[styles.text_black, styles.textSize_16]} type="Feather" name='map-pin' />
                                     </View>
                                 </TouchableOpacity>
+
+                                {
+                                    this.state.chooseUser === 'delegate' ?
+
+                                            <TouchableOpacity
+                                                style           = {[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}
+                                                onPress         = {()=> this._pickImage('ID')}>
+                                                <Text style={[styles.textRegular , styles.text_black, styles.width_150]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                    { this.state.PhotoID }
+                                                </Text>
+                                                <View style={[styles.overHidden]}>
+                                                    <Icon style={[styles.text_black, styles.textSize_16]} type="Feather" name='camera' />
+                                                </View>
+                                            </TouchableOpacity>
+
+                                        :
+                                        <View/>
+                                }
+
+                                {
+                                    this.state.chooseUser === 'delegate' ?
+
+                                            <TouchableOpacity
+                                                style           = {[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}
+                                                onPress         = {()=> this._pickImage('Car')}>
+                                                <Text style={[styles.textRegular , styles.text_black, styles.width_150]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                    { this.state.PhotoCar }
+                                                </Text>
+                                                <View style={[styles.overHidden]}>
+                                                    <Icon style={[styles.text_black, styles.textSize_16]} type="Feather" name='camera' />
+                                                </View>
+                                            </TouchableOpacity>
+
+                                        :
+                                        <View/>
+                                }
+
+                                {
+                                    this.state.chooseUser === 'delegate' ?
+
+                                            <TouchableOpacity
+                                                style           = {[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50,styles.rowGroup,styles.paddingHorizontal_10]}
+                                                onPress         = {()=> this._pickImage('License')}>
+                                                <Text style={[styles.textRegular , styles.text_black, styles.width_150]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                    { this.state.PhotoLicense }
+                                                </Text>
+                                                <View style={[styles.overHidden]}>
+                                                    <Icon style={[styles.text_black, styles.textSize_16]} type="Feather" name='camera' />
+                                                </View>
+                                            </TouchableOpacity>
+
+                                        :
+                                        <View/>
+                                }
 
                                 <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
                                     <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
@@ -345,9 +494,12 @@ class Register extends Component {
 }
 
 
-const mapStateToProps = ({ lang }) => {
+const mapStateToProps = ({ lang, cities, register, categoryHome }) => {
     return {
-        lang		: lang.lang
+        lang		    : lang.lang,
+        citys           : cities.cities,
+        loader          : register.loader,
+        categories      : categoryHome.categories,
     };
 };
-export default connect(mapStateToProps, {  })(Register);
+export default connect(mapStateToProps, { getCities , register, categoryHome })(Register);
