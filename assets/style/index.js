@@ -1061,7 +1061,7 @@ const styles = ({
     directionRow : {
         flexDirection:'row',
         alignItems:'center',
-        justifyContent:'space-between'
+        justifyContent:'center'
     },
     counterParent:{
         flexDirection:'column' ,

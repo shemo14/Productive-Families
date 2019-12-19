@@ -48,7 +48,7 @@ class Home extends Component {
 
     onSubCategories ( id ){
 
-        this.setState({spinner: true, active : id });
+        this.setState({active : id });
         this.props.homeProvider( this.props.lang , id ,this.props.user.token );
 
     }
