@@ -21,7 +21,7 @@ import COLORS from '../../src/consts/colors'
 import Swiper from 'react-native-swiper';
 import Modal from "react-native-modal";
 import {NavigationEvents} from "react-navigation";
-import {getOrderDetails , getCancelOrder , getDeleteOrder , getAcceptOrder} from '../actions'
+import {getOrderDetails , getCancelOrder , getDeleteOrder , getAcceptOrder , getFinishOrder} from '../actions'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 
 const width = Dimensions.get('window').width;
@@ -51,6 +51,50 @@ class OrderDetails extends Component {
     }
 
 
+
+    renderAcceptOrder(){
+        if (this.state.isSubmitted){
+            return(
+                <View style={[{ justifyContent: 'center', alignItems: 'center' , marginBottom:20 , alignSelf:'center' }]}>
+                    <DoubleBounce size={20} color={COLORS.orange} style={{ alignSelf: 'center' }} />
+                </View>
+            )
+        }
+
+        return (
+           <View style={[styles.Width_100 , styles.directionRowSpace , styles.paddingHorizontal_10, styles.marginVertical_15]}>
+               <TouchableOpacity
+                   onPress={() => this.acceptOrder()}
+                   style={[styles.cartBtn, styles.SelfCenter, {marginBottom: 20}]}>
+                   <Text
+                       style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('ok')}</Text>
+               </TouchableOpacity>
+
+               <TouchableOpacity
+                   onPress={() => this.cancelProviderOrder()}
+                   style={[styles.cartBtn, styles.SelfCenter, {
+                       marginBottom: 20,
+                       backgroundColor: '#8f8f8f96',
+                   }]}>
+                   <Text
+                       style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>{i18n.t('refuse')}</Text>
+               </TouchableOpacity>
+           </View>
+        );
+    }
+
+    acceptOrder(){
+        this.setState({ isSubmitted: true });
+        this.props.getAcceptOrder(this.props.lang, this.props.navigation.state.params.order_id , this.props.user.token  , this.props )
+    }
+
+
+    cancelProviderOrder(){
+        this.setState({ isSubmitted: true });
+        this.props.getCancelOrder(this.props.lang, this.props.navigation.state.params.order_id , null , this.props.user.token , this.props )
+    }
+
+
     renderDeleteOrder(){
         if (this.state.isSubmitted){
             return(
@@ -75,10 +119,10 @@ class OrderDetails extends Component {
         this.props.getDeleteOrder(this.props.lang, this.props.navigation.state.params.order_id , this.props.user.token  , this.props )
     }
 
-    renderAcceptOrder(){
+    renderFinishOrder(){
         if (this.state.isSubmitted){
             return(
-                <View style={[{ justifyContent: 'center', alignItems: 'center' , marginBottom:20 , alignSelf:'center' }]}>
+                <View style={[{ justifyContent: 'center', alignItems: 'center' , marginBottom:20 }]}>
                     <DoubleBounce size={20} color={COLORS.orange} style={{ alignSelf: 'center' }} />
                 </View>
             )
@@ -86,17 +130,17 @@ class OrderDetails extends Component {
 
         return (
             <TouchableOpacity
-                onPress={() => this.acceptOrder()}
+                onPress={() => this.finishOrder()}
                 style={[styles.cartBtn, styles.SelfCenter, {marginBottom: 20}]}>
                 <Text
-                    style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('ok')}</Text>
+                    style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('finishOrder')}</Text>
             </TouchableOpacity>
         );
     }
 
-    acceptOrder(){
+    finishOrder(){
         this.setState({ isSubmitted: true });
-        this.props.getAcceptOrder(this.props.lang, this.props.navigation.state.params.order_id , this.props.user.token  , this.props )
+        this.props.getFinishOrder(this.props.lang, this.props.navigation.state.params.order_id , this.props.user.token  , this.props )
     }
 
     componentWillReceiveProps(nextProps) {
@@ -160,34 +204,17 @@ class OrderDetails extends Component {
           return(
 
               this.props.navigation.state.params.orderType === 0  ?
-                  <View
-                      style={[styles.directionRowSpace, styles.paddingHorizontal_10, styles.marginVertical_15]}>
-
-                      {
-                          this.renderAcceptOrder()
-                      }
 
 
-                      <TouchableOpacity
-                          onPress={() => this.cancelOrder()}
-                          style={[styles.cartBtn, styles.SelfCenter, {
-                              marginBottom: 20,
-                              backgroundColor: '#8f8f8f96'
-                          }]}>
-                          <Text
-                              style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>{i18n.t('refuse')}</Text>
-                      </TouchableOpacity>
+                  this.renderAcceptOrder()
 
-                  </View>
+
                   :
 
                   this.props.navigation.state.params.orderType === 1  || this.props.navigation.state.params.orderType === 2  ?
-                      <TouchableOpacity
-                          // onPress={() => this.toggleModal()}
-                                        style={[styles.cartBtn, styles.SelfCenter, {marginBottom: 20}]}>
-                          <Text
-                              style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('finishOrder')}</Text>
-                      </TouchableOpacity>
+
+                      this.renderFinishOrder()
+
                       :
                       <View/>
           )
@@ -364,10 +391,8 @@ class OrderDetails extends Component {
                                                             borderLeftColor: COLORS.orange
                                                         }]}>
                                                     <View style={[styles.directionColumn, {flex: 1}]}>
-                                                        <View style={[styles.directionRow]}>
-                                                            <Text
-                                                                style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft, {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>{i18n.t('orderStatus')}</Text>
-                                                        </View>
+                                                        <Text
+                                                            style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft, {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>{i18n.t('orderStatus')}</Text>
                                                         <Text
                                                             style={[styles.textRegular, styles.text_orange, styles.textSize_14, styles.textLeft, {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>{this.props.orderDetails.status_text}</Text>
                                                     </View>
@@ -379,7 +404,7 @@ class OrderDetails extends Component {
 
 
                                     {
-                                        this.props.navigation.state.params.orderType === 2 || this.props.navigation.state.params.orderType === 3 ?
+                                        this.props.orderDetails.order_status == 2  ?
                                                 <View
                                                     style={[styles.position_R, styles.Width_95, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter]}>
                                                     <View style={[styles.lightOverlay, styles.Border]}></View>
@@ -483,4 +508,4 @@ const mapStateToProps = ({lang , orderDetails , profile}) => {
         user: profile.user,
     };
 };
-export default connect(mapStateToProps, {getOrderDetails , getCancelOrder , getDeleteOrder , getAcceptOrder})(OrderDetails);
+export default connect(mapStateToProps, {getOrderDetails , getCancelOrder , getDeleteOrder , getAcceptOrder , getFinishOrder})(OrderDetails);
