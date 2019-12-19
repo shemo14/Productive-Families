@@ -199,14 +199,20 @@ class FilterCategory extends Component {
 
                         <View style={[styles.marginVertical_5, styles.overHidden]}>
 
-                            <FlatList
-                                data                    = {this.props.providers}
-                                renderItem              = {({item}) => this.renderItems(item)}
-                                numColumns              = {1}
-                                keyExtractor            = {this._keyExtractor}
-                                // extraData               = {this.props.categoryProviders}
-                                onEndReachedThreshold   = {isIOS ? .01 : 1}
-                            />
+                            {
+                                this.props.providers?
+
+                                    <FlatList
+                                        data                    = {this.props.providers}
+                                        renderItem              = {({item}) => this.renderItems(item)}
+                                        numColumns              = {1}
+                                        keyExtractor            = {this._keyExtractor}
+                                        // extraData               = {this.props.categoryProviders}
+                                        onEndReachedThreshold   = {isIOS ? .01 : 1}
+                                    />
+                                    :
+                                    <View/>
+                            }
 
                         </View>
 
@@ -242,27 +248,49 @@ class FilterCategory extends Component {
                                             <View style={[styles.centerColum, styles.Width_90, styles.bgFullWidth]}>
 
                                                 <View style={[styles.viewPiker, styles.flexCenter,styles.marginVertical_15, styles.Width_100, styles.bg_White]}>
-                                                    <Item style={styles.itemPiker} regular>
-                                                        <Picker
-                                                            mode                    = "dropdown"
-                                                            style                   = {styles.Picker}
-                                                            placeholderStyle        = {[styles.textRegular,{ color: "#121212", writingDirection: 'rtl', width : '100%', fontSize : 14 }]}
-                                                            selectedValue           = {this.state.country}
-                                                            onValueChange           = {this.onValueCountry.bind(this)}
-                                                            textStyle               = {[styles.textRegular,{ color: "#121212", writingDirection: 'rtl', width : '100%', }]}
-                                                            placeholder             = {i18n.translate('city')}
-                                                            itemTextStyle           = {[styles.textRegular,{ color: "#121212", writingDirection: 'rtl', width : '100%', }]}
-                                                        >
 
-                                                            <Picker.Item style={[styles.Width_100]} label={i18n.t('city')} value={null} />
-                                                            {
-                                                                this.props.citys.map((city, i) => (
-                                                                    <Picker.Item style={styles.Width_100} key={i} label={city.name} value={city.id} />
-                                                                ))
-                                                            }
+                                                    {
+                                                        this.props.citys ?
+                                                            <Item style={styles.itemPiker} regular>
+                                                                <Picker
+                                                                    mode="dropdown"
+                                                                    style={styles.Picker}
+                                                                    placeholderStyle={[styles.textRegular, {
+                                                                        color: "#121212",
+                                                                        writingDirection: 'rtl',
+                                                                        width: '100%',
+                                                                        fontSize: 14
+                                                                    }]}
+                                                                    selectedValue={this.state.country}
+                                                                    onValueChange={this.onValueCountry.bind(this)}
+                                                                    textStyle={[styles.textRegular, {
+                                                                        color: "#121212",
+                                                                        writingDirection: 'rtl',
+                                                                        width: '100%',
+                                                                    }]}
+                                                                    placeholder={i18n.translate('city')}
+                                                                    itemTextStyle={[styles.textRegular, {
+                                                                        color: "#121212",
+                                                                        writingDirection: 'rtl',
+                                                                        width: '100%',
+                                                                    }]}
+                                                                >
 
-                                                        </Picker>
-                                                    </Item>
+                                                                    <Picker.Item style={[styles.Width_100]}
+                                                                                 label={i18n.t('city')} value={null}/>
+                                                                    {
+                                                                        this.props.citys.map((city, i) => (
+                                                                            <Picker.Item style={styles.Width_100}
+                                                                                         key={i} label={city.name}
+                                                                                         value={city.id}/>
+                                                                        ))
+                                                                    }
+
+                                                                </Picker>
+                                                            </Item>
+                                                            :
+                                                            <View/>
+                                                    }
                                                     <Icon style={styles.iconPicker} type="AntDesign" name='down' />
                                                 </View>
 

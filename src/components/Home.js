@@ -11,6 +11,7 @@ import i18n from "../../locale/i18n";
 import StarRating from "react-native-star-rating";
 import COLORS from "../consts/colors";
 import Spinner from "react-native-loading-spinner-overlay";
+import {Notifications} from "expo";
 
 const isIOS = Platform.OS === 'ios';
 
@@ -45,6 +46,9 @@ class Home extends Component {
 
     }
 
+    componentDidMount() {
+        Notifications.addListener(this.handleNotification);
+    }
 
     onSubCategories ( id ){
 
@@ -169,6 +173,15 @@ class Home extends Component {
     onFocus(){
         this.componentWillMount();
     }
+
+
+    handleNotification = (notification) => {
+        if (notification && notification.origin !== 'received') {
+            this.props.navigation.navigate('notifications');
+        }
+    }
+
+
 
     render() {
 

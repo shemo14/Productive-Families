@@ -59,7 +59,7 @@ class Notifications extends Component {
                 , { borderWidth: 1, borderTopColor : COLORS.lightWhite ,borderBottomColor : COLORS.lightWhite ,borderRightColor : COLORS.lightWhite , borderLeftWidth:5 ,
                         borderLeftColor: item.index % 2 === 0 ? COLORS.orange : COLORS.black}]}>
                     <View style={[styles.directionColumn , {flex:1}]}>
-                        <View style={[styles.directionRow ]}>
+                        <View style={[styles.directionRowSpace ]}>
                             <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>{item.item.title}</Text>
                             <TouchableOpacity
                                 style           = {[{width:22 , height:22}, styles.flexCenter, styles.bg_red, styles.borderLightOran, styles.Radius_60]}

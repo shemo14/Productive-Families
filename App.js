@@ -1,5 +1,5 @@
 import React from 'react';
-import {AsyncStorage, View} from 'react-native';
+import {AsyncStorage, View , Platform} from 'react-native';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import AppNavigator from './src/routes';
@@ -12,6 +12,12 @@ import './ReactotronConfig';
 import * as Permissions from "expo-permissions";
 import { Notifications } from 'expo'
 
+
+// Keystore password: f776e28dca4949babd81eb1fa896b21b
+// Key alias:         QGFtYW55X2thc3NlbS9jaGlmeg==
+// Key password:      b6865066ba7248d582f69b6802384111
+
+
 export default class App extends React.Component {
 
   constructor(props) {
@@ -23,6 +29,16 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
+
+    if (Platform.OS === 'android') {
+      Notifications.createChannelAndroidAsync('orders', {
+        name: 'Chat messages',
+        sound: true,
+      });
+    }
+
+    // Notifications.addListener(this.handleNotification);
+
 
     await Font.loadAsync({
       cairo             : require('./assets/fonts/Cairo-Regular.ttf'),
@@ -37,6 +53,14 @@ export default class App extends React.Component {
     // AsyncStorage.clear();
 
   }
+
+  //
+  // handleNotification = (notification) => {
+  //   if (notification && notification.origin !== 'received') {
+  //     this.props.navigation.navigate('notifications');
+  //   }
+  // }
+
 
   async componentWillMount() {
 
@@ -56,6 +80,7 @@ export default class App extends React.Component {
     }
 
     const deviceId = await Notifications.getExpoPushTokenAsync();
+    console.log('deviceIddeviceId' , deviceId)
 
     AsyncStorage.setItem('deviceID', deviceId);
 

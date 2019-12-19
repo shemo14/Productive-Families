@@ -212,145 +212,152 @@ class Product extends Component {
                 </Header>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
-
-                        <View style={styles.viewBlock}>
-                            <Swiper
-                                containerStyle      = {[styles.Width_95, styles.marginVertical_15, styles.swiper, styles.viewBlock]}
-                                autoplay            = {true}
-                                paginationStyle     = {{ alignSelf : "flex-end", paddingHorizontal : 30 , position:  'absolute',transform : [{ rotate: '90deg' }] , right : -330, zIndex: 999}}
-                                dotStyle            = {{ backgroundColor: '#fff' }}
-                                activeDotStyle      = {{ backgroundColor: '#F00', width: 20,}}
-                                animated            = {true}
-                                loop                = {true}
-                                autoplayTimeout     = { 2 }
-                            >
-
-                                {
-                                    this.props.images.map((img) => (
-
-                                        <View style={[styles.viewBlock]}>
-                                            <Image style={[styles.Width_95, styles.swiper]} source={{ uri : img.image}} resizeMode={'cover'}/>
-                                            {
-                                                this.props.user == null || this.props.user.type === 'user' ?
-                                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
-                                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                                            <TouchableOpacity onPress = {() => this.toggleFavorite(this.props.products.id)}>
-                                                                {
-                                                                    this.props.products.is_fav === 1 ?
-                                                                        <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='heart' />
-                                                                        :
-                                                                        <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='hearto' />
-                                                                }
-                                                            </TouchableOpacity>
-                                                        </View>
-                                                    </Animatable.View>
-                                                    :
-                                                    <View/>
-                                            }
-                                            {
-                                                this.props.user == null || this.props.user.type === 'provider' ?
-                                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent, styles.top_5, styles.marginVertical_10]}>
-                                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                                            <TouchableOpacity onPress = {() => this.editProdect()}>
-                                                                <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='edit' />
-                                                            </TouchableOpacity>
-                                                        </View>
-                                                    </Animatable.View>
-                                                    :
-                                                    <View/>
-                                            }
-                                            {
-                                                this.props.user == null || this.props.user.type === 'provider' ?
-                                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent , styles.top_35, styles.marginVertical_25]}>
-                                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                                            <TouchableOpacity onPress = {() => this.deletProduct()}>
-                                                                <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='close' />
-                                                            </TouchableOpacity>
-                                                        </View>
-                                                    </Animatable.View>
-                                                    :
-                                                    <View/>
-                                            }
-                                        </View>
-
-                                    ))
-                                }
-
-                            </Swiper>
-                        </View>
-
-                        <View style={[ styles.Width_90, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter]}>
-                            <View style={[styles.lightOverlay, styles.Border]}/>
-                            <View style={[styles.Width_100, styles.overHidden, styles.bg_White, styles.Border,styles.bgFullWidth,styles.paddingHorizontal_7 , styles.paddingVertical_7]}>
-                                <View style={[styles.overHidden]}>
-                                    <View style={[styles.rowGroup]}>
-                                        <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft, ]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
-                                            {this.props.products.name}
-                                        </Text>
-                                        <View style={{width:70}}>
-                                            <StarRating
-                                                disabled        = {true}
-                                                maxStars        = {5}
-                                                rating          = {this.props.products.rates}
-                                                fullStarColor   = {COLORS.orange}
-                                                starSize        = {15}
-                                                starStyle       = {styles.starStyle}
-                                            />
-                                        </View>
-                                    </View>
-                                    <Text style={[styles.textRegular, styles.text_bold_gray, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
-                                        {this.props.products.category} - {this.props.products.sub_category}
-                                    </Text>
-                                    <View style={[styles.directionRow]}>
-                                        <View style={[styles.Width_93]}>
-                                            <Text style={[styles.textRegular, styles.text_black, styles.textSize_14]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
-                                                {i18n.t('productSpec')}
-                                            </Text>
-                                            <Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_12]} >
-                                                {this.props.products.description}
-                                            </Text>
-                                        </View>
+                        {
+                            this.props.products ?
+                            <View>
+                                <View style={styles.viewBlock}>
+                                    <Swiper
+                                        containerStyle      = {[styles.Width_95, styles.marginVertical_15, styles.swiper, styles.viewBlock]}
+                                        autoplay            = {true}
+                                        paginationStyle     = {{ alignSelf : "flex-end", paddingHorizontal : 30 , position:  'absolute',transform : [{ rotate: '90deg' }] , right : -330, zIndex: 999}}
+                                        dotStyle            = {{ backgroundColor: '#fff' }}
+                                        activeDotStyle      = {{ backgroundColor: '#F00', width: 20,}}
+                                        animated            = {true}
+                                        loop                = {true}
+                                        autoplayTimeout     = { 2 }
+                                    >
 
                                         {
-                                            this.props.user == null || this.props.user.type === 'user' ?
-                                                <View style={styles.counterParent}>
-                                                    <TouchableOpacity onPress={() => this.increment()} style={styles.touchPlus}>
-                                                        <Icon type={'Entypo'} name={'plus'} style={styles.plus} />
-                                                    </TouchableOpacity>
-                                                    <View style={[styles.directionColumn , styles.countText ]}>
-                                                        <Text style={[styles.text_orange ,styles.textRegular, styles.textSize_14]}>
-                                                            {this.state.value}
-                                                        </Text>
-                                                    </View>
-                                                    <TouchableOpacity onPress={() => this.decrement()} style={styles.touchMinus}>
-                                                        <Icon type={'Entypo'} name={'minus'} style={styles.minus} />
-                                                    </TouchableOpacity>
+                                            this.props.images.map((img) => (
+
+                                                <View style={[styles.viewBlock]}>
+                                                    <Image style={[styles.Width_95, styles.swiper]} source={{ uri : img.image}} resizeMode={'cover'}/>
+                                                    {
+                                                        this.props.user == null || this.props.user.type === 'user' ?
+                                                            <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
+                                                                <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                                                    <TouchableOpacity onPress = {() => this.toggleFavorite(this.props.products.id)}>
+                                                                        {
+                                                                            this.props.products.is_fav === 1 ?
+                                                                                <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='heart' />
+                                                                                :
+                                                                                <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='hearto' />
+                                                                        }
+                                                                    </TouchableOpacity>
+                                                                </View>
+                                                            </Animatable.View>
+                                                            :
+                                                            <View/>
+                                                    }
+                                                    {
+                                                        this.props.user == null || this.props.user.type === 'provider' ?
+                                                            <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent, styles.top_5, styles.marginVertical_10]}>
+                                                                <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                                                    <TouchableOpacity onPress = {() => this.editProdect()}>
+                                                                        <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='edit' />
+                                                                    </TouchableOpacity>
+                                                                </View>
+                                                            </Animatable.View>
+                                                            :
+                                                            <View/>
+                                                    }
+                                                    {
+                                                        this.props.user == null || this.props.user.type === 'provider' ?
+                                                            <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent , styles.top_35, styles.marginVertical_25]}>
+                                                                <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                                                    <TouchableOpacity onPress = {() => this.deletProduct()}>
+                                                                        <Icon style={[styles.text_orange , styles.textSize_20]} type="AntDesign" name='close' />
+                                                                    </TouchableOpacity>
+                                                                </View>
+                                                            </Animatable.View>
+                                                            :
+                                                            <View/>
+                                                    }
                                                 </View>
-                                                :
-                                                <View/>
+
+                                            ))
                                         }
 
-                                    </View>
-                                    <View style={[styles.rowGroup , styles.marginVertical_15]}>
-                                        <View style={[styles.rowGroup]}>
-                                            <Text style={[styles.textRegular, styles.text_bold_gray,styles.textSize_14, styles.textLeft ]} >
-                                                {i18n.t('productPrice')}
+                                    </Swiper>
+                                </View>
+
+                                <View style={[ styles.Width_90, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter]}>
+                                    <View style={[styles.lightOverlay, styles.Border]}/>
+                                    <View style={[styles.Width_100, styles.overHidden, styles.bg_White, styles.Border,styles.bgFullWidth,styles.paddingHorizontal_7 , styles.paddingVertical_7]}>
+                                        <View style={[styles.overHidden]}>
+                                            <View style={[styles.rowGroup]}>
+                                                <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft, ]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                    {this.props.products.name}
+                                                </Text>
+                                                <View style={{width:70}}>
+                                                    <StarRating
+                                                        disabled        = {true}
+                                                        maxStars        = {5}
+                                                        rating          = {this.props.products.rates}
+                                                        fullStarColor   = {COLORS.orange}
+                                                        starSize        = {15}
+                                                        starStyle       = {styles.starStyle}
+                                                    />
+                                                </View>
+                                            </View>
+                                            <Text style={[styles.textRegular, styles.text_bold_gray, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                {this.props.products.category} - {this.props.products.sub_category}
                                             </Text>
-                                            <Text style={[styles.textRegular, styles.text_black,styles.textSize_14, styles.textLeft ,{borderRightWidth:2 , borderRightColor:COLORS.orange , paddingRight:5 , marginLeft:5}]}>
-                                                {this.props.products.price} {i18n.t('RS')}</Text>
+                                            <View style={[styles.directionRow]}>
+                                                <View style={[styles.Width_93]}>
+                                                    <Text style={[styles.textRegular, styles.text_black, styles.textSize_14]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                        {i18n.t('productSpec')}
+                                                    </Text>
+                                                    <Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_12]} >
+                                                        {this.props.products.description}
+                                                    </Text>
+                                                </View>
+
+                                                {
+                                                    this.props.user == null || this.props.user.type === 'user' ?
+                                                        <View style={styles.counterParent}>
+                                                            <TouchableOpacity onPress={() => this.increment()} style={styles.touchPlus}>
+                                                                <Icon type={'Entypo'} name={'plus'} style={styles.plus} />
+                                                            </TouchableOpacity>
+                                                            <View style={[styles.directionColumn , styles.countText ]}>
+                                                                <Text style={[styles.text_orange ,styles.textRegular, styles.textSize_14]}>
+                                                                    {this.state.value}
+                                                                </Text>
+                                                            </View>
+                                                            <TouchableOpacity onPress={() => this.decrement()} style={styles.touchMinus}>
+                                                                <Icon type={'Entypo'} name={'minus'} style={styles.minus} />
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                        :
+                                                        <View/>
+                                                }
+
+                                            </View>
+                                            <View style={[styles.rowGroup , styles.marginVertical_15]}>
+                                                <View style={[styles.rowGroup]}>
+                                                    <Text style={[styles.textRegular, styles.text_bold_gray,styles.textSize_14, styles.textLeft ]} >
+                                                        {i18n.t('productPrice')}
+                                                    </Text>
+                                                    <Text style={[styles.textRegular, styles.text_black,styles.textSize_14, styles.textLeft ,{borderRightWidth:2 , borderRightColor:COLORS.orange , paddingRight:5 , marginLeft:5}]}>
+                                                        {this.props.products.price} {i18n.t('RS')}</Text>
+                                                </View>
+                                                {
+                                                    this.props.user == null || this.props.user.type === 'user' ?
+                                                        <TouchableOpacity style={[styles.cartBtn]} onPress = {() => this.addToCart(this.props.products.id)}>
+                                                            <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft ]}>{i18n.t('addToCart')}</Text>
+                                                        </TouchableOpacity>
+                                                        :
+                                                        <View/>
+                                                }
+                                            </View>
                                         </View>
-                                        {
-                                            this.props.user == null || this.props.user.type === 'user' ?
-                                                <TouchableOpacity style={[styles.cartBtn]} onPress = {() => this.addToCart(this.props.products.id)}>
-                                                    <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft ]}>{i18n.t('addToCart')}</Text>
-                                                </TouchableOpacity>
-                                                :
-                                                <View/>
-                                        }
                                     </View>
                                 </View>
                             </View>
-                        </View>
+                                :
+                                <View/>
+                        }
+
                     </ImageBackground>
                 </Content>
 
