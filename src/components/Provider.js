@@ -131,39 +131,45 @@ class Provider extends Component {
                 </Header>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
-                        <View style={[styles.viewBlock, styles.bg_White , styles.borderGray, styles.Width_90]}>
-                            <Image style={[styles.Width_90, styles.swiper]} source={{ uri : provider_info.avatar }} resizeMode={'cover'}/>
-                            <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
-                                <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                    <Text style={[styles.textBold, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
-                                        {provider_info.details}
-                                    </Text>
-                                    <View style={{width:70}}>
-                                        <StarRating
-                                            disabled        = {true}
-                                            maxStars        = {5}
-                                            rating          = {provider_info.rates}
-                                            fullStarColor   = {COLORS.orange}
-                                            starSize        = {13}
-                                            starStyle       = {styles.starStyle}
-                                        />
-                                    </View>
-                                    <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
-                                        {provider_info.name}
-                                    </Text>
-                                    <View style={[styles.locationView]}>
-                                        <Icon style={[styles.text_White , styles.textSize_12 ,{marginRight:5}]} type="Feather" name='map-pin' />
-                                        <Text style={[styles.textRegular, styles.text_White,styles.textSize_12]}>
-                                            {provider_info.address}
-                                        </Text>
-                                    </View>
+                        {
+                            provider_info?
+                                <View style={[styles.viewBlock, styles.bg_White , styles.borderGray, styles.Width_90]}>
+                                    <Image style={[styles.Width_90, styles.swiper]} source={{ uri : provider_info.avatar }} resizeMode={'cover'}/>
+                                    <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
+                                        <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+                                            <Text style={[styles.textBold, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                {provider_info.details}
+                                            </Text>
+                                            <View style={{width:70}}>
+                                                <StarRating
+                                                    disabled        = {true}
+                                                    maxStars        = {5}
+                                                    rating          = {provider_info.rates}
+                                                    fullStarColor   = {COLORS.orange}
+                                                    starSize        = {13}
+                                                    starStyle       = {styles.starStyle}
+                                                />
+                                            </View>
+                                            <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                                {provider_info.name}
+                                            </Text>
+                                            <View style={[styles.locationView]}>
+                                                <Icon style={[styles.text_White , styles.textSize_12 ,{marginRight:5}]} type="Feather" name='map-pin' />
+                                                <Text style={[styles.textRegular, styles.text_White,styles.textSize_12]}>
+                                                    {provider_info.address}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </Animatable.View>
                                 </View>
-                            </Animatable.View>
-                        </View>
+                                :<View/>
+                        }
+
                         <View style={styles.mainScroll}>
                             <ScrollView style={[styles.Width_100, styles.paddingHorizontal_10]} horizontal={true} showsHorizontalScrollIndicator={false}>
 
                                 {
+                                    this.props.sub_categories ?
                                     this.props.sub_categories.map((pro) => (
 
                                         <View style={{flexDirection:'column' , justifyContent:'center' , alignItems:'center', alignSelf : 'center'}}>
@@ -177,22 +183,27 @@ class Provider extends Component {
                                             </Text>
                                         </View>
 
-                                    ))
+                                    )) :
+                                        <View/>
                                 }
 
                             </ScrollView>
                         </View>
 
                         <View style={[styles.marginVertical_5 , styles.paddingHorizontal_5]}>
+                            {
+                                this.props.products ?
+                                    <FlatList
+                                        data                    = {this.props.products}
+                                        renderItem              = {({item}) => this.renderItems(item)}
+                                        numColumns              = {2}
+                                        keyExtractor            = {this._keyExtractor}
+                                        extraData               = {this.state.refreshed}
+                                        onEndReachedThreshold   = {isIOS ? .01 : 1}
+                                    />
+                                    :<View/>
+                            }
 
-                            <FlatList
-                                data                    = {this.props.products}
-                                renderItem              = {({item}) => this.renderItems(item)}
-                                numColumns              = {2}
-                                keyExtractor            = {this._keyExtractor}
-                                extraData               = {this.state.refreshed}
-                                onEndReachedThreshold   = {isIOS ? .01 : 1}
-                            />
 
                         </View>
 
