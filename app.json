@@ -25,11 +25,17 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "app.aait.chifz"
+      "bundleIdentifier": "app.aait.chifz",
+      "infoPlist": {
+        "NSCameraUsageDescription": "App need this permission to update profile photo.",
+        "NSPhotoLibraryAddUsageDescription": "App need this permission to update profile photo.",
+        "NSLocationWhenInUseUsageDescription": "App need this permission to determine your order location.",
+        "NSPhotoLibraryUsageDescription": "App need this permission to update profile photo."
+      }
     },
     "android": {
       "package": "app.aait.chifz",
-      "versionCode": 12,
+      "versionCode": 1,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBripzhDn5xRMGI_ohKAsIcbd1-UuKS6uY"

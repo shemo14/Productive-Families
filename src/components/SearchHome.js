@@ -133,15 +133,20 @@ class SearchHome extends Component {
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
                             <View style={[styles.marginVertical_5 , styles.paddingHorizontal_5]}>
+                                {
+                                    this.props.categories?
+                                        <FlatList
+                                            data                    = {this.props.categories}
+                                            renderItem              = {({item}) => this.renderItems(item)}
+                                            numColumns              = {2}
+                                            keyExtractor            = {this._keyExtractor}
+                                            extraData               = {this.props.categories}
+                                            onEndReachedThreshold   = {isIOS ? .01 : 1}
+                                        />
+                                        :
+                                        <View/>
+                                }
 
-                                <FlatList
-                                    data                    = {this.props.categories}
-                                    renderItem              = {({item}) => this.renderItems(item)}
-                                    numColumns              = {2}
-                                    keyExtractor            = {this._keyExtractor}
-                                    extraData               = {this.props.categories}
-                                    onEndReachedThreshold   = {isIOS ? .01 : 1}
-                                />
 
                             </View>
 
