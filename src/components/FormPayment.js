@@ -137,7 +137,7 @@ class FormPayment extends Component {
     }
 
     onFocus() {
-        this.componentDidMount();
+        this.componentWillMount();
     }
 
     render() {

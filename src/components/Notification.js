@@ -38,7 +38,7 @@ class Notification extends Component {
     }
 
     onFocus(){
-        this.componentDidMount();
+        this.componentWillMount();
     }
 
     render() {

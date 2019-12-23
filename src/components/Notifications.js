@@ -161,12 +161,17 @@ class Notifications extends Component {
                                    this._renderRows(this.loadingAnimated, 5, '5rows') :
                                   <View>
                                       { this.renderNoData() }
-                                      <FlatList
-                                          data={this.props.notifications}
-                                          renderItem={(item) => this.renderItems(item)}
-                                          numColumns={1}
-                                          keyExtractor={this._keyExtractor}
-                                      />
+                                      {
+                                          this.props.notifications?
+                                              <FlatList
+                                                  data={this.props.notifications}
+                                                  renderItem={(item) => this.renderItems(item)}
+                                                  numColumns={1}
+                                                  keyExtractor={this._keyExtractor}
+                                              />
+                                              :<View/>
+                                      }
+
                                   </View>
                            }
                        </View>

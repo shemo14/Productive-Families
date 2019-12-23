@@ -243,6 +243,7 @@ class DelegateOrderDetails extends Component {
                         {
                             this.state.loader ?
                                 this._renderRows(this.loadingAnimated, 5, '5rows') :
+                                this.props.orderDetails?
                                <View>
                                     <View style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop: 20}]}>
                                        <View style={[styles.lightOverlay, styles.Border]}></View>
@@ -304,7 +305,7 @@ class DelegateOrderDetails extends Component {
                                                    <View style={[{ flexDirection:'row',
                                                        alignItems:'center',}]}>
                                                        <Icon style={[styles.text_bold_gray, styles.textSize_12]} type="Feather" name='map-pin' />
-                                                       <Text style={[styles.textRegular , styles.text_bold_gray, styles.marginHorizontal_5 ,styles.textSize_12]}>
+                                                       <Text style={[styles.textRegular , styles.text_bold_gray, styles.marginHorizontal_5 ,styles.textSize_12 , styles.writing , {alignSelf:'flex-start'}]}>
                                                            {this.props.orderDetails.user.address}
                                                        </Text>
                                                    </View>
@@ -387,7 +388,8 @@ class DelegateOrderDetails extends Component {
                                                    borderBottomColor: COLORS.lightWhite,
                                                    borderRightColor: COLORS.lightWhite,
                                                    borderLeftWidth: 5,
-                                                   borderLeftColor: COLORS.orange
+                                                   borderLeftColor: COLORS.orange,
+                                                   marginBottom:15
                                                }]}>
                                            <View style={[styles.directionColumn, {flex: 1}]}>
                                                <Text
@@ -414,6 +416,8 @@ class DelegateOrderDetails extends Component {
                                    }
 
                                </View>
+                                    :
+                                    <View/>
                         }
 
                     </ImageBackground>
