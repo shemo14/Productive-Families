@@ -31,7 +31,7 @@ class Confirmation extends Component {
     }
 
     onFocus(){
-        this.componentDidMount();
+        this.componentWillMount();
     }
     render() {
 

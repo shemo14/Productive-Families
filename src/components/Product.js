@@ -35,16 +35,50 @@ class Product extends Component {
             value: 1,
             value2: 1,
             status: null,
-            isFav: 0,
+            isFav: this.props.products.is_fav == 1 ? true : false,
             isHidden: true,
             fading: false,
             isModalVisible: false,
             bounceValue: new Animated.Value(400),  //This is the initial position of the subview
+            isSubmitted: false,
         }
     }
 
     componentWillMount() {
-        this.props.productDetails(this.props.lang, this.props.navigation.state.params.id);
+        this.props.productDetails(this.props.lang, this.props.navigation.state.params.id, this.props.user.token);
+    }
+
+
+    renderAddToCart(){
+        if (this.state.isSubmitted){
+            return(
+                <View style={[{ justifyContent: 'center', alignItems: 'center' , width:'45%',
+                    paddingHorizontal: 15,
+                    paddingVertical: 7,}]}>
+                    <DoubleBounce size={20} color={COLORS.orange} style={{ alignSelf: 'center' }} />
+                </View>
+            )
+        }
+
+        return (
+            <TouchableOpacity style={[styles.cartBtn]}
+                              onPress={() => this.addToCart(this.props.products.id)}>
+                <Text
+                    style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('addToCart')}</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    addToCart(id) {
+        this.setState({ isSubmitted: true });
+        const token = this.props.user ? this.props.user.token : null;
+        this.props.addCart(this.props.lang, id, token, this.state.value , this.props);
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({isSubmitted: false});
+
     }
 
     toggleModal = () => {
@@ -119,18 +153,9 @@ class Product extends Component {
     }
 
     toggleFavorite(id) {
-
         this.setState({isFav: !this.state.isFav});
         const token = this.props.user ? this.props.user.token : null;
         this.props.favorite(this.props.lang, id, token);
-
-    }
-
-    addToCart(id) {
-
-        const token = this.props.user ? this.props.user.token : null;
-        this.props.addCart(this.props.lang, id, token, this.state.value);
-
     }
 
     editProdect() {
@@ -197,7 +222,7 @@ class Product extends Component {
     };
 
     onFocus() {
-        this.componentDidMount();
+        this.componentWillMount();
     }
 
     render() {
@@ -210,15 +235,18 @@ class Product extends Component {
                 <Header style={styles.headerView}>
                     <Left style={styles.leftIcon}>
                         <Button style={styles.Button} transparent
-                                onPress={() => this.props.navigation.navigate('provider')}>
+                                onPress={() => this.props.navigation.goBack()}>
                             <Icon style={[styles.text_black, styles.textSize_22]} type="AntDesign" name='right'/>
                         </Button>
                     </Left>
                     <Body style={styles.bodyText}>
-                        <Title
-                            style={[styles.textRegular, styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
-                            صفحة المنتج الواحد
-                        </Title>
+                        {
+                            this.props.products ?
+                                <Title style={[styles.textRegular, styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
+                                    {this.props.products.name}
+                                </Title>:
+                                <View/>
+                        }
                     </Body>
                     <Right style={styles.rightIcon}>
                         <Button style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]}
@@ -268,7 +296,7 @@ class Product extends Component {
                                                                             <TouchableOpacity
                                                                                 onPress={() => this.toggleFavorite(this.props.products.id)}>
                                                                                 {
-                                                                                    this.props.products.is_fav === 1 ?
+                                                                                    this.state.isFav ?
                                                                                         <Icon
                                                                                             style={[styles.text_orange, styles.textSize_20]}
                                                                                             type="AntDesign"
@@ -361,12 +389,12 @@ class Product extends Component {
                                                 <View style={[styles.directionRow]}>
                                                     <View style={[styles.Width_93]}>
                                                         <Text
-                                                            style={[styles.textRegular, styles.text_black, styles.textSize_14]}
+                                                            style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.writing , {alignSelf:'flex-start'}]}
                                                             numberOfLines={1} prop with ellipsizeMode="head">
                                                             {i18n.t('productSpec')}
                                                         </Text>
                                                         <Text
-                                                            style={[styles.textRegular, styles.text_bold_gray, styles.textSize_12]}>
+                                                            style={[styles.textRegular, styles.text_bold_gray, styles.textSize_12 , styles.writing , {alignSelf:'flex-start'}]}>
                                                             {this.props.products.description}
                                                         </Text>
                                                     </View>
@@ -410,15 +438,12 @@ class Product extends Component {
                                                                 paddingRight: 5,
                                                                 marginLeft: 5
                                                             }]}>
-                                                            {this.props.products.price} {i18n.t('RS')}</Text>
+                                                            {this.props.products.price * this.state.value } {i18n.t('RS')}</Text>
                                                     </View>
                                                     {
                                                         this.props.user == null || this.props.user.type === 'user' ?
-                                                            <TouchableOpacity style={[styles.cartBtn]}
-                                                                              onPress={() => this.addToCart(this.props.products.id)}>
-                                                                <Text
-                                                                    style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('addToCart')}</Text>
-                                                            </TouchableOpacity>
+
+                                                            this.renderAddToCart()
                                                             :
                                                             <View/>
                                                     }

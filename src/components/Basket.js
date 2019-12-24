@@ -9,6 +9,7 @@ import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 import i18n from "../../locale/i18n";
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+import ReactotronConfig from '../../ReactotronConfig'
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -20,7 +21,7 @@ class Basket extends Component {
 
         this.state = {
             starCount: 3.5,
-            loader: true
+            loader: true,
         }
     }
 
@@ -36,6 +37,19 @@ class Basket extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({loader: false});
+    }
+
+    renderNoData() {
+        if (this.props.cartList && (this.props.cartList).length <= 0) {
+            return (
+                <View style={[styles.directionColumnCenter, {height: '95%'}]}>
+                    <Image source={require('../../assets/images/no-data.png')} resizeMode={'contain'}
+                           style={{alignSelf: 'center', width: 200, height: 200}}/>
+                </View>
+            );
+        }
+
+        return <View/>
     }
 
     runPlaceHolder() {
@@ -72,18 +86,15 @@ class Basket extends Component {
         }
 
         return (
-            <View style={{position: 'absolute', zIndex: 10, height: height - 175, bottom: 0, alignSelf: 'center'}}>
-                <ImageBackground source={require('../../assets/images/bg_img.png')}
-                                 style={[styles.bgFullWidth, {height: '100%', flex: 1}]}>
-                    {shimmerRows}
-                </ImageBackground>
+            <View>
+                {shimmerRows}
             </View>
         )
     }
 
 
     onFocus() {
-        this.componentDidMount();
+        this.componentWillMount();
     }
 
     render() {
@@ -114,38 +125,47 @@ class Basket extends Component {
                             this.state.loader ?
                                 this._renderRows(this.loadingAnimated, 5, '5rows')
                                 :
-                                this.props.cartList.map((cart, i) => (
-                                    <TouchableOpacity
-                                        onPress={() => this.props.navigation.navigate('DetailsBasket', {provider_id: cart.id})}
-                                        key={i}
-                                        style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop: 10}]}>
-                                        <View style={[styles.lightOverlay, styles.Border]}></View>
-                                        <View
-                                            style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                            <View style={[styles.icImg, styles.flex_30]}>
-                                                <Image style={[styles.icImg]}
-                                                       source={{uri: cart.avatar}}
-                                                       resizeMode={'cover'}/>
-                                            </View>
-                                            <View style={[styles.flex_70]}>
-                                                <View style={[styles.rowGroup]}>
-                                                    <Text
-                                                        style={[styles.textRegular, styles.text_orange]}>{cart.name}</Text>
-                                                </View>
-                                                <View style={[styles.overHidden]}>
-                                                    <Text
-                                                        style={[styles.textRegular, styles.text_gray, styles.Width_100, styles.textLeft]}>{cart.category}</Text>
-                                                </View>
-                                                <View style={[styles.overHidden, styles.rowRight]}>
-                                                    <Icon style={[styles.text_gray, styles.textSize_14]} type="Feather"
-                                                          name='map-pin'/>
-                                                    <Text
-                                                        style={[styles.textRegular, styles.text_gray, styles.marginHorizontal_5]}>{cart.address}</Text>
-                                                </View>
-                                            </View>
-                                        </View>
-                                    </TouchableOpacity>
-                                ))
+								<View>
+									{this.renderNoData()}
+									{
+										this.props.cartList ?
+											this.props.cartList.map((cart, i) => (
+												<TouchableOpacity
+													onPress={() => this.props.navigation.navigate('DetailsBasket', {provider_id: cart.id})}
+													key={i}
+													style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop: 10}]}>
+													<View style={[styles.lightOverlay, styles.Border]}></View>
+													<View
+														style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+														<View style={[styles.icImg, styles.flex_30]}>
+															<Image style={[styles.icImg]}
+																source={{uri: cart.avatar}}
+																resizeMode={'cover'}/>
+														</View>
+														<View style={[styles.flex_70]}>
+															<View style={[styles.rowGroup]}>
+																<Text
+																	style={[styles.textRegular, styles.text_orange]}>{cart.name}</Text>
+															</View>
+															<View style={[styles.overHidden]}>
+																<Text
+																	style={[styles.textRegular, styles.text_gray, styles.Width_100, styles.textLeft]}>{cart.category}</Text>
+															</View>
+															<View style={[styles.overHidden, styles.rowRight]}>
+																<Icon style={[styles.text_gray, styles.textSize_14]}
+																	type="Feather"
+																	name='map-pin'/>
+																<Text
+																	style={[styles.textRegular, styles.text_gray, styles.marginHorizontal_5]}>{cart.address}</Text>
+															</View>
+														</View>
+													</View>
+												</TouchableOpacity>
+											))
+											:
+											<View/>
+									}
+								</View>
                         }
 
                     </ImageBackground>

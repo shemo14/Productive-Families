@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground, Platform, FlatList} from "react-native";
+import {View, Text, Image, TouchableOpacity, ImageBackground, Platform, FlatList, Animated , Dimensions} from "react-native";
 import {
     Container,
     Content,
@@ -24,7 +24,10 @@ import StarRating from 'react-native-star-rating';
 import Modal from "react-native-modal";
 import * as Animatable from 'react-native-animatable';
 import {categoryProviders, searchProviders, filterProviders, getCities} from '../actions';
-import cities from "../reducers/CitiesReducer";
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
 const isIOS = Platform.OS === 'ios';
 
@@ -42,12 +45,22 @@ class FilterCategory extends Component {
             latitude: '',
             longitude: '',
             city_name: '',
+            loader: true
         }
     }
 
+    static navigationOptions = () => ({
+        header: null,
+        drawerLabel: (<Text style={styles.textLabel}>{i18n.t('home')}</Text>),
+        drawerIcon: (<Icon style={styles.icon} type="SimpleLineIcons" name="home"/>)
+    });
+
     componentWillMount() {
 
+        this.setState({loader: true});
+        // setTimeout(() => this.props.categoryProviders(this.props.lang, this.props.navigation.state.params.id), 2000);
         this.props.categoryProviders(this.props.lang, this.props.navigation.state.params.id);
+
         this.props.getCities(this.props.lang);
 
         if (this.props.navigation.getParam('latitude') || this.props.navigation.getParam('longitude')) {
@@ -60,28 +73,13 @@ class FilterCategory extends Component {
 
     }
 
-    static navigationOptions = () => ({
-        header: null,
-        drawerLabel: (<Text style={styles.textLabel}>{i18n.t('home')}</Text>),
-        drawerIcon: (<Icon style={styles.icon} type="SimpleLineIcons" name="home"/>)
-    });
-
-    renderLoader() {
-        if (this.props.loader) {
-            return (
-                <View style={[styles.loading, styles.flexCenter]}>
-                    <DoubleBounce size={20}/>
-                </View>
-            );
-        }
+    componentWillReceiveProps(nextProps) {
+        this.setState({loader: false});
     }
+
 
     onValueCountry(value) {
         this.setState({country: value});
-    }
-
-    onFocus() {
-        this.componentDidMount();
     }
 
     selectRating(id) {
@@ -113,7 +111,7 @@ class FilterCategory extends Component {
 
         this.props.filterProviders(data);
 
-        this.setState({show_modal: !this.state.show_modal});
+        this.setState({show_modal: !this.state.show_modal , loader:true});
 
         console.log('data filter', data);
 
@@ -124,7 +122,7 @@ class FilterCategory extends Component {
     renderItems = (item, key) => {
         return (
 
-            <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
+            <View>
                 <TouchableOpacity
                     onPress={() => this.props.navigation.navigate('provider', {id: item.id, name: item.name})}
                     style={[styles.position_R, styles.flexCenter, styles.Width_90, styles.marginVertical_15]}
@@ -139,7 +137,7 @@ class FilterCategory extends Component {
                         <View style={[styles.flex_70]}>
                             <View style={[styles.rowGroup]}>
                                 <Text style={[styles.textRegular, styles.text_red]}>
-                                    {item.category}
+                                    {item.name}
                                 </Text>
                                 <StarRating
                                     disabled={true}
@@ -151,7 +149,7 @@ class FilterCategory extends Component {
                             </View>
                             <View style={[styles.overHidden]}>
                                 <Text style={[styles.textRegular, styles.text_gray, styles.Width_100, styles.textLeft]}>
-                                    {item.name}
+                                    {item.category}
                                 </Text>
                             </View>
                             <View style={[styles.overHidden, styles.rowRight]}>
@@ -163,15 +161,79 @@ class FilterCategory extends Component {
                         </View>
                     </View>
                 </TouchableOpacity>
-            </Animatable.View>
+            </View>
         );
     };
 
 
+    renderNoData() {
+        if (this.props.providers && (this.props.providers).length <= 0) {
+            return (
+                <View style={[styles.directionColumnCenter, {height: '95%'}]}>
+                    <Image source={require('../../assets/images/no-data.png')} resizeMode={'contain'}
+                           style={{alignSelf: 'center', width: 200, height: 200}}/>
+                </View>
+            );
+        }
+
+        return <View/>
+    }
+
+    componentDidMount() {
+        this.runPlaceHolder();
+    }
+
+    runPlaceHolder() {
+        if (Array.isArray(this.loadingAnimated) && this.loadingAnimated.length > 0) {
+            Animated.parallel(
+                this.loadingAnimated.map(animate => {
+                    if (animate && animate.getAnimated) {
+                        return animate.getAnimated();
+                    }
+                    return null;
+                }),
+                {
+                    stopTogether: false,
+                }
+            ).start(() => {
+                this.runPlaceHolder();
+            })
+        }
+    }
+
+    _renderRows(loadingAnimated, numberRow, uniqueKey) {
+        let shimmerRows = [];
+        for (let index = 0; index < numberRow; index++) {
+            shimmerRows.push(
+                <ShimmerPlaceHolder
+                    key={`loading-${index}-${uniqueKey}`}
+                    ref={(ref) => loadingAnimated.push(ref)}
+                    style={{marginVertical: 7, alignSelf: 'center'}}
+                    width={width - 20}
+                    height={100}
+                    colorShimmer={['#ffffff75', '#FEDAD075', '#ffffff75']}
+                />
+            )
+        }
+
+        return (
+            <View>
+                {shimmerRows}
+            </View>
+        )
+    }
+
+    onFocus() {
+        this.componentWillMount();
+    }
+
     render() {
+
+        this.loadingAnimated = [];
+
         return (
             <Container>
-                {this.renderLoader()}
+
                 <NavigationEvents onWillFocus={() => this.onFocus()}/>
 
                 <Header style={styles.headerView}>
@@ -216,18 +278,25 @@ class FilterCategory extends Component {
                         <View style={[styles.marginVertical_5, styles.overHidden]}>
 
                             {
-                                this.props.providers ?
+                                this.state.loader ?
+                                    this._renderRows(this.loadingAnimated, 5, '5rows') :
+                                    <View>
+                                        {this.renderNoData()}
+                                        {
+                                            this.props.providers ?
+                                                <FlatList
+                                                    data={this.props.providers}
+                                                    renderItem={({item}) => this.renderItems(item)}
+                                                    numColumns={1}
+                                                    keyExtractor={this._keyExtractor}
+                                                    // extraData               = {this.props.categoryProviders}
+                                                    onEndReachedThreshold={isIOS ? .01 : 1}
+                                                />
+                                                :
+                                                <View/>
+                                        }
+                                    </View>
 
-                                    <FlatList
-                                        data={this.props.providers}
-                                        renderItem={({item}) => this.renderItems(item)}
-                                        numColumns={1}
-                                        keyExtractor={this._keyExtractor}
-                                        // extraData               = {this.props.categoryProviders}
-                                        onEndReachedThreshold={isIOS ? .01 : 1}
-                                    />
-                                    :
-                                    <View/>
                             }
 
                         </View>

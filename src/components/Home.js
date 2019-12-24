@@ -313,7 +313,7 @@ class Home extends Component {
                         }
 
                         {
-                            this.props.user != null && this.props.user.type === 'provider' ?
+                            this.props.user != null && this.props.user.type === 'provider' && provider_info?
                                 <View style={[styles.homeProvider]}>
 
                                     <View style={[styles.viewBlock, styles.bg_White , styles.borderGray, styles.Width_90, styles.position_R]}>
