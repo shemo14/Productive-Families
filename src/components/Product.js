@@ -35,7 +35,7 @@ class Product extends Component {
             value: 1,
             value2: 1,
             status: null,
-            isFav: 0,
+            isFav: this.props.products.is_fav == 1 ? true : false,
             isHidden: true,
             fading: false,
             isModalVisible: false,
@@ -45,7 +45,7 @@ class Product extends Component {
     }
 
     componentWillMount() {
-        this.props.productDetails(this.props.lang, this.props.navigation.state.params.id);
+        this.props.productDetails(this.props.lang, this.props.navigation.state.params.id, this.props.user.token);
     }
 
 
@@ -75,10 +75,12 @@ class Product extends Component {
         this.props.addCart(this.props.lang, id, token, this.state.value , this.props);
 
     }
+
     componentWillReceiveProps(nextProps) {
         this.setState({isSubmitted: false});
 
     }
+
     toggleModal = () => {
         this.setState({isModalVisible: !this.state.isModalVisible});
     };
@@ -151,13 +153,10 @@ class Product extends Component {
     }
 
     toggleFavorite(id) {
-
         this.setState({isFav: !this.state.isFav});
         const token = this.props.user ? this.props.user.token : null;
         this.props.favorite(this.props.lang, id, token);
-
     }
-
 
     editProdect() {
         this.props.navigation.navigate('AddProduct', {data: this.props.products});
@@ -243,8 +242,7 @@ class Product extends Component {
                     <Body style={styles.bodyText}>
                         {
                             this.props.products ?
-                                <Title
-                                    style={[styles.textRegular, styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
+                                <Title style={[styles.textRegular, styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
                                     {this.props.products.name}
                                 </Title>:
                                 <View/>
@@ -298,7 +296,7 @@ class Product extends Component {
                                                                             <TouchableOpacity
                                                                                 onPress={() => this.toggleFavorite(this.props.products.id)}>
                                                                                 {
-                                                                                    this.props.products.is_fav === 1 ?
+                                                                                    this.state.isFav ?
                                                                                         <Icon
                                                                                             style={[styles.text_orange, styles.textSize_20]}
                                                                                             type="AntDesign"

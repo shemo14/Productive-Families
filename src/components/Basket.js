@@ -21,7 +21,7 @@ class Basket extends Component {
 
         this.state = {
             starCount: 3.5,
-            loader: true
+            loader: true,
         }
     }
 
@@ -125,47 +125,47 @@ class Basket extends Component {
                             this.state.loader ?
                                 this._renderRows(this.loadingAnimated, 5, '5rows')
                                 :
-                                <View>
-                                    {this.renderNoData()}
-                                    {
-                                        this.props.cartList ?
-                                            this.props.cartList.map((cart, i) => (
-                                                <TouchableOpacity
-                                                    onPress={() => this.props.navigation.navigate('DetailsBasket', {provider_id: cart.id})}
-                                                    key={i}
-                                                    style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop: 10}]}>
-                                                    <View style={[styles.lightOverlay, styles.Border]}></View>
-                                                    <View
-                                                        style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                                        <View style={[styles.icImg, styles.flex_30]}>
-                                                            <Image style={[styles.icImg]}
-                                                                   source={{uri: cart.avatar}}
-                                                                   resizeMode={'cover'}/>
-                                                        </View>
-                                                        <View style={[styles.flex_70]}>
-                                                            <View style={[styles.rowGroup]}>
-                                                                <Text
-                                                                    style={[styles.textRegular, styles.text_orange]}>{cart.name}</Text>
-                                                            </View>
-                                                            <View style={[styles.overHidden]}>
-                                                                <Text
-                                                                    style={[styles.textRegular, styles.text_gray, styles.Width_100, styles.textLeft]}>{cart.category}</Text>
-                                                            </View>
-                                                            <View style={[styles.overHidden, styles.rowRight]}>
-                                                                <Icon style={[styles.text_gray, styles.textSize_14]}
-                                                                      type="Feather"
-                                                                      name='map-pin'/>
-                                                                <Text
-                                                                    style={[styles.textRegular, styles.text_gray, styles.marginHorizontal_5]}>{cart.address}</Text>
-                                                            </View>
-                                                        </View>
-                                                    </View>
-                                                </TouchableOpacity>
-                                            ))
-                                            :
-                                            <View/>
-                                    }
-                                </View>
+								<View>
+									{this.renderNoData()}
+									{
+										this.props.cartList ?
+											this.props.cartList.map((cart, i) => (
+												<TouchableOpacity
+													onPress={() => this.props.navigation.navigate('DetailsBasket', {provider_id: cart.id})}
+													key={i}
+													style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop: 10}]}>
+													<View style={[styles.lightOverlay, styles.Border]}></View>
+													<View
+														style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+														<View style={[styles.icImg, styles.flex_30]}>
+															<Image style={[styles.icImg]}
+																source={{uri: cart.avatar}}
+																resizeMode={'cover'}/>
+														</View>
+														<View style={[styles.flex_70]}>
+															<View style={[styles.rowGroup]}>
+																<Text
+																	style={[styles.textRegular, styles.text_orange]}>{cart.name}</Text>
+															</View>
+															<View style={[styles.overHidden]}>
+																<Text
+																	style={[styles.textRegular, styles.text_gray, styles.Width_100, styles.textLeft]}>{cart.category}</Text>
+															</View>
+															<View style={[styles.overHidden, styles.rowRight]}>
+																<Icon style={[styles.text_gray, styles.textSize_14]}
+																	type="Feather"
+																	name='map-pin'/>
+																<Text
+																	style={[styles.textRegular, styles.text_gray, styles.marginHorizontal_5]}>{cart.address}</Text>
+															</View>
+														</View>
+													</View>
+												</TouchableOpacity>
+											))
+											:
+											<View/>
+									}
+								</View>
                         }
 
                     </ImageBackground>

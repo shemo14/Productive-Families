@@ -9,7 +9,7 @@ export const getCartProducts = (lang, provider_id , token) => {
     }
 };
 
-export const deleteCart = (lang , provider_id, cart_id, token) => {
+export const deleteCart = (lang , provider_id, cart_id, token, props) => {
     return (dispatch) => {
 
         axios({
@@ -18,19 +18,37 @@ export const deleteCart = (lang , provider_id, cart_id, token) => {
             data: {lang , cart_id},
             headers: {Authorization: token}
         }).then(response => {
-            CartProducts(lang , provider_id , token , dispatch)
+            CartProducts(lang , provider_id , token , dispatch, props)
         })
 
     }
 };
 
-const CartProducts = (lang , provider_id , token , dispatch ) => {
+export const editCart = (lang , provider_id, cart_id, quantity,  token, props) => {
+	return (dispatch) => {
+
+		axios({
+			url: CONST.url + 'carts/edit-quantity',
+			method: 'POST',
+			data: {lang , cart_id, quantity},
+			headers: {Authorization: token}
+		}).then(response => {
+			CartProducts(lang , provider_id , token , dispatch, props)
+		})
+
+	}
+};
+
+const CartProducts = (lang , provider_id , token , dispatch, props ) => {
     axios({
         url: CONST.url + 'carts/products',
         method: 'POST',
         data: {lang , provider_id},
         headers: {Authorization: token}
     }).then(response => {
-        dispatch({type:'getCartProducts', payload: response.data})
+        if ((response.data.data).length <= 0){
+            return props.navigation.navigate('Basket')
+	    }else
+            dispatch({type:'getCartProducts', payload: response.data})
     })
 };

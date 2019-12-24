@@ -8,32 +8,54 @@ import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
 import {getCartProducts, deleteCart} from '../actions'
 import i18n from "../../locale/i18n";
+import CartItem from './CartItem'
+
 import COLORS from "../consts/colors";
 
 const isIOS = Platform.OS === 'ios';
+
+let cartItems = [];
+
 
 class DetailsBasket extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            count: 1
+            count: 1,
+            totalPrice: 0
         }
     }
 
-    incrementCount() {
-        this.setState({count: this.state.count + 1});
-    }
-
-    DecrementCount() {
-        if (this.state.count > 1)
-            this.setState({count: this.state.count - 1});
-    }
-
     componentWillMount() {
+		cartItems   = [];
+		this.setState({ totalPrice: 0 });
+
         const provider_id = this.props.navigation.state.params.provider_id
-        this.props.getCartProducts(this.props.lang, provider_id, this.props.user.token)
+        this.props.getCartProducts(this.props.lang, provider_id, this.props.user.token, this.props)
     }
+
+	pushCartItems(cart_id , price){
+		if (cartItems.includes(cart_id) === false) {
+			cartItems.push(cart_id);
+			const totalPrice = Number(this.state.totalPrice) + Number(price);
+			setTimeout(() => this.setState({ totalPrice }), 0)
+		}
+
+		console.log('selected items_', cartItems , 'current total price ' , this.state.totalPrice);
+	}
+
+	pullCartItems(cart_id , price){
+		for( var i = 0; i < cartItems.length; i++){
+			if ( cartItems[i] === cart_id) {
+				cartItems.splice(i, 1);
+				const totalPrice = Number(this.state.totalPrice) - Number(price);
+				setTimeout(() => this.setState({ totalPrice }), 0)
+			}
+		}
+
+		console.log('selected items_', cartItems , 'current total price ' ,this.state.totalPrice );
+	}
 
     static navigationOptions = () => ({
         header: null,
@@ -41,7 +63,12 @@ class DetailsBasket extends Component {
         drawerIcon: (<Icon style={styles.icon} type="SimpleLineIcons" name="home"/>)
     });
 
-    renderLoader() {
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.cartProducts.prices)
+            this.setState({ totalPrice: nextProps.cartProducts.prices.products_price });
+	}
+
+	renderLoader() {
         if (this.props.loader) {
             return (
                 <View style={[styles.loading, styles.flexCenter]}>
@@ -51,73 +78,12 @@ class DetailsBasket extends Component {
         }
     }
 
-    deleteCart(cart_id) {
-        const provider_id = this.props.navigation.state.params.provider_id
-        this.props.deleteCart(this.props.lang, provider_id, cart_id, this.props.user.token)
-    }
-
-
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item, key) => {
+		const providerId = this.props.navigation.state.params.provider_id;
         return (
-            <View
-                style={[styles.position_R, styles.flex_45, {
-                    marginTop: 25,
-                    marginBottom: 25
-                }, styles.height_200, styles.marginHorizontal_10]}
-                key={key}
-                // onPress     = {() => this.props.navigation.navigate('product', { id : item.id })}
-            >
-                <View style={[styles.lightOverlay, styles.Border]}></View>
-                <View style={[styles.bg_White, styles.Border]}>
-                    <View style={[styles.rowGroup, styles.paddingHorizontal_5, styles.paddingVertical_5]}>
-                        <View style={[styles.flex_80]}>
-                            <Image style={[styles.Width_90, styles.height_100, styles.flexCenter]}
-                                   source={{uri: item.product_thumbnail}} resizeMode={'cover'}/>
-                        </View>
-                        <View style={[styles.flex_20, styles.flexCenter]}>
-                            <TouchableOpacity
-                                style={[styles.width_30, styles.height_30, styles.flexCenter, styles.bg_light_oran, styles.borderLightOran, styles.marginVertical_5]}
-                                onPress={() => this.incrementCount()}
-                            >
-                                <Icon style={[styles.text_red, styles.textSize_18]} type="AntDesign" name='plus'/>
-                            </TouchableOpacity>
-                            <Text
-                                style={[styles.textRegular, styles.text_red, styles.width_30, styles.height_30, styles.borderLightOran, styles.textCenter]}>
-                                {item.quantity}
-                            </Text>
-                            <TouchableOpacity
-                                style={[styles.width_30, styles.height_30, styles.flexCenter, styles.bg_light_oran, styles.borderLightOran, styles.marginVertical_5]}
-                                onPress={() => this.DecrementCount()}
-                            >
-                                <Icon style={[styles.text_red, styles.textSize_18]} type="AntDesign" name='minus'/>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={[styles.overHidden, styles.paddingHorizontal_10, styles.marginVertical_5]}>
-                        <Text
-                            style={[styles.text_gray, styles.textSize_16, styles.textRegular, styles.Width_100, styles.textLeft]}>
-                            {item.product_name}
-                        </Text>
-                        <Text
-                            style={[styles.text_light_gray, styles.textSize_12, styles.textRegular, styles.Width_100, styles.textLeft]}>
-                            {item.product_category} - {item.product_sub_category}
-                        </Text>
-                        <Text
-                            style={[styles.text_red, styles.textSize_14, styles.textRegular, styles.SelfLeft, styles.textLeft, styles.borderText, styles.paddingHorizontal_5]}>
-                            {item.product_price * item.quantity} {i18n.t('RS')}
-                        </Text>
-                    </View>
-                    <TouchableOpacity
-                        style={[styles.width_40, styles.height_40, styles.flexCenter, styles.bg_red, styles.borderLightOran, styles.marginVertical_5, styles.position_A, styles.iconRemove]}
-                        onPress={() => this.deleteCart(item.cart_id)}
-                    >
-                        <Icon style={[styles.text_White, styles.textSize_20]} type="AntDesign" name='close'/>
-                    </TouchableOpacity>
-                </View>
-            </View>
-
+			<CartItem item={item} pushItem={(cart_id, price) => this.pushCartItems(cart_id, price)} pullItem={(cart_id, price) => this.pullCartItems(cart_id, price)} key={key} providerId={providerId} navigation={this.props.navigation} />
         );
     };
 
@@ -152,56 +118,6 @@ class DetailsBasket extends Component {
                     {this.renderLoader()}
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
-                        {/*<View style={[ styles.rowGroup , styles.marginVertical_15 , styles.paddingHorizontal_20]}>*/}
-                        {/*{*/}
-                        {/*this.props.cartProducts.products.map((product, i) => (*/}
-                        {/*<View key={i} style={[styles.position_R , styles.flex_45, styles.marginVertical_15]}>*/}
-                        {/*<View style={[styles.lightOverlay, styles.Border]}></View>*/}
-                        {/*<View style={[styles.bg_White, styles.Border]}>*/}
-                        {/*<View style={[styles.rowGroup, styles.paddingHorizontal_5 , styles.paddingVertical_5]}>*/}
-                        {/*<View style={[styles.flex_80]}>*/}
-                        {/*<Image style={[styles.Width_90 , styles.height_100, styles.flexCenter]} source={{uri:product.product_thumbnail}} resizeMode={'cover'}/>*/}
-                        {/*</View>*/}
-                        {/*<View style={[styles.flex_20, styles.flexCenter]}>*/}
-                        {/*<TouchableOpacity*/}
-                        {/*style           = {[styles.width_30 , styles.height_30 , styles.flexCenter, styles.bg_light_oran, styles.borderLightOran, styles.marginVertical_5]}*/}
-                        {/*onPress         = {() => this.incrementCount()}*/}
-                        {/*>*/}
-                        {/*<Icon style={[styles.text_red, styles.textSize_18]} type="AntDesign" name='plus' />*/}
-                        {/*</TouchableOpacity>*/}
-                        {/*<Text style={[styles.textRegular , styles.text_red,styles.width_30 , styles.height_30, styles.borderLightOran, styles.textCenter]}>*/}
-                        {/*{product.quantity}*/}
-                        {/*</Text>*/}
-                        {/*<TouchableOpacity*/}
-                        {/*style           = {[styles.width_30 , styles.height_30 , styles.flexCenter, styles.bg_light_oran, styles.borderLightOran, styles.marginVertical_5]}*/}
-                        {/*onPress         = {() => this.DecrementCount()}*/}
-                        {/*>*/}
-                        {/*<Icon style={[styles.text_red, styles.textSize_18]} type="AntDesign" name='minus' />*/}
-                        {/*</TouchableOpacity>*/}
-                        {/*</View>*/}
-                        {/*</View>*/}
-                        {/*<View style={[styles.overHidden, styles.paddingHorizontal_10, styles.marginVertical_5]}>*/}
-                        {/*<Text style={[styles.text_gray, styles.textSize_16, styles.textRegular, styles.Width_100, styles.textLeft]}>*/}
-                        {/*{product.product_name}*/}
-                        {/*</Text>*/}
-                        {/*<Text style={[styles.text_light_gray, styles.textSize_14, styles.textRegular, styles.Width_100, styles.textLeft]}>*/}
-                        {/*{product.product_category} - {product.product_sub_category}*/}
-                        {/*</Text>*/}
-                        {/*<Text style={[styles.text_red, styles.textSize_14, styles.textRegular, styles.SelfLeft, styles.textLeft, styles.borderText, styles.paddingHorizontal_5]}>*/}
-                        {/*{product.product_price} { i18n.t('RS') }*/}
-                        {/*</Text>*/}
-                        {/*</View>*/}
-                        {/*<TouchableOpacity*/}
-                        {/*style           = {[styles.width_40 , styles.height_40 , styles.flexCenter, styles.bg_red, styles.borderLightOran, styles.marginVertical_5, styles.position_A, styles.iconRemove]}*/}
-                        {/*onPress         = {() => this.deleteCart(product.cart_id)}*/}
-                        {/*>*/}
-                        {/*<Icon style     = {[styles.text_White, styles.textSize_20]} type="AntDesign" name='close' />*/}
-                        {/*</TouchableOpacity>*/}
-                        {/*</View>*/}
-                        {/*</View>*/}
-                        {/*))*/}
-                        {/*}*/}
-                        {/*</View>*/}
                         {
                             this.props.cartProducts ?
 
@@ -218,7 +134,7 @@ class DetailsBasket extends Component {
                                             {i18n.t('priceprod')}
                                         </Text>
                                         <Text
-                                            style={[styles.textBold, styles.text_black, styles.textSize_14]}>{this.props.cartProducts.prices.products_price} {i18n.t('RS')}</Text>
+                                            style={[styles.textBold, styles.text_black, styles.textSize_14]}>{this.state.totalPrice} {i18n.t('RS')}</Text>
                                     </View>
 
                                     <View
@@ -235,8 +151,7 @@ class DetailsBasket extends Component {
                                         <Text style={[styles.textBold, styles.text_White, styles.textSize_14]}>
                                             {i18n.t('totalprice')}
                                         </Text>
-                                        <Text
-                                            style={[styles.textBold, styles.text_White, styles.textSize_14]}>{this.props.cartProducts.prices.total_price} {i18n.t('RS')}</Text>
+                                        <Text style={[styles.textBold, styles.text_White, styles.textSize_14]}>{this.state.totalPrice + Number(this.props.cartProducts.prices.shipping_price)} {i18n.t('RS')}</Text>
                                     </View>
 
                                     <TouchableOpacity

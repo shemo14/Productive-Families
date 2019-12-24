@@ -99,11 +99,9 @@ class FilterCategory extends Component {
         const data = {keyword, lang: this.props.lang};
 
         this.props.searchProviders(data);
-
     }
 
     onFilter() {
-
         const {country, rating} = this.state;
         const data = {
             lang: this.props.lang,
@@ -131,7 +129,7 @@ class FilterCategory extends Component {
                     style={[styles.position_R, styles.flexCenter, styles.Width_90, styles.marginVertical_15]}
                     key={key}
                 >
-                    <View style={[styles.lightOverlay, styles.Border]}></View>
+                    <View style={[styles.lightOverlay, styles.Border]} />
                     <View
                         style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
                         <View style={[styles.icImg, styles.flex_30]}>

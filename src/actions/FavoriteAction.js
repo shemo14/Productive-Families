@@ -14,20 +14,30 @@ export const favorite = ( lang , product_id , token ) => {
                 headers     : token != null ? { Authorization: token } : null,
                 data        : { lang, product_id, device_id }
             }).then(response => {
-                dispatch({type: 'favorite', payload: response.data});
-                Toast.show({
-                    text        : response.data.msg,
-                    type        : "danger",
-                    duration    : 3000,
-                    textStyle       : {
-                        color           : "white",
-                        fontFamily      : 'cairo',
-                        textAlign       : 'center'
-                    }
-                });
+                returnFav(lang, token, dispatch);
             });
         });
 
     }
 
 };
+
+export const getFavs = ( lang, token ) => {
+
+	return (dispatch) => {
+		returnFav(lang, token, dispatch)
+	}
+};
+
+const returnFav = (lang, token, dispatch) => {
+	AsyncStorage.getItem('deviceID').then(device_id => {
+		axios({
+			url         : CONST.url + 'favourites',
+			method      : 'POST',
+			headers     : token != null ? { Authorization: token } : null,
+			data        : { lang, device_id }
+		}).then(response => {
+			dispatch({type: 'get_favs', payload: response.data});
+		});
+	});
+}

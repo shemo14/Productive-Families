@@ -6,10 +6,11 @@ import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {NavigationEvents} from "react-navigation";
 import i18n from "../../locale/i18n";
-const isIOS = Platform.OS === 'ios';
 import { offers, favorite } from '../actions';
-import * as Animatable from "react-native-animatable";
-import StarRating from "react-native-star-rating";
+import ProductBlock from './ProductBlock'
+
+const isIOS = Platform.OS === 'ios';
+
 
 class Offers extends Component {
     constructor(props){
@@ -21,7 +22,7 @@ class Offers extends Component {
     }
 
     componentWillMount() {
-        this.props.offers( this.props.lang );
+        this.props.offers( this.props.lang, this.props.user.token );
     }
 
     static navigationOptions = () => ({
@@ -40,53 +41,11 @@ class Offers extends Component {
         }
     }
 
-    toggleFavorite (id){
-
-        this.setState({ isFav: ! this.state.isFav, activeType : id });
-        const token =  this.props.user ?  this.props.user.token : null;
-        this.props.favorite( this.props.lang, id  , token );
-
-    }
-
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item, key) => {
         return(
-            <TouchableOpacity
-                style       = {[styles.position_R , styles.flex_45, styles.marginVertical_15, styles.height_200, styles.marginHorizontal_10]}
-                key         = { key }
-                onPress     = {() => this.props.navigation.navigate('product', { id : item.id })}
-            >
-                <View style={[styles.lightOverlay, styles.Border]}></View>
-                <View style={[styles.bg_White, styles.Border]}>
-                    <View style={[styles.rowGroup, styles.paddingHorizontal_5 , styles.paddingVertical_5]}>
-                        <View style={[styles.flex_100, styles.position_R]}>
-                            <Image style={[styles.Width_100 , styles.height_100, styles.flexCenter]} source={{ uri : item.thumbnail }} resizeMode={'cover'}/>
-                            <Text style={[styles.overlay_black, styles.text_White, styles.textRegular, styles.position_A, styles.top_5, styles.left_0, styles.paddingHorizontal_5]}>
-                                { item.discount } %
-                             </Text>
-                        </View>
-                    </View>
-                    <View style={[styles.overHidden, styles.paddingHorizontal_10, styles.marginVertical_5,]}>
-                        <Text style={[styles.text_gray, styles.textSize_16, styles.textRegular, styles.Width_100, styles.textLeft, styles.width_80]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
-                            { item.name }
-                        </Text>
-                        <Text style={[styles.text_light_gray, styles.textSize_12, styles.textRegular, styles.Width_100, styles.textLeft]}>
-                            { item.category } - { item.sub_category }
-                        </Text>
-                        <View style={[styles.rowGroup]}>
-                            <Text style={[styles.text_red, styles.textSize_12, styles.textRegular,styles.textLeft, styles.borderText, styles.paddingHorizontal_5]}>
-                                { item.price } {i18n.t('RS')}
-                            </Text>
-                            <TouchableOpacity onPress = {() => this.toggleFavorite(item.id)}>
-                                <Text>
-                                    <Icon style={[styles.text_red, styles.textSize_18]} type="AntDesign" name={this.state.isFav === 1 ? 'heart' : 'hearto'} />
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </TouchableOpacity>
+			<ProductBlock item={item} key={key} fromFav={false} navigation={this.props.navigation} />
         );
     };
 
@@ -138,10 +97,11 @@ class Offers extends Component {
     }
 }
 
-const mapStateToProps = ({ lang, offers }) => {
+const mapStateToProps = ({ lang, offers, profile }) => {
     return {
         lang        : lang.lang,
-        offer       : offers.offers
+        offer       : offers.offers,
+        user        : profile.user
     };
 };
 export default connect(mapStateToProps, { offers , favorite})(Offers);

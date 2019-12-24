@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground, Linking, FlatList, Platform, ScrollView} from "react-native";
+import {View, Text, Image, TouchableOpacity, ImageBackground, Linking, FlatList, Platform, ScrollView, Dimensions} from "react-native";
 import {Container, Content, Header, Button, Left, Icon, Body, Title, Right, Item, Input,} from 'native-base'
 import styles from '../../assets/style'
 import {connect} from "react-redux";
@@ -12,8 +12,10 @@ import StarRating from "react-native-star-rating";
 import COLORS from "../consts/colors";
 import Spinner from "react-native-loading-spinner-overlay";
 import {Notifications} from "expo";
+import Masonry from 'react-native-masonry';
 
 const isIOS = Platform.OS === 'ios';
+const width = Dimensions.get('window').width;
 
 class Home extends Component {
     constructor(props){
@@ -69,16 +71,16 @@ class Home extends Component {
 
     _keyExtractor = (item, index) => item.id;
 
-    renderItems = (item, key) => {
+    renderItems = (item) => {
         return(
             <TouchableOpacity
-                onPress     = {() => this.props.navigation.navigate('FilterCategory', { id : item.id , name : item.name  })}
-                key         = { key }
-                style       = {[styles.position_R, styles.Width_45, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter]}>
-                <View style={[styles.position_R, styles.Width_100, styles.height_250 , styles.Border,styles.bgFullWidth, styles.overHidden]}>
+                onPress     = {() => this.props.navigation.navigate('FilterCategory', { id : item.item.id , name : item.item.name  })}
+                key         = { item.index }
+                style       = {[styles.position_R, styles.Width_45, item.index%2 == 0 ? styles.height_150 : styles.height_250, { alignSelf: 'flex-start', top: item.index >= 2 && item.index%2 === 0 ? -105 : 0 , marginBottom: 15, width: '46.7%', marginHorizontal: 6 }]}>
+                <View style={[styles.position_R, styles.Width_100, item.index%2 == 0 ? styles.height_150 : styles.height_250 , styles.Border, styles.overHidden]}>
                     <Animatable.View animation="zoomIn" easing="ease-out" delay={500}>
                         <View style={[styles.overHidden, styles.position_R]}>
-                            <Image style={[styles.Width_100 , styles.height_250]} source={{ uri: item.image }}/>
+                            <Image style={[styles.Width_100 ,  item.index%2 == 0 ? styles.height_150 : styles.height_250]} source={{ uri: item.item.image }}/>
                             <View style={[
                                 styles.textRegular ,
                                 styles.text_White ,
@@ -94,9 +96,9 @@ class Home extends Component {
                                 styles.rowGroup,
                                 styles.paddingHorizontal_15
                             ]}>
-                                <Image style={styles.ionImage} source={{ uri: item.icon }}/>
+                                <Image style={styles.ionImage} source={{ uri: item.item.icon }}/>
                                 <Text style={[styles.textRegular , styles.text_White , styles.textSize_14 , styles.textCenter ,]}>
-                                    { item.name }
+                                    { item.item.name }
                                 </Text>
                             </View>
                         </View>
@@ -190,39 +192,38 @@ class Home extends Component {
         return (
             <Container>
 
-                <Spinner
-                    visible           = { this.state.spinner }
-                />
+                <Spinner visible = { this.state.spinner } />
 				<NavigationEvents onWillFocus={() => this.onFocus()} />
 
                 <Header style={styles.headerView}>
-                    <Left style={[styles.leftIcon]}>
-                        <Button style={styles.Button} transparent onPress={() => { this.props.navigation.openDrawer()} }>
-                            <Image style={[styles.ionImage]} source={require('../../assets/images/menu.png')}/>
-                        </Button>
-                    </Left>
-                    <Body style={styles.bodyText}>
-                        <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
-                            { i18n.t('home') }
-                        </Title>
-                    </Body>
-                    {
-                        this.props.user == null || this.props.user.type === 'user' ?
-                            <Right style={styles.rightIcon}>
-                                <Button onPress={() => this.props.navigation.navigate('notifications')} style={[styles.text_gray]} transparent>
-                                    <Image style={[styles.ionImage]} source={require('../../assets/images/alarm.png')}/>
-                                </Button>
-                                <Button  onPress={() => this.props.navigation.navigate('Basket')} style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent>
-                                    <Image style={[styles.ionImage]} source={require('../../assets/images/basket.png')}/>
-                                </Button>
-                            </Right>
-                            :
-                            <Right style={styles.rightIcon}>
-                                <Button  onPress={() => this.props.navigation.navigate('notifications')} style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent>
-                                    <Image style={[styles.ionImage]} source={require('../../assets/images/alarm.png')}/>
-                                </Button>
-                            </Right>
-                    }
+                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={{ height: 85, width: '100%', position: 'absolute' }} />
+                        <Left style={[styles.leftIcon]}>
+                            <Button style={styles.Button} transparent onPress={() => { this.props.navigation.openDrawer()} }>
+                                <Image style={[styles.ionImage]} source={require('../../assets/images/menu.png')}/>
+                            </Button>
+                        </Left>
+                        <Body style={styles.bodyText}>
+                            <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>
+                                { i18n.t('home') }
+                            </Title>
+                        </Body>
+                        {
+                            this.props.user == null || this.props.user.type === 'user' ?
+                                <Right style={styles.rightIcon}>
+                                    <Button onPress={() => this.props.navigation.navigate('notifications')} style={[styles.text_gray]} transparent>
+                                        <Image style={[styles.ionImage]} source={require('../../assets/images/alarm.png')}/>
+                                    </Button>
+                                    <Button  onPress={() => this.props.navigation.navigate('Basket')} style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent>
+                                        <Image style={[styles.ionImage]} source={require('../../assets/images/basket.png')}/>
+                                    </Button>
+                                </Right>
+                                :
+                                <Right style={styles.rightIcon}>
+                                    <Button  onPress={() => this.props.navigation.navigate('notifications')} style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent>
+                                        <Image style={[styles.ionImage]} source={require('../../assets/images/alarm.png')}/>
+                                    </Button>
+                                </Right>
+                        }
                 </Header>
                 <Content  contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
                     <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
@@ -295,17 +296,15 @@ class Home extends Component {
 
                                     </View>
 
-                                    <View style={[styles.marginVertical_5]}>
-
+                                    <View>
                                         <FlatList
                                             data                    = {this.props.categories}
-                                            renderItem              = {({item}) => this.renderItems(item)}
+                                            renderItem              = {(item) => this.renderItems(item)}
                                             numColumns              = {2}
                                             keyExtractor            = {this._keyExtractor}
                                             extraData               = {this.props.categories}
                                             onEndReachedThreshold   = {isIOS ? .01 : 1}
                                         />
-
                                     </View>
 
                                 </View>
