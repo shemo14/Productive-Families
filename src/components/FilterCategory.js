@@ -122,6 +122,7 @@ class FilterCategory extends Component {
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item, key) => {
+
         return (
 
             <View>
