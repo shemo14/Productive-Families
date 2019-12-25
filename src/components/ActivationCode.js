@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground,} from "react-native";
+import {View, Text, Image, TouchableOpacity, ImageBackground,KeyboardAvoidingView} from "react-native";
 import {Container, Content, Form, Item, Input, Toast, Icon} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 import { activeCode, profile, userLogin } from "../actions";
 import Spinner from "react-native-loading-spinner-overlay";
 import activationCode from "../reducers/ActivationCodeReducer";
+import {DoubleBounce} from "react-native-loader";
+import COLORS from "../consts/colors";
 
 
 class ActivationCode extends Component {
@@ -67,9 +69,56 @@ class ActivationCode extends Component {
         return isError;
     };
 
-    onLoginPressed() {
 
-        this.setState({ spinner: true });
+    renderSubmit() {
+        if (this.state.code == '') {
+            return (
+                <TouchableOpacity
+                    style={[
+                        styles.bg_red,
+                        styles.width_150,
+                        styles.flexCenter,
+                        styles.marginVertical_15,
+                        styles.height_40,
+                        {
+                            backgroundColor: '#999'
+                        }
+                    ]}>
+                    <Text style={[styles.textRegular, styles.textSize_14, styles.text_White]}>
+                        {i18n.translate('confirm')}
+                    </Text>
+                </TouchableOpacity>
+            );
+        }
+
+        if (this.state.spinner){
+            return(
+                <View style={[{ justifyContent: 'center', alignItems: 'center' , marginBottom:20 }]}>
+                    <DoubleBounce size={20} color={COLORS.orange} style={{ alignSelf: 'center' }} />
+                </View>
+            )
+        }
+
+        return (
+            <TouchableOpacity
+                style={[
+                    styles.bg_red,
+                    styles.width_150,
+                    styles.flexCenter,
+                    styles.marginVertical_15,
+                    styles.height_40
+                ]}
+                onPress={() => this.onPressed()}>
+                <Text style={[styles.textRegular , styles.textSize_14, styles.text_White]}>
+                    {i18n.translate('confirm')}
+                </Text>
+            </TouchableOpacity>
+        );
+    }
+
+    onPressed() {
+
+
         const { password, phone, deviceId } = this.props.navigation.state.params;
 
         const err = this.validate();
@@ -77,6 +126,7 @@ class ActivationCode extends Component {
             const {code , type} = this.state;
             const activeCode  = this.props.navigation.state.params.code;
             if (activeCode == code){
+                this.setState({ spinner: true });
                 this.props.activeCode({ code, password, phone, deviceId }, this.props , this.props.lang);
             } else {
                 Toast.show({
@@ -96,7 +146,7 @@ class ActivationCode extends Component {
     }
 
     componentWillReceiveProps(newProps){
-
+        this.setState({ spinner: false });
         console.log('props auth ...PPP', newProps, newProps.activeKey);
 
         if (this.state.activeKey == 0){
@@ -152,7 +202,8 @@ class ActivationCode extends Component {
                                     <Image style={[styles.icoImage]} source={require('../../assets/images/logo.png')}/>
                                 </View>
                             </Animatable.View>
-                            <Form style={[styles.Width_100, styles.flexCenter, styles.marginVertical_10, styles.Width_90]}>
+                            <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
+                                <Form style={[styles.Width_100, styles.flexCenter, styles.marginVertical_10, styles.Width_90]}>
 
                                 <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
                                     <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
@@ -170,21 +221,12 @@ class ActivationCode extends Component {
                                     </View>
                                 </View>
 
-                                <TouchableOpacity
-                                    style={[
-                                        styles.bg_red,
-                                        styles.width_150,
-                                        styles.flexCenter,
-                                        styles.marginVertical_15,
-                                        styles.height_40
-                                    ]}
-                                    onPress={() => this.onLoginPressed()}>
-                                    <Text style={[styles.textRegular , styles.textSize_14, styles.text_White]}>
-                                        {i18n.translate('confirm')}
-                                    </Text>
-                                </TouchableOpacity>
+                                    {
+                                        this.renderSubmit()
+                                    }
 
                             </Form>
+                            </KeyboardAvoidingView>
                         </View>
                     </ImageBackground>
                 </Content>

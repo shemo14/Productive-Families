@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground,} from "react-native";
+import {View, Text, Image, TouchableOpacity, ImageBackground, KeyboardAvoidingView,} from "react-native";
 import {Container, Content, Form, Item, Input, Toast, Icon} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
@@ -118,7 +118,8 @@ class NewPassword extends Component {
                                     <Image style={[styles.icoImage]} source={require('../../assets/images/logo.png')}/>
                                 </View>
                             </Animatable.View>
-                            <Form style={[styles.Width_100, styles.flexCenter, styles.marginVertical_10, styles.Width_90]}>
+                            <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
+                                <Form style={[styles.Width_100, styles.flexCenter, styles.marginVertical_10, styles.Width_90]}>
 
                                 <View style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter ]}>
                                     <Item floatingLabel style={[ styles.item, styles.position_R, styles.overHidden ]}>
@@ -183,6 +184,7 @@ class NewPassword extends Component {
                                 </TouchableOpacity>
 
                             </Form>
+                            </KeyboardAvoidingView>
                         </View>
                     </ImageBackground>
                 </Content>

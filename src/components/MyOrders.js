@@ -190,12 +190,9 @@ class MyOrders extends Component {
 											const myOrders = this.props.user.type === 'provider' ? order.order_user : order.order_provider
 											return (
 												<TouchableOpacity key={i}
-													onPress={() => this.props.navigation.navigate(this.props.user.type === 'delegate' ? 'delegateOrderDetails' : 'orderDetails', {
-														orderType: this.state.activeType,
-														order_id: order.order_info.order_id
-													})}
+													onPress={() => this.props.navigation.navigate(this.props.user.type === 'delegate' ? 'delegateOrderDetails' : 'orderDetails', { order_id: order.order_info.order_id })}
 													style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop: 20}]}>
-													<View style={[styles.lightOverlay, styles.Border]}></View>
+													<View style={[styles.lightOverlay, styles.Border]} />
 													<View
 														style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
 														<View style={[styles.icImg, styles.flex_30]}>

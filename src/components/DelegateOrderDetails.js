@@ -39,7 +39,6 @@ class DelegateOrderDetails extends Component {
             loader: false,
             reason: '',
             isSubmitted: false,
-
         }
     }
 
@@ -52,7 +51,7 @@ class DelegateOrderDetails extends Component {
                 key         = { key }
                 // onPress     = {() => this.props.navigation.navigate('product', { id : item.id })}
             >
-                <View style={[styles.lightOverlay, styles.Border]}></View>
+                <View style={[styles.lightOverlay, styles.Border]} />
                 <View style={[styles.bg_White, styles.Border]}>
                     <View style={[styles.rowGroup, styles.paddingHorizontal_5 , styles.paddingVertical_5]}>
                         <View style={[styles.flex_100, styles.position_R]}>
@@ -61,7 +60,6 @@ class DelegateOrderDetails extends Component {
                                 source          = {{uri:item.product_info.image}}
                                 resizeMode      = {'cover'}
                             />
-
 
                         </View>
                     </View>
@@ -78,7 +76,7 @@ class DelegateOrderDetails extends Component {
                         </Text>
                         <View style={[styles.rowGroup]}>
                             <Text style={[styles.text_red, styles.textSize_13, styles.textRegular,styles.textLeft, styles.borderText, styles.paddingHorizontal_5]}>
-                                {item.product_info.product_price} {i18n.t('RS')}
+                                {item.product_info.total_price} {i18n.t('RS')}
                             </Text>
                             <Text style={[styles.text_red, styles.textSize_13, styles.textRegular,styles.textLeft,{borderWidth:1 , borderColor:COLORS.orange , textAlign: 'center'}, styles.paddingHorizontal_5]}>
                                 {item.product_info.product_count}
@@ -325,39 +323,30 @@ class DelegateOrderDetails extends Component {
                                            marginTop: 15,
                                            marginBottom: 15
                                        }, styles.marginHorizontal_10, styles.SelfCenter]}>
-                                       <View style={[styles.lightOverlay, styles.Border]}></View>
+                                       <View style={[styles.lightOverlay, styles.Border]} />
                                        <View
                                            style={[styles.Width_100, styles.overHidden, styles.bg_White, styles.Border, styles.bgFullWidth, styles.paddingHorizontal_7, styles.paddingVertical_7]}>
-                                           <View
-                                               style={[styles.directionRowSpace, styles.Border, styles.paddingHorizontal_10, styles.paddingVertical_10, {marginTop: 15}]}>
-                                               <Text
-                                                   style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>{i18n.t('productsprice')}</Text>
-                                               <Text
-                                                   style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>{this.props.orderDetails.products_price} {i18n.t('RS')}</Text>
+                                           <View style={[styles.directionRowSpace, styles.Border, styles.paddingHorizontal_10, styles.paddingVertical_10, {marginTop: 15}]}>
+                                               <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>{i18n.t('productsprice')}</Text>
+                                               <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>{this.props.orderDetails.products_price} {i18n.t('RS')}</Text>
                                            </View>
-                                           <View
-                                               style={[styles.directionRowSpace, styles.Border, styles.paddingHorizontal_10, styles.paddingVertical_10, {marginTop: 10}]}>
-                                               <Text
-                                                   style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>{i18n.t('deliveredPrice')}</Text>
-                                               <Text
-                                                   style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>{this.props.orderDetails.shipping_price} {i18n.t('RS')}</Text>
+                                           <View style={[styles.directionRowSpace, styles.Border, styles.paddingHorizontal_10, styles.paddingVertical_10, {marginTop: 10}]}>
+                                               <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>{i18n.t('deliveredPrice')}</Text>
+                                               <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>{this.props.orderDetails.shipping_price} {i18n.t('RS')}</Text>
                                            </View>
-                                           <View
-                                               style={[styles.directionRowSpace, styles.Border, styles.paddingHorizontal_10, styles.paddingVertical_10, {
+                                           <View style={[styles.directionRowSpace, styles.Border, styles.paddingHorizontal_10, styles.paddingVertical_10, {
                                                    marginTop: 10,
                                                    backgroundColor: '#000'
                                                }]}>
-                                               <Text
-                                                   style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('total')}</Text>
-                                               <Text
-                                                   style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{this.props.orderDetails.total_price} {i18n.t('RS')}</Text>
+                                               <Text style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{i18n.t('total')}</Text>
+                                               <Text style={[styles.textRegular, styles.text_White, styles.textSize_14, styles.textLeft]}>{this.props.orderDetails.total_price} {i18n.t('RS')}</Text>
                                            </View>
                                        </View>
                                    </View>
 
                                    <View
                                        style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop: 20}]}>
-                                       <View style={[styles.lightOverlay, styles.Border]}></View>
+                                       <View style={[styles.lightOverlay, styles.Border]} />
                                        <View
                                            style={[styles.position_R, styles.Width_100, styles.overHidden, styles.bg_White, styles.bgFullWidth, styles.paddingHorizontal_7, styles.paddingVertical_7
                                                , {
@@ -379,7 +368,7 @@ class DelegateOrderDetails extends Component {
 
                                    <View
                                        style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop: 20}]}>
-                                       <View style={[styles.lightOverlay, styles.Border]}></View>
+                                       <View style={[styles.lightOverlay, styles.Border]} />
                                        <View
                                            style={[styles.position_R, styles.Width_100, styles.overHidden, styles.bg_White, styles.bgFullWidth, styles.paddingHorizontal_7, styles.paddingVertical_7
                                                , {
@@ -401,15 +390,13 @@ class DelegateOrderDetails extends Component {
                                    </View>
 
                                    {
-                                       this.props.navigation.state.params.orderType === 0  ||  this.props.navigation.state.params.orderType === 1 ?
-
+									   this.props.orderDetails.order_status === 1 ?
                                            this.renderAcceptOrder()
-
                                            : <View/>
                                    }
 
                                    {
-                                       this.props.navigation.state.params.orderType === 2 ?
+									   this.props.orderDetails.order_status === 2 ?
                                            this.renderFinishOrder()
                                            :
                                            <View/>

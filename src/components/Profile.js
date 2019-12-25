@@ -47,8 +47,8 @@ class Profile extends Component {
     renderSubmit(){
         if (this.state.password == '' || this.state.newPassword == '' || this.state.confirmNewPassword == '') {
             return (
-                <View style={[styles.Width_100,]}>
-                    <TouchableOpacity style={[styles.cartBtn , styles.SelfCenter , {margin:20}]}>
+                <View style={[styles.Width_100,{marginBottom:20}]}>
+                    <TouchableOpacity style={[styles.cartBtn , styles.SelfCenter , {backgroundColor:'#999'}]}>
                         <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft]}>{ i18n.t('confirm') }</Text>
                     </TouchableOpacity>
                 </View>
@@ -62,8 +62,8 @@ class Profile extends Component {
             )
         }
         return (
-            <View style={[styles.Width_100,]}>
-                <TouchableOpacity onPress={() => this.changePass()} style={[styles.cartBtn , styles.SelfCenter , {margin:20}]}>
+            <View style={[styles.Width_100,{marginBottom:20}]}>
+                <TouchableOpacity onPress={() => this.changePass()} style={[styles.cartBtn , styles.SelfCenter ]}>
                     <Text style={[styles.textRegular, styles.text_White,styles.textSize_14, styles.textLeft]}>{i18n.t('confirm')}</Text>
                 </TouchableOpacity>
             </View>

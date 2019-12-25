@@ -288,6 +288,13 @@ const authStack = createStackNavigator({
                 header: null
             }
         },
+        MapLocation : {
+            screen: MapLocation,
+            navigationOptions: {
+                header: null
+            }
+        },
+
     }
 );
 

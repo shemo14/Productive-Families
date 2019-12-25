@@ -112,6 +112,7 @@ const ar = {
     'infoimage'                 : 'يجب إختيار صور المنتج',
     'namestore'                 : 'اسم المتجر',
     'passError'                 : 'كلمة المرور الجديده غير مطابقه لتآكيد كلمه المرور',
+    'noComments'                : 'لا يوجد تعليقات بهذا المنتج',
 
 
 
@@ -167,6 +168,7 @@ const ar = {
     'canceled'                  : 'ملغاه',
     'confirmation'              : 'تاكيد الموافقة',
     'confirmationText'          : 'تم تأكيد الموافقة وسيتم ارسال اشعار للعميل بالموافقة وتنفيذ الطلب',
+    'notInvalidCode'            : 'الكود غير صحيح',
 };
 
 export default ar;

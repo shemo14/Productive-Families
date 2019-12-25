@@ -8,7 +8,10 @@ import {connect} from 'react-redux';
 import {NavigationEvents} from "react-navigation";
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import * as Location from 'expo-location';
 import {getCities, register, categoryHome} from "../actions";
+import axios from "axios";
+
 
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -42,22 +45,74 @@ class Register extends Component {
             Carbase64: null,
             Licensebase64: null,
             spinner: false,
+            mapRegion: null,
+            hasLocationPermissions: false,
+            initMap: true,
         }
     }
 
-    componentWillMount() {
+    async componentWillMount() {
 
         if (this.props.navigation.getParam('latitude') || this.props.navigation.getParam('longitude')) {
             this.state.city_name = this.props.navigation.getParam('city_name');
             this.setState({latitude: this.props.navigation.getParam('latitude')});
             this.setState({longitude: this.props.navigation.getParam('longitude')});
         } else {
-            this.setState({city_name: i18n.t('mapname')});
+            let {status} = await Permissions.askAsync(Permissions.LOCATION);
+            if (status !== 'granted') {
+                alert('صلاحيات تحديد موقعك الحالي ملغاه');
+            } else {
+                const {coords: {latitude, longitude}} = await Location.getCurrentPositionAsync({});
+                const userLocation = {latitude, longitude};
+                this.setState({
+                    initMap: false,
+                    mapRegion: userLocation,
+                    latitude: userLocation.latitude,
+                    longitude: userLocation.longitude
+                });
+
+            }
+
+            let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+            getCity += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
+            getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=' + this.props.lang + '&sensor=true';
+
+            console.log(getCity);
+
+            try {
+                const {data} = await axios.get(getCity);
+                this.setState({city_name: data.results[0].formatted_address});
+
+            } catch (e) {
+                console.log(e);
+            }
         }
 
         this.props.categoryHome(this.props.lang);
         this.props.getCities(this.props.lang);
 
+
+    }
+
+    _handleMapRegionChange = async (mapRegion) => {
+        console.log(mapRegion);
+        this.setState({mapRegion});
+
+        let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+        getCity += mapRegion.latitude + ',' + mapRegion.longitude;
+        getCity += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language= ' + this.props.lang + '&sensor=true';
+
+        console.log('locations data', getCity);
+
+
+        try {
+            const {data} = await axios.get(getCity);
+            console.log(data);
+            this.setState({city_name: data.results[0].formatted_address});
+
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     onFocus() {
@@ -255,10 +310,12 @@ class Register extends Component {
                                 </View>
                             </Animatable.View>
                             <KeyboardAvoidingView behavior={'padding'} style={styles.keyboardAvoid}>
-                                <Form style={[styles.Width_100, styles.flexCenter, styles.marginVertical_10, styles.Width_90]}>
+                                <Form
+                                    style={[styles.Width_100, styles.flexCenter, styles.marginVertical_10, styles.Width_90]}>
                                     <View
                                         style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter]}>
-                                        <Item floatingLabel style={[styles.item, styles.position_R, styles.overHidden]}>
+                                        <Item floatingLabel
+                                              style={[styles.item, styles.position_R, styles.overHidden]}>
                                             <Input
                                                 placeholder={i18n.t('userName')}
                                                 style={[styles.input, styles.height_50, (this.state.usernameStatus === 1 ? styles.Active : styles.noActive)]}
@@ -276,7 +333,8 @@ class Register extends Component {
 
                                     <View
                                         style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter]}>
-                                        <Item floatingLabel style={[styles.item, styles.position_R, styles.overHidden]}>
+                                        <Item floatingLabel
+                                              style={[styles.item, styles.position_R, styles.overHidden]}>
                                             <Input
                                                 placeholder={i18n.t('phone')}
                                                 style={[styles.input, styles.height_50, (this.state.phoneStatus === 1 ? styles.Active : styles.noActive)]}
@@ -364,7 +422,8 @@ class Register extends Component {
                                                              value={null}/>
                                                 {
                                                     this.props.citys.map((city, i) => (
-                                                        <Picker.Item style={styles.Width_100} key={i} label={city.name}
+                                                        <Picker.Item style={styles.Width_100} key={i}
+                                                                     label={city.name}
                                                                      value={city.id}/>
                                                     ))
                                                 }
@@ -441,12 +500,14 @@ class Register extends Component {
                                             <TouchableOpacity
                                                 style={[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50, styles.rowGroup, styles.paddingHorizontal_10]}
                                                 onPress={() => this._pickImage('ID')}>
-                                                <Text style={[styles.textRegular, styles.text_black, styles.width_150]}
-                                                      numberOfLines={1} prop with ellipsizeMode="head">
+                                                <Text
+                                                    style={[styles.textRegular, styles.text_black, styles.width_150]}
+                                                    numberOfLines={1} prop with ellipsizeMode="head">
                                                     {this.state.PhotoID}
                                                 </Text>
                                                 <View style={[styles.overHidden]}>
-                                                    <Icon style={[styles.text_black, styles.textSize_16]} type="Feather"
+                                                    <Icon style={[styles.text_black, styles.textSize_16]}
+                                                          type="Feather"
                                                           name='camera'/>
                                                 </View>
                                             </TouchableOpacity>
@@ -461,12 +522,14 @@ class Register extends Component {
                                             <TouchableOpacity
                                                 style={[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50, styles.rowGroup, styles.paddingHorizontal_10]}
                                                 onPress={() => this._pickImage('Car')}>
-                                                <Text style={[styles.textRegular, styles.text_black, styles.width_150]}
-                                                      numberOfLines={1} prop with ellipsizeMode="head">
+                                                <Text
+                                                    style={[styles.textRegular, styles.text_black, styles.width_150]}
+                                                    numberOfLines={1} prop with ellipsizeMode="head">
                                                     {this.state.PhotoCar}
                                                 </Text>
                                                 <View style={[styles.overHidden]}>
-                                                    <Icon style={[styles.text_black, styles.textSize_16]} type="Feather"
+                                                    <Icon style={[styles.text_black, styles.textSize_16]}
+                                                          type="Feather"
                                                           name='camera'/>
                                                 </View>
                                             </TouchableOpacity>
@@ -481,12 +544,14 @@ class Register extends Component {
                                             <TouchableOpacity
                                                 style={[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50, styles.rowGroup, styles.paddingHorizontal_10]}
                                                 onPress={() => this._pickImage('License')}>
-                                                <Text style={[styles.textRegular, styles.text_black, styles.width_150]}
-                                                      numberOfLines={1} prop with ellipsizeMode="head">
+                                                <Text
+                                                    style={[styles.textRegular, styles.text_black, styles.width_150]}
+                                                    numberOfLines={1} prop with ellipsizeMode="head">
                                                     {this.state.PhotoLicense}
                                                 </Text>
                                                 <View style={[styles.overHidden]}>
-                                                    <Icon style={[styles.text_black, styles.textSize_16]} type="Feather"
+                                                    <Icon style={[styles.text_black, styles.textSize_16]}
+                                                          type="Feather"
                                                           name='camera'/>
                                                 </View>
                                             </TouchableOpacity>
@@ -497,7 +562,8 @@ class Register extends Component {
 
                                     <View
                                         style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter]}>
-                                        <Item floatingLabel style={[styles.item, styles.position_R, styles.overHidden]}>
+                                        <Item floatingLabel
+                                              style={[styles.item, styles.position_R, styles.overHidden]}>
                                             <Input
                                                 placeholder={i18n.t('password')}
                                                 style={[styles.input, styles.height_50, (this.state.passwordStatus === 1 ? styles.Active : styles.noActive)]}
@@ -516,7 +582,8 @@ class Register extends Component {
 
                                     <View
                                         style={[styles.position_R, styles.overHidden, styles.height_70, styles.flexCenter]}>
-                                        <Item floatingLabel style={[styles.item, styles.position_R, styles.overHidden]}>
+                                        <Item floatingLabel
+                                              style={[styles.item, styles.position_R, styles.overHidden]}>
                                             <Input
                                                 placeholder={i18n.t('password')}
                                                 style={[styles.input, styles.height_50, (this.state.rePasswordStatus === 1 ? styles.Active : styles.noActive)]}
