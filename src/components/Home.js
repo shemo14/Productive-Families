@@ -172,6 +172,19 @@ class Home extends Component {
         });
     }
 
+	renderNoData() {
+		if (this.props.orders && (this.props.orders).length <= 0) {
+			return (
+				<View style={[styles.directionColumnCenter, {height: '85%'}]}>
+					<Image source={require('../../assets/images/no-data.png')} resizeMode={'contain'}
+						style={{alignSelf: 'center', width: 200, height: 200}}/>
+				</View>
+			);
+		}
+
+		return <View/>
+	}
+
     onFocus(){
         this.componentWillMount();
     }
@@ -181,22 +194,18 @@ class Home extends Component {
         if (notification && notification.origin !== 'received') {
             this.props.navigation.navigate('notifications');
         }
-    }
-
-
+    };
 
     render() {
-
         const provider_info = this.props.provider;
 
         return (
             <Container>
-
                 <Spinner visible = { this.state.spinner } />
 				<NavigationEvents onWillFocus={() => this.onFocus()} />
 
                 <Header style={styles.headerView}>
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={{ height: 85, width: '100%', position: 'absolute' }} />
+                    {/*<ImageBackground source={require('../../assets/images/bg_img.png')} style={{ height: 85, width: '100%', position: 'absolute' }} />*/}
                         <Left style={[styles.leftIcon]}>
                             <Button style={styles.Button} transparent onPress={() => { this.props.navigation.openDrawer()} }>
                                 <Image style={[styles.ionImage]} source={require('../../assets/images/menu.png')}/>
@@ -396,41 +405,46 @@ class Home extends Component {
                         {
                             this.props.user != null && this.props.user.type === 'delegate' ?
                                 <View style={[styles.homeDelegat, styles.paddingVertical_10]}>
-
+									{this.renderNoData()}
                                     {
-                                        this.props.orders.map((order, i) => (
-
-                                            <TouchableOpacity
-                                                onPress     = {() => this.props.navigation.navigate('delegateOrderDetails', { id : order.id })}
-                                                key         = { i }
-                                                style       = {[styles.position_R, styles.flexCenter, styles.Width_90, styles.marginVertical_10]}
-                                            >
-                                                <View style={[styles.lightOverlay, styles.Border]}></View>
-                                                <View style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                                    <View style={[styles.icImg, styles.flex_30]}>
-                                                        <Image style={[styles.icImg]} source={{ uri : order.avatar }}/>
-                                                    </View>
-                                                    <View style={[styles.flex_70]}>
-                                                        <View style={[styles.rowGroup]}>
-                                                            <Text style={[styles.textRegular , styles.text_black]}>{ order.name }</Text>
-                                                        </View>
-                                                        <View style={[styles.overHidden]}>
-                                                            <Text style={[styles.textRegular , styles.text_gray, styles.Width_100, styles.textLeft]}>
-                                                                { order.category }
-                                                            </Text>
-                                                        </View>
-                                                        <View style={[styles.overHidden, styles.rowGroup]}>
-                                                            <Text style={[styles.textRegular , styles.text_red,]}>{ order.price }  </Text>
-                                                            <Text style={[styles.textRegular , styles.text_gray,]}>{ order.date }</Text>
-                                                        </View>
-                                                    </View>
-                                                    <TouchableOpacity style = {[styles.width_40 , styles.height_40 , styles.flexCenter, styles.bg_light_oran, styles.borderLightOran, styles.marginVertical_5, styles.position_A, styles.top_5, styles.right_0]}>
-                                                        <Text style={[styles.textRegular , styles.text_red]}>{ order.provider_id }</Text>
-                                                    </TouchableOpacity>
-                                                </View>
-                                            </TouchableOpacity>
-
-                                        ))
+                                        this.props.orders.map((order, i) => {
+											const myOrders = this.props.user.type === 'provider' ? order.order_user : order.order_provider;
+											return(
+												<TouchableOpacity key={i}
+													onPress={() => this.props.navigation.navigate( 'delegateOrderDetails' , { order_id: order.order_info.order_id })}
+													style={[styles.position_R, styles.flexCenter, styles.Width_90, {marginTop: 20}]}>
+													<View style={[styles.lightOverlay, styles.Border]} />
+													<View
+														style={[styles.rowGroup, styles.bg_White, styles.Border, styles.paddingVertical_10, styles.paddingHorizontal_10]}>
+														<View style={[styles.icImg, styles.flex_30]}>
+															<Image style={[styles.icImg]}
+																source={{uri: myOrders.avatar}}/>
+														</View>
+														<View style={[styles.flex_70]}>
+															<View style={[styles.rowGroup]}>
+																<Text
+																	style={[styles.textRegular, styles.text_black]}>{myOrders.name}</Text>
+															</View>
+															<View style={[styles.overHidden]}>
+																<Text
+																	style={[styles.textRegular, styles.text_gray, styles.Width_100, styles.textLeft]}>{order.order_info.category}</Text>
+															</View>
+															<View style={[styles.overHidden, styles.rowGroup]}>
+																<Text
+																	style={[styles.textRegular, styles.text_red,]}>{order.order_info.price} {i18n.t('RS')}</Text>
+																<Text
+																	style={[styles.textRegular, styles.text_gray,]}>{order.order_info.date}</Text>
+															</View>
+														</View>
+														<TouchableOpacity
+															style={[styles.width_40, styles.height_40, styles.flexCenter, styles.bg_light_oran, styles.borderLightOran, styles.marginVertical_5, styles.position_A, styles.top_5, styles.right_0]}>
+															<Text
+																style={[styles.textRegular, styles.text_red]}>{order.order_info.order_items}</Text>
+														</TouchableOpacity>
+													</View>
+												</TouchableOpacity>
+											)
+                                        })
                                     }
 
                                 </View>

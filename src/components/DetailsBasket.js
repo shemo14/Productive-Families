@@ -151,7 +151,7 @@ class DetailsBasket extends Component {
                                         <Text style={[styles.textBold, styles.text_White, styles.textSize_14]}>
                                             {i18n.t('totalprice')}
                                         </Text>
-                                        <Text style={[styles.textBold, styles.text_White, styles.textSize_14]}>{this.state.totalPrice + Number(this.props.cartProducts.prices.shipping_price)} {i18n.t('RS')}</Text>
+                                        <Text style={[styles.textBold, styles.text_White, styles.textSize_14]}>{Number(this.state.totalPrice) + Number(this.props.cartProducts.prices.shipping_price)} {i18n.t('RS')}</Text>
                                     </View>
 
                                     <TouchableOpacity

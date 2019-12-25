@@ -7,7 +7,7 @@ export const homeDelegate = ( lang , status, token) => {
 
     return (dispatch) => {
         axios({
-            url         : CONST.url + 'delegate/orders',
+            url         : CONST.url + 'orders',
             method      : 'POST',
             data        : { lang , status },
             headers     : { Authorization: token }

@@ -52,9 +52,10 @@ class Notifications extends Component {
     _keyExtractor = (item, index) => item.id;
 
     renderItems = (item , index) => {
+        console.log(item);
         return(
-            <TouchableOpacity style={[styles.position_R, styles.Width_95, {marginTop:15}, styles.marginHorizontal_10, styles.SelfCenter]}>
-                <View style={[styles.lightOverlay, styles.Border]}></View>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate(this.props.user.type === 'delegate' ? 'delegateOrderDetails' : 'orderDetails', { order_id: item.item.order_id })} style={[styles.position_R, styles.Width_95, {marginTop:15}, styles.marginHorizontal_10, styles.SelfCenter]}>
+                <View style={[styles.lightOverlay, styles.Border]} />
                 <View style={[styles.position_R, styles.Width_100, styles.overHidden, styles.bg_White,styles.bgFullWidth,styles.paddingHorizontal_7 , styles.paddingVertical_7
                 , { borderWidth: 1, borderTopColor : COLORS.lightWhite ,borderBottomColor : COLORS.lightWhite ,borderRightColor : COLORS.lightWhite , borderLeftWidth:5 ,
                         borderLeftColor: item.index % 2 === 0 ? COLORS.orange : COLORS.black}]}>
