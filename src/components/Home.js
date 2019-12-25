@@ -117,7 +117,7 @@ class Home extends Component {
                 key         = { key }
                 onPress     = {() => this.props.navigation.navigate('product', { id : item.id })}
             >
-                <View style={[styles.lightOverlay, styles.Border]}></View>
+                <View style={[styles.lightOverlay, styles.Border]} />
                 <View style={[styles.bg_White, styles.Border]}>
                     <View style={[styles.rowGroup, styles.paddingHorizontal_5 , styles.paddingVertical_5]}>
                         <View style={[styles.flex_100, styles.position_R]}>
@@ -152,13 +152,11 @@ class Home extends Component {
                         </Text>
                         <View style={[styles.rowGroup]}>
                             <Text style={[styles.text_red, styles.textSize_13, styles.textRegular,styles.textLeft, styles.borderText, styles.paddingHorizontal_5]}>
+                                {item.discount_price} {i18n.t('RS')}
+                            </Text>
+                            <Text style={[styles.text_red, styles.textSize_13, styles.textRegular,styles.textLeft, styles.borderText, styles.paddingHorizontal_5, { textDecorationLine: 'line-through' }]}>
                                 {item.price} {i18n.t('RS')}
                             </Text>
-                            <TouchableOpacity onPress = {() => this.toggleFavorite(item.id)}>
-                                <Text>
-                                    <Icon style={[styles.text_red, styles.textSize_18]} type="AntDesign" name={this.state.isFav === 1 ? 'heart' : 'hearto'} />
-                                </Text>
-                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>

@@ -14,7 +14,6 @@ export * from './ProviderProductsAction';
 export * from './FavoriteAction';
 export * from './ProductsDetailsAction';
 export * from './AddToCartAction';
-export * from './AddCommentAction';
 export * from './CartListAction';
 export * from './CartProductsAction';
 export * from './UserOrdersAction';

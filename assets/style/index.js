@@ -381,7 +381,7 @@ const styles = ({
         flexDirection       : "row",
         justifyContent      : "space-between",
         alignItems          : "center",
-        // flexWrap            : 'wrap'
+        flexWrap            : 'wrap'
     },
     rowCenter : {
         flexDirection       : "row",

@@ -71,7 +71,6 @@ class Product extends Component {
 		this.setState({ isSubmitted: true });
 		const token = this.props.user ? this.props.user.token : null;
 		this.props.addCart(this.props.lang, id, token, this.state.value , this.props);
-
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -429,23 +428,30 @@ class Product extends Component {
 															style={[styles.textRegular, styles.text_bold_gray, styles.textSize_14, styles.textLeft]}>
 															{i18n.t('productPrice')}
 														</Text>
-														<Text
-															style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft, {
+														<Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft, {
 																borderRightWidth: 2,
 																borderRightColor: COLORS.orange,
 																paddingRight: 5,
 																marginLeft: 5
 															}]}>
+															{this.props.products.discount_price * this.state.value } {i18n.t('RS')}</Text>
+
+														<Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft, {
+															borderRightWidth: 2,
+															borderRightColor: COLORS.orange,
+															paddingRight: 5,
+															marginLeft: 5,
+															textDecorationLine: 'line-through'
+														}]}>
 															{this.props.products.price * this.state.value } {i18n.t('RS')}</Text>
 													</View>
-													{
-														this.props.user == null || this.props.user.type === 'user' ?
-
-															this.renderAddToCart()
-															:
-															<View/>
-													}
 												</View>
+												{
+													this.props.user == null || this.props.user.type === 'user' ?
+														<View style={{ alignSelf: 'center' }}>
+															{this.renderAddToCart()}
+														</View> : <View/>
+												}
 											</View>
 										</View>
 									</View>
