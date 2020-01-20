@@ -35,10 +35,10 @@
     },
     "android": {
       "package": "app.aait.chifz",
-      "versionCode": 1,
+      "versionCode": 3,
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyBripzhDn5xRMGI_ohKAsIcbd1-UuKS6uY"
+          "apiKey": "AIzaSyBQu-aDY--uY14s4U3ok-XwwqhsnhLFe5Q"
         }
       }
     }
