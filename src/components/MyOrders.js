@@ -9,18 +9,19 @@ import i18n from "../../locale/i18n";
 import {getUserOrders} from '../actions'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
+const width 			= Dimensions.get('window').width;
+const height 			= Dimensions.get('window').height;
+let newOrderStatus 		= 1;
 
 
 class MyOrders extends Component {
 	constructor(props) {
 		super(props);
-
 		this.state = {
-			activeType: this.props.user.type === 'delegate' ? 1 : 0,
-			loader: true
+			activeType		:this.props.user.type === 'delegate' ? 1 : 0,
+			loader			: true
 		}
+
 	}
 
 
@@ -45,21 +46,28 @@ class MyOrders extends Component {
 	}
 
 	componentWillMount() {
-		this.getOrders(this.state.activeType)
+		newOrderStatus  = this.props.user.type === 'delegate' ? 1 : 0;
+		this.setState({
+			activeType	:  this.props.user.type === 'delegate' ? 1 : 0
+		}, () => {
+			this.getOrders(this.state.activeType);
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
-		this.setState({loader: false});
+		this.setState({loader: false,});
 	}
 
 	getOrders(type) {
-		this.setState({activeType: type, loader: true});
+ 		this.setState({activeType: type, loader: true});
 		const token = this.props.user.token;
-		setTimeout(() => this.props.getUserOrders(this.props.lang, type, token), 2000)
-
+		setTimeout(() => {
+			this.props.getUserOrders(this.props.lang, type, token)
+		}, 2000)
 	}
 
 	componentDidMount() {
+		newOrderStatus = this.props.user.type === 'delegate' ? 1 : 0;
 		this.runPlaceHolder();
 	}
 
@@ -91,7 +99,8 @@ class MyOrders extends Component {
 					style={{marginBottom: 7, alignSelf: 'center'}}
 					width={width - 20}
 					height={100}
-					colorShimmer={['#ffffff75', '#FEDAD075', '#ffffff75']}
+					colorShimmer={['#ffffff75', COLORS.light_oran, '#ffffff75']}
+					duration = {600}
 				/>
 			)
 		}
@@ -107,17 +116,27 @@ class MyOrders extends Component {
 	}
 
 	onFocus() {
+
 		this.componentWillMount();
+	}
+
+	componentWillUnmount() {
+		newOrderStatus  = this.props.user.type === 'delegate' ? 1 : 0;
+		this.setState({
+			activeType	:   this.props.user.type === 'delegate' ? 1 : 0
+		}, () => {
+		});
 	}
 
 	render() {
 
-		const newOrderStatus = this.props.user.type === 'delegate' ? 1 : 0;
+	    newOrderStatus = this.props.user.type === 'delegate' ? 1 : 0;
 		this.loadingAnimated = [];
 
 		return (
 			<Container>
 
+				<NavigationEvents onWillFocus={() => this.onFocus()}/>
 
 				<Header style={styles.headerView}>
 					<Left style={styles.leftIcon}>
@@ -132,10 +151,9 @@ class MyOrders extends Component {
 					</Title>
 					</Body>
 				</Header>
+				<ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 				<Content contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
-					<ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
-						<NavigationEvents onWillFocus={() => this.onFocus()}/>
 
 						<View
 							style={[styles.rowGroup, styles.paddingHorizontal_15, styles.marginVertical_15, styles.overlay_white, styles.Border]}>
@@ -179,7 +197,9 @@ class MyOrders extends Component {
 
 						{
 							this.state.loader ?
+
 								this._renderRows(this.loadingAnimated, 5, '5rows')
+
 								:
 
 								<View>
@@ -210,15 +230,17 @@ class MyOrders extends Component {
 															</View>
 															<View style={[styles.overHidden, styles.rowGroup]}>
 																<Text
-																	style={[styles.textRegular, styles.text_red,]}>{order.order_info.price} {i18n.t('RS')}</Text>
+																	style={[styles.textRegular, styles.text_red,{borderRightWidth: 2,
+																		borderRightColor: COLORS.orange,
+																		paddingRight: 5,}]}>{order.order_info.price} {i18n.t('RS')}</Text>
 																<Text
 																	style={[styles.textRegular, styles.text_gray,]}>{order.order_info.date}</Text>
 															</View>
 														</View>
 														<TouchableOpacity
-															style={[styles.width_40, styles.height_40, styles.flexCenter, styles.bg_light_oran, styles.borderLightOran, styles.marginVertical_5, styles.position_A, styles.top_5, styles.right_0]}>
+															style={[styles.width_40, styles.height_40, styles.flexCenter, styles.bg_light_oran,  styles.marginVertical_5, styles.position_A, styles.top_5, styles.right_0]}>
 															<Text
-																style={[styles.textRegular, styles.text_red]}>{order.order_info.order_items}</Text>
+																style={[styles.textRegular, styles.text_orange]}>{order.order_info.order_items}</Text>
 														</TouchableOpacity>
 													</View>
 												</TouchableOpacity>
@@ -230,8 +252,8 @@ class MyOrders extends Component {
 
 						}
 
-					</ImageBackground>
 				</Content>
+				</ImageBackground>
 			</Container>
 
 		);

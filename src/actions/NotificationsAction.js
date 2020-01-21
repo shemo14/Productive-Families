@@ -48,18 +48,18 @@ const Notifications = (lang , token , dispatch ) => {
 
         dispatch({type:'getNotifications', payload: response.data});
 
-        if(response.data.data.length === 0){
-            Toast.show({
-                text        : response.data.msg,
-                type        : "danger",
-                duration    : 3000,
-                textStyle   : {
-                    color       : "white",
-                    fontFamily  : 'cairo',
-                    textAlign   : 'center'
-                }
-            });
-        }
+        // if(response.data.data.length === 0){
+        //     Toast.show({
+        //         text        : response.data.msg,
+        //         type        : "danger",
+        //         duration    : 3000,
+        //         textStyle   : {
+        //             color       : "white",
+        //             fontFamily  : 'cairo',
+        //             textAlign   : 'center'
+        //         }
+        //     });
+        // }
 
     })
 };

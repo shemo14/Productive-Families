@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {getCartList} from '../actions'
 import {NavigationEvents} from "react-navigation";
 import * as Animatable from 'react-native-animatable';
+import COLORS from '../../src/consts/colors';
 import i18n from "../../locale/i18n";
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import ReactotronConfig from '../../ReactotronConfig'
@@ -80,7 +81,7 @@ class Basket extends Component {
                     style={{marginBottom: 7, alignSelf: 'center'}}
                     width={width - 20}
                     height={100}
-                    colorShimmer={['#ffffff75', '#FEDAD075', '#ffffff75']}
+                    colorShimmer={['#ffffff75', COLORS.light_oran, '#ffffff75']}
                 />
             )
         }
@@ -119,8 +120,8 @@ class Basket extends Component {
                         </Title>
                     </Body>
                 </Header>
+                <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                         {
                             this.state.loader ?
                                 this._renderRows(this.loadingAnimated, 5, '5rows')
@@ -156,7 +157,7 @@ class Basket extends Component {
 																	type="Feather"
 																	name='map-pin'/>
 																<Text
-																	style={[styles.textRegular, styles.text_gray, styles.marginHorizontal_5]}>{cart.address}</Text>
+																	style={[styles.textRegular, styles.text_gray, styles.marginHorizontal_5]}>{cart.address.substr(0,20)}</Text>
 															</View>
 														</View>
 													</View>
@@ -168,8 +169,8 @@ class Basket extends Component {
 								</View>
                         }
 
-                    </ImageBackground>
                 </Content>
+                    </ImageBackground>
             </Container>
 
         );

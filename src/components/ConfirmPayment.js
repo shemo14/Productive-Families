@@ -42,7 +42,7 @@ class ConfirmPayment extends Component {
 
                 <Header style={styles.headerView}>
                     <Left style={styles.leftIcon}>
-                        <Button style={styles.Button} transparent onPress={() => this.props.navigation.goBack()}>
+                        <Button style={styles.Button} transparent onPress={() => this.props.navigation.navigate('MyOrders')}>
                             <Icon style={[styles.text_black, styles.textSize_22]} type="AntDesign" name='right' />
                         </Button>
                     </Left>
@@ -52,8 +52,8 @@ class ConfirmPayment extends Component {
                         </Title>
                     </Body>
                 </Header>
+                <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content  contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
                         <View style={[styles.overHidden, styles.marginVertical_25, styles.paddingHorizontal_20]}>
                             <View style={[styles.overHidden, styles.SelfRight]}>
@@ -67,13 +67,13 @@ class ConfirmPayment extends Component {
 
                             <View style={[styles.overHidden, styles.flexCenter, styles.marginVertical_25, styles.Width_80]}>
                                 <Text style={[styles.textRegular , styles.textSize_18, styles.text_black, styles.textCenter]}>
-                                    تم تآكيد الدفع عبر الفيزا وسيتم التواصل معكم في حين ظهور آي مشكله
+                                    { i18n.t('confirmationPayment') }
                                 </Text>
                             </View>
 
                             <TouchableOpacity
                                 style={[
-                                    styles.bg_red,
+                                    styles.bg_orange,
                                     styles.width_150,
                                     styles.flexCenter,
                                     styles.marginVertical_15,
@@ -86,8 +86,8 @@ class ConfirmPayment extends Component {
                             </TouchableOpacity>
                         </View>
 
-                    </ImageBackground>
                 </Content>
+                </ImageBackground>
             </Container>
 
         );

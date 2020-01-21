@@ -19,7 +19,7 @@ export const forgetPass = (data, lang, props) => {
 
            if (response.data.key === 1){
 
-                props.navigation.navigate('NewPassword', { code : response.data.data.code });
+                props.navigation.navigate('NewPassword', { code : response.data.data.code, user_id : response.data.data.id });
 
            }
 

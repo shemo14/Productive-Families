@@ -184,7 +184,7 @@ class OrderDetails extends Component {
 					style={{marginVertical:7, alignSelf: 'center'}}
 					width={width - 20}
 					height={100}
-					colorShimmer={['#ffffff75', '#FEDAD075', '#ffffff75']}
+					colorShimmer={['#ffffff75', COLORS.light_oran, '#ffffff75']}
 				/>
 			)
 		}
@@ -247,8 +247,8 @@ class OrderDetails extends Component {
 						style={[styles.textRegular, styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>{i18n.t('orderDet')}</Title>
 					</Body>
 				</Header>
+				<ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 				<Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
-					<ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 						<NavigationEvents onWillFocus={() => this.onFocus()}/>
 						{
 							this.state.loader ?
@@ -449,8 +449,8 @@ class OrderDetails extends Component {
 									<View/>
 						}
 
-					</ImageBackground>
 				</Content>
+				</ImageBackground>
 				<Modal style={{}} isVisible={this.state.isModalVisible} onBackdropPress={() => this.toggleModal()}>
 					<View style={[styles.commentModal, {padding: 15, height: 250}]}>
 						<Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft]}>

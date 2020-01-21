@@ -35,7 +35,7 @@ class Product extends Component {
 			value: 1,
 			value2: 1,
 			status: null,
-			isFav: this.props.user.type == 'user' && this.props.products.is_fav == 1 ? true : false,
+			isFav: this.props.user.type == 'user' && this.props.products && this.props.products.is_fav == 1 ? true : false,
 			isHidden: true,
 			fading: false,
 			isModalVisible: false,
@@ -156,7 +156,7 @@ class Product extends Component {
 	}
 
 	editProdect() {
-		this.props.navigation.navigate('AddProduct', {data: this.props.products});
+		this.props.navigation.navigate('updateProduct', {data: this.props.products , product_id: this.props.navigation.state.params.id});
 	}
 
 	addComment(id) {
@@ -198,7 +198,7 @@ class Product extends Component {
 							disabled={true}
 							maxStars={5}
 							rating={item.rate}
-							fullStarColor={COLORS.orange}
+							fullStarColor={COLORS.light_red}
 							starSize={15}
 							starStyle={styles.starStyle}
 						/>
@@ -252,8 +252,8 @@ class Product extends Component {
 						</Button>
 					</Right>
 				</Header>
+				<ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 				<Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
-					<ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 						{
 							this.props.products ?
 								<View>
@@ -363,8 +363,8 @@ class Product extends Component {
 											<View style={[styles.overHidden]}>
 												<View style={[styles.rowGroup]}>
 													<Text
-														style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft,]}
-														numberOfLines={1} prop with ellipsizeMode="head">
+														style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft,styles.width_150]}
+														numberOfLines={1} prop with ellipsizeMode="tail">
 														{this.props.products.name}
 													</Text>
 													<View style={{width: 70}}>
@@ -372,26 +372,26 @@ class Product extends Component {
 															disabled={true}
 															maxStars={5}
 															rating={this.props.products.rates}
-															fullStarColor={COLORS.orange}
+															fullStarColor={COLORS.light_red}
 															starSize={15}
 															starStyle={styles.starStyle}
 														/>
 													</View>
 												</View>
 												<Text
-													style={[styles.textRegular, styles.text_bold_gray, styles.Width_100, styles.textSize_12, styles.textLeft]}
-													numberOfLines={1} prop with ellipsizeMode="head">
+													style={[styles.textRegular, styles.text_bold_gray, styles.Width_100, styles.textSize_12, styles.textLeft, styles.width_150]}
+													numberOfLines={1} prop with ellipsizeMode="tail">
 													{this.props.products.category} - {this.props.products.sub_category}
 												</Text>
 												<View style={[styles.directionRow]}>
 													<View style={[styles.Width_93]}>
 														<Text
-															style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.writing , {alignSelf:'flex-start'}]}
-															numberOfLines={1} prop with ellipsizeMode="head">
+															style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.writing , styles.width_150, {alignSelf:'flex-start'}]}
+															numberOfLines={1} prop with ellipsizeMode="tail">
 															{i18n.t('productSpec')}
 														</Text>
 														<Text
-															style={[styles.textRegular, styles.text_bold_gray, styles.textSize_12 , styles.writing , {alignSelf:'flex-start'}]}>
+															style={[styles.textRegular, styles.text_bold_gray, styles.textSize_12 , styles.writing , styles.width_150, {alignSelf:'flex-start'}]}>
 															{this.props.products.description}
 														</Text>
 													</View>
@@ -460,8 +460,8 @@ class Product extends Component {
 								<View/>
 						}
 
-					</ImageBackground>
 				</Content>
+				</ImageBackground>
 
 				<Animated.View style={[styles.subView, styles.Width_90, {transform: [{translateY: this.state.bounceValue}]}, { alignSelf : 'center', }]}>
 					<View style={[styles.lightOverlay, styles.Border]}/>
@@ -470,12 +470,14 @@ class Product extends Component {
 						<View style={[styles.rowGroup,]}>
 
 							<TouchableOpacity onPress={() => { this._toggleSubview() }} style={[ styles.Width_100, styles.height_40, { flexDirection: 'row', justifyContent: 'space-between' }]}>
-								<Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft, styles.marginVertical_10, styles.paddingHorizontal_10]}>
-									{i18n.t('comments')}
-									<Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_14]}>
-										( {this.props.products.comments_count} )
-									</Text>
-								</Text>
+								{
+									this.props.products ?
+										<Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft, styles.marginVertical_10, styles.paddingHorizontal_10]}>
+											{i18n.t('comments')} <Text style={[styles.textRegular, styles.text_bold_gray, styles.textSize_14]}>
+												( {this.props.products.comments_count} )
+											</Text>
+										</Text> : <View />
+								}
 
 								<View style={[styles.height_40, styles.width_40, styles.Radius_30, styles.bg_orange, { top: -10, zIndex: 99, alignSelf: 'center', justifyContent: 'center', alignItems: 'center', position: 'absolute', right: '44%' }]}>
 									<Icon type={'AntDesign'} name={this.state.isHidden ? 'up' : 'down'} style={[styles.text_White, styles.textSize_16 ]}/>

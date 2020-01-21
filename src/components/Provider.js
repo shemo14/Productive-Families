@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {View, Text, Image, ImageBackground, ScrollView, TouchableOpacity, FlatList, Platform, Animated,Dimensions} from "react-native";
+import {View, Text, Image, ImageBackground, ScrollView, TouchableOpacity, FlatList, Platform,} from "react-native";
 import {Container, Content, Icon, Header, Left, Button, Body, Title} from 'native-base'
 import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
@@ -10,6 +10,7 @@ import {NavigationEvents} from "react-navigation";
 import StarRating from 'react-native-star-rating';
 import { providerProduct , favorite , profile} from '../actions';
 import ProductBlock from './ProductBlock'
+import {DoubleBounce} from "react-native-loader";
 
 const isIOS = Platform.OS === 'ios';
 
@@ -23,7 +24,6 @@ class Provider extends Component {
             isFav               : 0,
             refreshed           : false,
             active              : true,
-            loader              : true
         }
     }
 
@@ -35,6 +35,16 @@ class Provider extends Component {
         this.setState({spinner: true, active : id });
         this.props.providerProduct( this.props.lang , this.props.navigation.state.params.id, this.props.user.token ,id);
     }
+
+    // renderLoader(){
+    //     if (this.props.loader){
+    //         return(
+    //             <View style={[styles.loading, styles.flexCenter]}>
+    //                 <DoubleBounce size={20} />
+    //             </View>
+    //         );
+    //     }
+    // }
 
     componentWillReceiveProps(nextProps) {
         this.setState({ refreshed: !this.state.refreshed })
@@ -56,6 +66,19 @@ class Provider extends Component {
         );
     };
 
+    renderNoData() {
+        if (this.props.products && (this.props.products).length <= 0) {
+            return (
+                <View style={[styles.directionColumnCenter, styles.Width_100]}>
+                    <Image source={require('../../assets/images/no-data.png')} resizeMode={'contain'}
+                           style={{alignSelf: 'center', width: 200, height: 200}}/>
+                </View>
+            );
+        }
+
+        return <View/>
+    }
+
     onFocus(){
         this.componentWillMount();
     }
@@ -67,6 +90,7 @@ class Provider extends Component {
         return (
             <Container>
 
+                {/*{ this.renderLoader() }*/}
                 <NavigationEvents onWillFocus={() => this.onFocus()} />
 
                 <Header style={styles.headerView}>
@@ -81,15 +105,15 @@ class Provider extends Component {
                     </Title>
                     </Body>
                 </Header>
+                <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                         {
                             provider_info?
                                 <View style={[styles.viewBlock, styles.bg_White , styles.borderGray, styles.Width_90]}>
-                                    <Image style={[styles.Width_90, styles.swiper]} source={{ uri : provider_info.avatar }} resizeMode={'cover'}/>
+                                    <Image style={[styles.Width_100, styles.swiper]} source={{ uri : provider_info.avatar }} resizeMode={'cover'}/>
                                     <Animatable.View animation="fadeInRight" easing="ease-out" delay={500} style={[styles.blockContent]}>
                                         <View style={[styles.paddingVertical_10, styles.paddingHorizontal_10]}>
-                                            <Text style={[styles.textBold, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                            <Text style={[styles.textBold, styles.text_White, styles.width_150 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "tail">
                                                 {provider_info.details}
                                             </Text>
                                             <View style={{width:70}}>
@@ -97,17 +121,17 @@ class Provider extends Component {
                                                     disabled        = {true}
                                                     maxStars        = {5}
                                                     rating          = {provider_info.rates}
-                                                    fullStarColor   = {COLORS.orange}
+                                                    fullStarColor   = {COLORS.light_red}
                                                     starSize        = {13}
                                                     starStyle       = {styles.starStyle}
                                                 />
                                             </View>
-                                            <Text style={[styles.textRegular, styles.text_White, styles.Width_100 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "head">
+                                            <Text style={[styles.textRegular, styles.text_White, styles.width_150 ,styles.textSize_12, styles.textLeft]} numberOfLines = { 1 } prop with ellipsizeMode = "tail">
                                                 {provider_info.name}
                                             </Text>
                                             <View style={[styles.locationView]}>
                                                 <Icon style={[styles.text_White , styles.textSize_12 ,{marginRight:5}]} type="Feather" name='map-pin' />
-                                                <Text style={[styles.textRegular, styles.text_White,styles.textSize_12]}>
+                                                <Text style={[styles.textRegular, styles.text_White,styles.textSize_12, styles.width_150 ,]} numberOfLines={1} prop with ellipsizeMode="tail">
                                                     {provider_info.address}
                                                 </Text>
                                             </View>
@@ -143,22 +167,22 @@ class Provider extends Component {
                         </View>
 
                         <View style={[styles.marginVertical_5 , styles.paddingHorizontal_5]}>
-                            {
-                                this.props.products ?
-                                    <FlatList
-                                        data                    = {this.props.products}
-                                        renderItem              = {({item}) => this.renderItems(item)}
-                                        numColumns              = {2}
-                                        keyExtractor            = {this._keyExtractor}
-                                        extraData               = {this.state.refreshed}
-                                        onEndReachedThreshold   = {isIOS ? .01 : 1}
-                                    />
-                                    :<View/>
-                            }
+
+                            {this.renderNoData()}
+
+                            <FlatList
+                                data                    = {this.props.products}
+                                renderItem              = {({item}) => this.renderItems(item)}
+                                numColumns              = {2}
+                                keyExtractor            = {this._keyExtractor}
+                                extraData               = {this.state.refreshed}
+                                onEndReachedThreshold   = {isIOS ? .01 : 1}
+                            />
+
                         </View>
 
-                    </ImageBackground>
                 </Content>
+                </ImageBackground>
             </Container>
 
         );
@@ -175,6 +199,7 @@ const mapStateToProps = ({ lang , providerProducts , favorite , profile}) => {
         isRefreshed         : providerProducts.isRefreshed,
         setfavorite         : favorite.favorite,
         user                : profile.user,
+        loader              : providerProducts.loader
     };
 };
 export default connect(mapStateToProps, { providerProduct , favorite , profile })(Provider);

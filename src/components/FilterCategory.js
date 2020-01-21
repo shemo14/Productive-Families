@@ -1,5 +1,16 @@
 import React, {Component} from "react";
-import {View, Text, Image, TouchableOpacity, ImageBackground, Platform, FlatList, Animated , Dimensions} from "react-native";
+import {
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    ImageBackground,
+    Platform,
+    FlatList,
+    Animated,
+    Dimensions,
+    I18nManager
+} from "react-native";
 import {
     Container,
     Content,
@@ -25,6 +36,7 @@ import Modal from "react-native-modal";
 import * as Animatable from 'react-native-animatable';
 import {categoryProviders, searchProviders, filterProviders, getCities} from '../actions';
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+import COLORS from '../consts/colors'
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -104,9 +116,10 @@ class FilterCategory extends Component {
     onFilter() {
         const {country, rating} = this.state;
         const data = {
-            lang: this.props.lang,
-            city_id: country,
-            rate: rating,
+            lang        : this.props.lang,
+            city_id     : country,
+            rate        : rating,
+            category_id : this.props.navigation.state.params.id
         };
 
         this.props.filterProviders(data);
@@ -137,7 +150,7 @@ class FilterCategory extends Component {
                         </View>
                         <View style={[styles.flex_70]}>
                             <View style={[styles.rowGroup]}>
-                                <Text style={[styles.textRegular, styles.text_red]}>
+                                <Text style={[styles.textRegular, styles.text_orange]}>
                                     {item.name}
                                 </Text>
                                 <StarRating
@@ -155,7 +168,9 @@ class FilterCategory extends Component {
                             </View>
                             <View style={[styles.overHidden, styles.rowRight]}>
                                 <Icon style={[styles.text_gray, styles.textSize_14]} type="Feather" name='map-pin'/>
-                                <Text style={[styles.textRegular, styles.text_gray, styles.marginHorizontal_5]}>
+                                <Text style={[styles.textRegular, styles.text_gray, styles.marginHorizontal_5, styles.flex, {textAlign : I18nManager.isRTL ? 'left' : 'right'}]}
+                                      numberOfLines   = { 1 } prop with
+                                      ellipsizeMode   = "tail">
                                     {item.address}
                                 </Text>
                             </View>
@@ -212,7 +227,8 @@ class FilterCategory extends Component {
                     style={{marginVertical: 7, alignSelf: 'center'}}
                     width={width - 20}
                     height={100}
-                    colorShimmer={['#ffffff75', '#FEDAD075', '#ffffff75']}
+                    colorShimmer={['#ffffff75', COLORS.light_oran, '#ffffff75']}
+                    duration = {1600}
                 />
             )
         }
@@ -256,8 +272,8 @@ class FilterCategory extends Component {
                         </Button>
                     </Right>
                 </Header>
+                <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
                         <View style={[styles.position_R, styles.Width_60, styles.SelfRight]}>
                             <Item floatingLabel style={styles.item}>
@@ -320,7 +336,7 @@ class FilterCategory extends Component {
 
                                     <Animatable.View animation="fadeInRight" easing="ease-out" delay={500}>
                                         <View
-                                            style={[styles.bg_overlay, styles.overHidden, styles.paddingVertical_10, styles.Width_70, styles.heightFull, styles.paddingVertical_20]}>
+                                            style={[styles.bg_light_oran, styles.overHidden, styles.paddingVertical_10, styles.Width_70, styles.heightFull, styles.paddingVertical_20]}>
                                             <View style={[styles.overHidden, styles.heightFull, styles.bgFullWidth]}>
 
                                                 <View
@@ -466,7 +482,7 @@ class FilterCategory extends Component {
                                                 </View>
 
                                                 <TouchableOpacity
-                                                    style={[styles.overHidden, styles.bg_red, styles.width_120, styles.flexCenter, styles.Radius_5, styles.height_40, styles.marginVertical_25]}
+                                                    style={[styles.overHidden, styles.bg_orange, styles.width_120, styles.flexCenter, styles.Radius_5, styles.height_40, styles.marginVertical_25]}
                                                     onPress={() => this.onFilter()}>
                                                     <Text
                                                         style={[styles.textRegular, styles.textSize_18, styles.text_White, styles.textCenter]}>
@@ -481,8 +497,8 @@ class FilterCategory extends Component {
                             </View>
                         </Modal>
 
-                    </ImageBackground>
                 </Content>
+                </ImageBackground>
             </Container>
 
         );

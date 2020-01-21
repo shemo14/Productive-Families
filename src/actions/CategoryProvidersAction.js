@@ -14,8 +14,6 @@ export const categoryProviders = ( lang , category_id ) => {
 
             dispatch({type: 'categoryProviders', payload: response.data});
 
-            console.log('data here ==', response.data);
-
             if(response.data.data.length === 0){
                 Toast.show({
                     text        : i18n.t('nopro'),
@@ -65,13 +63,13 @@ export const searchProviders = ( { lang , keyword } ) => {
 
 };
 
-export const filterProviders = ( { lang , city_id , rate } ) => {
+export const filterProviders = ( { lang , city_id , rate, category_id } ) => {
 
     return (dispatch) => {
         axios({
             url         : CONST.url + 'filter/providers',
             method      : 'POST',
-            data        : { lang , city_id , rate }
+            data        : { lang , city_id , rate, category_id }
         }).then(response => {
 
             dispatch({type: 'categoryProviders', payload: response.data});

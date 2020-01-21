@@ -55,8 +55,8 @@ class ChoosePayment extends Component {
                         </Title>
                     </Body>
                 </Header>
+                <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content  contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                         <View style={[styles.rowGroup , styles.paddingHorizontal_10, styles.marginVertical_10]}>
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('FormPayment' , {
                                 provider_id             : this.props.navigation.state.params.provider_id,
@@ -119,8 +119,8 @@ class ChoosePayment extends Component {
                                     style={[styles.textBold, {color:'#ef7e31'}, styles.marginHorizontal_5]}>{i18n.translate('sdad')}</Text>
                             </TouchableOpacity>
                         </View>
-                    </ImageBackground>
                 </Content>
+                </ImageBackground>
             </Container>
 
         );

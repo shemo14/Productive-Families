@@ -10,7 +10,8 @@ export const complaint = (data) => {
                 url         : CONST.url + 'send-complaint',
                 method      : 'POST',
                 data: {
-                    complaint    : data.message,
+                    complaint       : data.message,
+                    lang            : data.lang
                 }
             }).then(response => {
                 dispatch({type: 'complaint', payload: response.data});

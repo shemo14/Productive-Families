@@ -57,6 +57,7 @@ class Register extends Component {
             this.state.city_name = this.props.navigation.getParam('city_name');
             this.setState({latitude: this.props.navigation.getParam('latitude')});
             this.setState({longitude: this.props.navigation.getParam('longitude')});
+            console.log('map site ===', this.state.city_name)
         } else {
             let {status} = await Permissions.askAsync(Permissions.LOCATION);
             if (status !== 'granted') {
@@ -296,11 +297,11 @@ class Register extends Component {
                     visible={this.state.spinner}
                 />
 
+                <ImageBackground source={require('../../assets/images/background.png')}
+                                 style={[styles.bgFullWidth]}>
                 <NavigationEvents onWillFocus={() => this.onFocus()}/>
 
                 <Content contentContainerStyle={styles.bgFullWidth}>
-                    <ImageBackground source={require('../../assets/images/background.png')}
-                                     style={[styles.bgFullWidth]}>
                         <View
                             style={[styles.position_R, styles.bgFullWidth, styles.marginVertical_15, styles.SelfCenter, styles.Width_100]}>
                             <Animatable.View animation="fadeInDown" easing="ease-out" delay={500}
@@ -484,8 +485,8 @@ class Register extends Component {
                                     <TouchableOpacity
                                         style={[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50, styles.rowGroup, styles.paddingHorizontal_10]}
                                         onPress={() => this.props.navigation.navigate('MapLocation', {pageName: this.props.navigation.state.routeName})}>
-                                        <Text style={[styles.textRegular, styles.text_black, styles.width_150]}
-                                              numberOfLines={1} prop with ellipsizeMode="head">
+                                        <Text style={[styles.textRegular, styles.text_black, styles.width_200]}
+                                              numberOfLines={1} prop with ellipsizeMode="tail">
                                             {this.state.city_name}
                                         </Text>
                                         <View style={[styles.overHidden]}>
@@ -501,8 +502,8 @@ class Register extends Component {
                                                 style={[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50, styles.rowGroup, styles.paddingHorizontal_10]}
                                                 onPress={() => this._pickImage('ID')}>
                                                 <Text
-                                                    style={[styles.textRegular, styles.text_black, styles.width_150]}
-                                                    numberOfLines={1} prop with ellipsizeMode="head">
+                                                    style={[styles.textRegular, styles.text_black, styles.width_200]}
+                                                    numberOfLines={1} prop with ellipsizeMode="tail">
                                                     {this.state.PhotoID}
                                                 </Text>
                                                 <View style={[styles.overHidden]}>
@@ -523,8 +524,8 @@ class Register extends Component {
                                                 style={[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50, styles.rowGroup, styles.paddingHorizontal_10]}
                                                 onPress={() => this._pickImage('Car')}>
                                                 <Text
-                                                    style={[styles.textRegular, styles.text_black, styles.width_150]}
-                                                    numberOfLines={1} prop with ellipsizeMode="head">
+                                                    style={[styles.textRegular, styles.text_black, styles.width_200]}
+                                                    numberOfLines={1} prop with ellipsizeMode="tail">
                                                     {this.state.PhotoCar}
                                                 </Text>
                                                 <View style={[styles.overHidden]}>
@@ -545,8 +546,8 @@ class Register extends Component {
                                                 style={[styles.borderBold, styles.marginVertical_15, styles.Width_100, styles.height_50, styles.rowGroup, styles.paddingHorizontal_10]}
                                                 onPress={() => this._pickImage('License')}>
                                                 <Text
-                                                    style={[styles.textRegular, styles.text_black, styles.width_150]}
-                                                    numberOfLines={1} prop with ellipsizeMode="head">
+                                                    style={[styles.textRegular, styles.text_black, styles.width_200]}
+                                                    numberOfLines={1} prop with ellipsizeMode="tail">
                                                     {this.state.PhotoLicense}
                                                 </Text>
                                                 <View style={[styles.overHidden]}>
@@ -585,7 +586,7 @@ class Register extends Component {
                                         <Item floatingLabel
                                               style={[styles.item, styles.position_R, styles.overHidden]}>
                                             <Input
-                                                placeholder={i18n.t('password')}
+                                                placeholder={i18n.t('confirmPassword')}
                                                 style={[styles.input, styles.height_50, (this.state.rePasswordStatus === 1 ? styles.Active : styles.noActive)]}
                                                 onChangeText={(confirmpassword) => this.setState({confirmpassword})}
                                                 onBlur={() => this.unActiveInput('rePasswordStatus')}
@@ -603,7 +604,7 @@ class Register extends Component {
                                     <View style={[styles.rowRight, styles.marginVertical_20]}>
                                         <TouchableOpacity style={[styles.rowRight, styles.marginVertical_10]}>
                                             <CheckBox
-                                                style={[styles.checkBox, styles.Border, styles.bg_red]}
+                                                style={[styles.checkBox, styles.Border, styles.bg_orange]}
                                                 color={styles.text_gray}
                                                 selectedColor={styles.text_White}
                                                 onPress={() => this.setState({checked: !this.state.checked})}
@@ -620,7 +621,7 @@ class Register extends Component {
 
                                     <TouchableOpacity
                                         style={[
-                                            styles.bg_red,
+                                            styles.bg_orange,
                                             styles.width_150,
                                             styles.flexCenter,
                                             styles.marginVertical_15,
@@ -635,18 +636,18 @@ class Register extends Component {
                                 </Form>
                             </KeyboardAvoidingView>
                             <View
-                                style={[styles.bg_lightWhite, styles.SelfLeft, styles.paddingHorizontal_10, styles.height_100, styles.centerContext, styles.marginVertical_25]}>
+                                style={[styles.bg_light_gray, styles.SelfLeft, styles.paddingHorizontal_10, styles.height_100, styles.centerContext, styles.marginVertical_25]}>
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}
                                                   style={[styles.bg_light_oran, styles.paddingHorizontal_10, styles.height_40, styles.centerContext]}>
-                                    <Text style={[styles.textRegular, styles.textSize_14, styles.text_red]}>
+                                    <Text style={[styles.textRegular, styles.textSize_14, styles.text_orange]}>
                                         {i18n.t('login')}
                                     </Text>
                                 </TouchableOpacity>
                             </View>
 
                         </View>
-                    </ImageBackground>
                 </Content>
+                    </ImageBackground>
             </Container>
         );
     }

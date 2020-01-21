@@ -74,9 +74,9 @@ class ForgetPassword extends Component {
                 <Spinner
                     visible={this.state.spinner}
                 />
+                <ImageBackground source={require('../../assets/images/background.png')}
+                                 style={[styles.bgFullWidth]}>
                 <Content contentContainerStyle={styles.bgFullWidth}>
-                    <ImageBackground source={require('../../assets/images/background.png')}
-                                     style={[styles.bgFullWidth]}>
                         <View
                             style={[styles.position_R, styles.bgFullWidth, styles.marginVertical_15, styles.SelfCenter, styles.Width_100]}>
                             <Animatable.View animation="fadeInDown" easing="ease-out" delay={500}
@@ -110,7 +110,7 @@ class ForgetPassword extends Component {
 
                                     <TouchableOpacity
                                         style={[
-                                            styles.bg_red,
+                                            styles.bg_orange,
                                             styles.width_150,
                                             styles.flexCenter,
                                             styles.marginVertical_15,
@@ -125,8 +125,8 @@ class ForgetPassword extends Component {
                                 </Form>
                             </KeyboardAvoidingView>
                         </View>
-                    </ImageBackground>
                 </Content>
+                    </ImageBackground>
             </Container>
         );
     }

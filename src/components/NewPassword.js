@@ -13,6 +13,7 @@ class NewPassword extends Component {
     constructor(props){
         super(props);
         this.state = {
+            user_id             : '',
             code                : '',
             password            : '',
             confirmpassword     : '',
@@ -26,6 +27,9 @@ class NewPassword extends Component {
 
         const code  = this.props.navigation.state.params.code;
         alert(code);
+
+        this.setState({ user_id : this.props.navigation.state.params.user_id });
+        console.log('phone', this.props.navigation.state.params.user_id);
 
     }
 
@@ -68,7 +72,7 @@ class NewPassword extends Component {
 
         if (this.state.code.length <= 0) {
             isError = true;
-            msg = i18n.t('phoneValidation');
+            msg = i18n.t('codeN');
         }else if (this.state.password.length <= 0 || this.state.password.length < 6){
             isError     = true;
             msg         = i18n.translate('passreq');
@@ -95,8 +99,8 @@ class NewPassword extends Component {
     onLoginPressed() {
         const err = this.validate();
         if (!err){
-            const { code , password } = this.state;
-            this.props.newPass({ code , password }, this.props.lang, this.props);
+            const { code , password, user_id } = this.state;
+            this.props.newPass({ code , password, user_id }, this.props.lang, this.props);
         }
     }
 
@@ -110,8 +114,8 @@ class NewPassword extends Component {
 
             <Container>
                 <NavigationEvents onWillFocus={() => this.onFocus()} />
+                <ImageBackground source={require('../../assets/images/background.png')} style={[styles.bgFullWidth]}>
                 <Content contentContainerStyle={styles.bgFullWidth}>
-                    <ImageBackground source={require('../../assets/images/background.png')} style={[styles.bgFullWidth]}>
                         <View style={[styles.position_R, styles.bgFullWidth, styles.marginVertical_15, styles.SelfCenter, styles.Width_100]}>
                             <Animatable.View animation="fadeInDown" easing="ease-out" delay={500} style={[styles.flexCenter]}>
                                 <View style={[styles.overHidden, styles.marginVertical_15]}>
@@ -171,7 +175,7 @@ class NewPassword extends Component {
 
                                 <TouchableOpacity
                                     style={[
-                                        styles.bg_red,
+                                        styles.bg_orange,
                                         styles.width_150,
                                         styles.flexCenter,
                                         styles.marginVertical_15,
@@ -186,8 +190,8 @@ class NewPassword extends Component {
                             </Form>
                             </KeyboardAvoidingView>
                         </View>
-                    </ImageBackground>
                 </Content>
+                    </ImageBackground>
             </Container>
         );
     }

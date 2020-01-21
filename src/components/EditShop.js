@@ -134,8 +134,8 @@ class EditShop extends Component {
                         </Button>
                     </Right>
                 </Header>
+                <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
 
                         { image != null ?
@@ -231,8 +231,8 @@ class EditShop extends Component {
                             </TouchableOpacity>
 
                         </KeyboardAvoidingView>
-                    </ImageBackground>
                 </Content>
+                </ImageBackground>
             </Container>
 
         );

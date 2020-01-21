@@ -3,7 +3,7 @@ import CONST from "../consts";
 import {Toast} from "native-base";
 
 
-export const updateProduct = (data, props, lang, token) => {
+export const updateProduct = (data, props, lang, token , product_id) => {
     return (dispatch) => {
 
         axios({
@@ -11,6 +11,7 @@ export const updateProduct = (data, props, lang, token) => {
             method      : 'POST',
             headers     : { Authorization: token },
             data        : {
+                product_id,
                 name_ar			        : data.namePro,
                 sub_category_id	        : data.kindPro,
                 price			        : data.pricePro,
@@ -37,6 +38,23 @@ export const updateProduct = (data, props, lang, token) => {
                     textAlign   	: 'center'
                 }
             });
+
+        })
+
+    }
+};
+export const deleteProductImage = (lang, token , product_image_id) => {
+    return (dispatch) => {
+
+        axios({
+            url         : CONST.url + 'products/delete-image',
+            method      : 'POST',
+            headers     : { Authorization: token },
+            data        : {
+                product_image_id,
+                lang
+            }
+        }).then(response => {
 
         })
 

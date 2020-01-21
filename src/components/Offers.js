@@ -72,9 +72,9 @@ class Offers extends Component {
                         </Title>
                     </Body>
                 </Header>
+                <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content  contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
                     { this.renderLoader() }
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
                         <View style={[styles.marginVertical_5 , styles.paddingHorizontal_5]}>
 
@@ -89,8 +89,8 @@ class Offers extends Component {
 
                         </View>
 
-                    </ImageBackground>
                 </Content>
+                </ImageBackground>
             </Container>
 
         );

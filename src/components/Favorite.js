@@ -48,6 +48,19 @@ class Favorite extends Component {
 		}
 	}
 
+	renderNoData() {
+		if (this.props.products && (this.props.products).length <= 0) {
+			return (
+				<View style={[styles.directionColumnCenter, {height: '85%', width: '100%'}]}>
+					<Image source={require('../../assets/images/no-data.png')} resizeMode={'contain'}
+						   style={{alignSelf: 'center', width: 200, height: 200}}/>
+				</View>
+			);
+		}
+
+		return <View/>
+	}
+
 	renderItems = (item , key) => {
 		return(
 			<ProductBlock item={item} key={key} fromFav={true} navigation={this.props.navigation} />
@@ -79,27 +92,43 @@ class Favorite extends Component {
 					</Title>
 					</Body>
 				</Header>
+				<ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 				<Content  contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
 					{ this.renderLoader() }
-					<ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
 						<View style={[ styles.rowGroup , styles.marginVertical_15 , styles.paddingHorizontal_20]}>
-							{
-								this.props.products ?
-									<FlatList
-										data                    = {this.props.products}
-										renderItem              = {({item}) => this.renderItems(item)}
-										numColumns              = {2}
-										keyExtractor            = {this._keyExtractor}
-										extraData               = {this.state.refreshed}
-										onEndReachedThreshold   = {isIOS ? .01 : 1}
-									/>
-									 : <View/>
-							}
+							{/*{*/}
+							{/*	this.props.products ?*/}
+							{/*		<FlatList*/}
+							{/*			data                    = {this.props.products}*/}
+							{/*			renderItem              = {({item}) => this.renderItems(item)}*/}
+							{/*			numColumns              = {2}*/}
+							{/*			keyExtractor            = {this._keyExtractor}*/}
+							{/*			extraData               = {this.state.refreshed}*/}
+							{/*			onEndReachedThreshold   = {isIOS ? .01 : 1}*/}
+							{/*		/>*/}
+							{/*		:*/}
+							{/*		<View>*/}
+							{/*			{this.renderNoData()}*/}
+							{/*		</View>*/}
+							{/*}*/}
+
+
+							{this.renderNoData()}
+
+							<FlatList
+								data                    = {this.props.products}
+								renderItem              = {({item}) => this.renderItems(item)}
+								numColumns              = {2}
+								keyExtractor            = {this._keyExtractor}
+								extraData               = {this.state.refreshed}
+								onEndReachedThreshold   = {isIOS ? .01 : 1}
+							/>
+
 						</View>
 
-					</ImageBackground>
 				</Content>
+				</ImageBackground>
 			</Container>
 
 		);

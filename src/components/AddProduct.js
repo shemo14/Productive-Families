@@ -5,7 +5,7 @@ import styles from '../../assets/style'
 import i18n from '../../locale/i18n'
 import * as Animatable from 'react-native-animatable';
 import {connect} from "react-redux";
-import {profile , addProduct, subCate} from '../actions';
+import {profile , addProduct, subCate , updateProduct, deleteProductImage} from '../actions';
 import {NavigationEvents} from "react-navigation";
 import Spinner from "react-native-loading-spinner-overlay";
 
@@ -77,7 +77,7 @@ class AddProduct extends Component {
     };
 
     async componentDidMount() {
-
+        base64 = [];
         await Permissions.askAsync(Permissions.CAMERA);
         await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
@@ -155,6 +155,7 @@ class AddProduct extends Component {
         let photos = this.state.photos;
         photos.splice(index, 1);
         this.setState({ photos, refreshed: !this.state.refreshed, imageId: null })
+        this.props.deleteProductImage(this.props.lang, this.props.user.token , item.id);
     }
 
 
@@ -196,6 +197,7 @@ class AddProduct extends Component {
 
 
     componentWillMount() {
+		base64 = [];
 
         this.props.subCate( this.props.lang, this.props.user.token);
 
@@ -203,10 +205,10 @@ class AddProduct extends Component {
 
             this.setState({
                 namePro             : this.props.navigation.state.params.data.name,
-                pricePro            : this.props.navigation.state.params.data.price,
-                discount            : this.props.navigation.state.params.data.discount_price,
+                pricePro            : this.props.navigation.state.params.data.price.toString(),
+                discount            : this.props.navigation.state.params.data.discount.toString(),
                 info                : this.props.navigation.state.params.data.description,
-                kindPro             : this.props.navigation.state.params.data.category_id,
+                kindPro             : this.props.navigation.state.params.data.sub_category_id,
                 photos              : this.props.navigation.state.params.data.images,
             });
 
@@ -215,6 +217,7 @@ class AddProduct extends Component {
     }
 
     onFocus(){
+		base64 = [];
         this.componentWillMount();
     }
 
@@ -227,10 +230,7 @@ class AddProduct extends Component {
 
         return (
             <Container>
-
-                <Spinner
-                    visible           = { this.state.spinner }
-                />
+                <Spinner visible = { this.state.spinner } />
                 <NavigationEvents onWillFocus={() => this.onFocus()} />
 
                 <Header style={styles.headerView}>
@@ -245,8 +245,8 @@ class AddProduct extends Component {
                         </Title>
                     </Body>
                 </Header>
+                <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
                         <View style={[styles.rowGroup, styles.marginVertical_10]}>
                             <View style={[styles.position_R, styles.flex_45,]}>
@@ -375,8 +375,8 @@ class AddProduct extends Component {
                             }
 
                         </KeyboardAvoidingView>
-                    </ImageBackground>
                 </Content>
+                    </ImageBackground>
             </Container>
 
         );
@@ -391,4 +391,4 @@ const mapStateToProps = ({ lang, profile, subCate }) => {
         subCategory         : subCate.subCate
     };
 };
-export default connect(mapStateToProps, {addProduct , profile, subCate})(AddProduct);
+export default connect(mapStateToProps, {addProduct , profile, subCate , updateProduct, deleteProductImage})(AddProduct);

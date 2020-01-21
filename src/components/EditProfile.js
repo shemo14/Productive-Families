@@ -187,11 +187,8 @@ class EditProfile extends Component {
                         </Button>
                     </Right>
                 </Header>
+                <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
-
-
-
                         { image != null ?
 
                             <View style={[styles.position_R, styles.Width_90, styles.marginVertical_15, styles.marginHorizontal_10, styles.SelfCenter,{right:20}]}>
@@ -254,6 +251,7 @@ class EditProfile extends Component {
                                             onBlur                  = {() => this.unActiveInput('phone')}
                                             onFocus                 = {() => this.activeInput('phone')}
                                             value                   = {this.state.phone}
+                                            keyboardType            = {'number-pad'}
                                         />
                                     </Item>
                                     <View style = {[ styles.position_A , styles.bg_light_oran, styles.flexCenter, styles.iconInput,  (this.state.phoneStatus === 1 ? styles.left_0 : styles.leftHidLeft )]}>
@@ -354,8 +352,8 @@ class EditProfile extends Component {
                             }
 
                         </KeyboardAvoidingView>
-                    </ImageBackground>
                 </Content>
+                </ImageBackground>
             </Container>
 
         );

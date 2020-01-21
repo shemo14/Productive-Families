@@ -12,6 +12,7 @@ export const newPass = (data , lang, props) => {
             data        : {
                 code			        : data.code,
                 password			    : data.password,
+                user_id			        : data.user_id,
                 lang
             }
         }).then(response => {

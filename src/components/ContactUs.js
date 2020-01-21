@@ -8,6 +8,7 @@ import {DoubleBounce} from "react-native-loader";
 import { getContactUs, complaint } from '../actions';
 import  Modal  from "react-native-modal";
 import * as Animatable from 'react-native-animatable';
+import {NavigationEvents} from "react-navigation";
 
 class ContactUs extends Component {
     constructor(props){
@@ -15,12 +16,17 @@ class ContactUs extends Component {
         this.state={
             show_modal          : false,
             message             : '',
+            error               : ''
         }
     }
 
 
     componentWillMount() {
         this.props.getContactUs( this.props.lang );
+    }
+
+    onFocus(){
+        this.componentWillMount();
     }
 
     renderLoader(){
@@ -40,6 +46,7 @@ class ContactUs extends Component {
         if (this.state.message.length <= 0 ) {
             isError     = true;
             msg         = i18n.t('context');
+            this.setState({ error : i18n.t('context') })
         }
 
         if (msg !== ''){
@@ -63,7 +70,7 @@ class ContactUs extends Component {
         if (!err){
 
             const { message } = this.state;
-            const data = {message};
+            const data = {message, lang: this.props.lang};
 
             this.props.complaint(data, this.props);
 
@@ -87,6 +94,7 @@ class ContactUs extends Component {
         return (
             <Container>
                 { this.renderLoader() }
+                <NavigationEvents onWillFocus={() => this.onFocus()} />
                 <Header style={styles.headerView}>
                     <Left style={styles.leftIcon}>
                         <Button style={styles.Button} transparent onPress={() => this.props.navigation.goBack()}>
@@ -99,8 +107,8 @@ class ContactUs extends Component {
                         </Title>
                     </Body>
                 </Header>
+                <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                         <TouchableOpacity style={[styles.borderRed, styles.marginVertical_15, styles.Width_80, styles.SelfCenter, styles.height_50, styles.paddingHorizontal_25]}>
                             <View style={[styles.bg_light_oran, styles.iconImg, styles.iconContact, styles.flexCenter]}>
                                 <Icon style={[styles.text_orange, styles.textSize_22]} type="Feather" name='user' />
@@ -143,22 +151,11 @@ class ContactUs extends Component {
                         </View>
 
                         <Modal
-                            onBackButtonPress               = {() => this.toggleModal()}
+                            onBackdropPress               = {() => this.toggleModal()}
                             isVisible                       = {this.state.show_modal}
-                            style                           = {styles.bgModel}
-                            hasBackdrop                     = {false}
-                            animationIn                     = {'slideInUp'}
-                            animationOut                    = {'slideOutDown'}
-                            animationInTiming               = {1000}
-                            animationOutTiming              = {1000}
-                            backdropTransitionInTiming      = {1000}
-                            backdropTransitionOutTiming     = {1000}
-                            swipeDirection                  = "bottom"
                         >
-                            <View style={styles.contentModel}>
-                                <View style={styles.model}>
+                                <View style={styles.commentModal}>
 
-                                    <Animatable.View animation="fadeInUp" easing="ease-out" delay={500}>
                                     <View style={[styles.bg_White, styles.overHidden, styles.Width_100, styles.paddingVertical_10]}>
                                         <View style={[styles.overHidden]}>
                                             <Text style={[styles.textRegular, styles.textSize_16, styles.text_black, styles.textCenter]}>
@@ -176,22 +173,23 @@ class ContactUs extends Component {
                                                             onChangeText                    = {(message) => this.setState({message})}
                                                         />
                                                     </Item>
+                                                    <Text style = {[styles.textRegular, styles.textCenter, styles.textSize_14 , styles.text_red]}>
+                                                        { this.state.error }
+                                                    </Text>
                                                 </Form>
                                             </View>
-                                            <TouchableOpacity style={[styles.overHidden, styles.paddingVertical_5 , styles.bg_red, styles.Width_50, styles.flexCenter, styles.Radius_5]} onPress={() => this.onSent()}>
+                                            <TouchableOpacity style={[styles.overHidden, styles.paddingVertical_5 , styles.bg_orange, styles.Width_50, styles.flexCenter, styles.Radius_5]} onPress={() => this.onSent()}>
                                                 <Text style={[styles.textRegular, styles.textSize_18, styles.text_White, styles.textCenter]}>
                                                     { i18n.t('sent') }
                                                 </Text>
                                             </TouchableOpacity>
                                         </View>
                                     </View>
-                                    </Animatable.View>
 
                                 </View>
-                            </View>
                         </Modal>
-                    </ImageBackground>
                 </Content>
+                </ImageBackground>
             </Container>
 
         );

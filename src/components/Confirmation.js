@@ -52,8 +52,8 @@ class Confirmation extends Component {
                     </Title>
                     </Body>
                 </Header>
+                <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content  contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
                         <View style={[styles.overHidden, styles.marginVertical_25, styles.paddingHorizontal_20]}>
                             <View style={[styles.overHidden, styles.SelfRight]}>
@@ -73,7 +73,7 @@ class Confirmation extends Component {
 
                             <TouchableOpacity
                                 style={[
-                                    styles.bg_red,
+                                    styles.bg_orange,
                                     styles.width_150,
                                     styles.flexCenter,
                                     styles.marginVertical_15,
@@ -86,8 +86,8 @@ class Confirmation extends Component {
                             </TouchableOpacity>
                         </View>
 
-                    </ImageBackground>
                 </Content>
+                </ImageBackground>
             </Container>
 
         );

@@ -63,7 +63,7 @@ class Notifications extends Component {
                         <View style={[styles.directionRowSpace ]}>
                             <Text style={[styles.textRegular, styles.text_black, styles.textSize_14, styles.textLeft , {writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr'}]}>{item.item.title}</Text>
                             <TouchableOpacity
-                                style           = {[{width:22 , height:22}, styles.flexCenter, styles.bg_red, styles.borderLightOran, styles.Radius_60]}
+                                style           = {[{width:22 , height:22}, styles.flexCenter, styles.bg_orange, styles.borderLightOran, styles.Radius_60]}
                                 onPress         = {() => this.deleteNotify(item.item.id)}
                             >
                                 <Icon style     = {[styles.text_White, styles.textSize_12]} type="AntDesign" name='close' />
@@ -123,7 +123,7 @@ class Notifications extends Component {
                     style={{marginVertical:7, alignSelf: 'center'}}
                     width={width - 20}
                     height={100}
-                    colorShimmer={['#ffffff75', '#FEDAD075', '#ffffff75']}
+                    colorShimmer={['#ffffff75', COLORS.light_oran, '#ffffff75']}
                 />
             )
         }
@@ -154,8 +154,8 @@ class Notifications extends Component {
                     <Title style={[styles.textRegular , styles.text_black, styles.textSize_20, styles.textLeft, styles.Width_100, styles.paddingHorizontal_0, styles.paddingVertical_0]}>{i18n.t('Notifications')}</Title>
                     </Body>
                 </Header>
+                <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content contentContainerStyle={styles.bgFullWidth} style={styles.contentView}>
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                        <View style={[styles.paddingHorizontal_10]}>
                            {
                                this.state.loader ?
@@ -176,8 +176,8 @@ class Notifications extends Component {
                                   </View>
                            }
                        </View>
-                    </ImageBackground>
                 </Content>
+                </ImageBackground>
             </Container>
 
         );

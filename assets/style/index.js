@@ -968,7 +968,7 @@ const styles = ({
     },
     borderText : {
         borderRightWidth        : 2,
-        borderRightColor        : '#F00',
+        borderRightColor        : COLORS.orange,
     },
 
     // Style Map

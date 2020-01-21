@@ -52,7 +52,7 @@ class SearchHome extends Component {
     }
 
     onFocus(){
-        this.componentDidMount();
+        this.componentWillMount();
     }
 
     render() {
@@ -76,8 +76,8 @@ class SearchHome extends Component {
                         </Title>
                     </Body>
                 </Header>
+                <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content  contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
-                    <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
 
                             <View style={[styles.marginVertical_5 , styles.paddingHorizontal_5]}>
                                 {
@@ -97,8 +97,8 @@ class SearchHome extends Component {
 
                             </View>
 
-                    </ImageBackground>
                 </Content>
+                </ImageBackground>
             </Container>
 
         );
