@@ -31,9 +31,6 @@ import EditShop                 from "../components/EditShop";
 import AddProduct               from "../components/AddProduct";
 import SearchHome               from "../components/SearchHome";
 import DrawerCustomization      from "./DrawerCustomization";
-
-//// amaaaany
-
 import Provider                 from "../components/Provider";
 import Product                  from "../components/Product";
 import Notifications            from "../components/Notifications";
@@ -43,6 +40,7 @@ import EditProfile              from "../components/EditProfile";
 import DelegateOrderDetails     from "../components/DelegateOrderDetails";
 import Confirmation             from "../components/Confirmation";
 import UpdateProduct from "../components/UpdateProduct";
+import LoginAs from "../components/LoginAs";
 
 
 const drawerCust = (props) => (<DrawerCustomization {...props} />);
@@ -73,7 +71,6 @@ const drawerNavigator = createDrawerNavigator({
 
 const appStack =  createStackNavigator({
 
-    // Sh3wza
 
     drawerNavigator: {
         screen: drawerNavigator,
@@ -185,9 +182,6 @@ const appStack =  createStackNavigator({
     },
 
 
-
-
-    /// Amaany
     delegateOrderDetails: {
         screen: DelegateOrderDetails,
         navigationOptions: {
@@ -252,6 +246,12 @@ const appStack =  createStackNavigator({
 });
 
 const authStack = createStackNavigator({
+        loginAs: {
+            screen: LoginAs,
+            navigationOptions: {
+                header: null
+            }
+        },
         Login: {
             screen: Login,
             navigationOptions: {

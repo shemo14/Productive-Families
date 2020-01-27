@@ -35,7 +35,7 @@ class Register extends Component {
             type: 0,
             userId: null,
             country: null,
-            chooseUser: null,
+            chooseUser: this.props.navigation.state.params.userType,
             category_id: null,
             checked: false,
             PhotoID: i18n.t('PhotoID'),
@@ -352,45 +352,45 @@ class Register extends Component {
                                         </View>
                                     </View>
 
-                                    <View
-                                        style={[styles.viewPiker, styles.flexCenter, styles.marginVertical_15, styles.Width_100, styles.borderBold]}>
-                                        <Item style={styles.itemPiker} regular>
-                                            <Picker
-                                                mode="dropdown"
-                                                style={styles.Picker}
-                                                placeholderStyle={[styles.textRegular, {
-                                                    color: "#7C7C7C",
-                                                    writingDirection: 'rtl',
-                                                    width: '100%',
-                                                    fontSize: 14
-                                                }]}
-                                                selectedValue={this.state.chooseUser}
-                                                onValueChange={this.onValueUser.bind(this)}
-                                                textStyle={[styles.textRegular, {
-                                                    color: "#7C7C7C",
-                                                    writingDirection: 'rtl'
-                                                }]}
-                                                placeholder={i18n.t('viewgest')}
-                                                itemTextStyle={[styles.textRegular, {
-                                                    color: "#7C7C7C",
-                                                    writingDirection: 'rtl'
-                                                }]}
-                                            >
+                                    {/*<View*/}
+                                        {/*style={[styles.viewPiker, styles.flexCenter, styles.marginVertical_15, styles.Width_100, styles.borderBold]}>*/}
+                                        {/*<Item style={styles.itemPiker} regular>*/}
+                                            {/*<Picker*/}
+                                                {/*mode="dropdown"*/}
+                                                {/*style={styles.Picker}*/}
+                                                {/*placeholderStyle={[styles.textRegular, {*/}
+                                                    {/*color: "#7C7C7C",*/}
+                                                    {/*writingDirection: 'rtl',*/}
+                                                    {/*width: '100%',*/}
+                                                    {/*fontSize: 14*/}
+                                                {/*}]}*/}
+                                                {/*selectedValue={this.state.chooseUser}*/}
+                                                {/*onValueChange={this.onValueUser.bind(this)}*/}
+                                                {/*textStyle={[styles.textRegular, {*/}
+                                                    {/*color: "#7C7C7C",*/}
+                                                    {/*writingDirection: 'rtl'*/}
+                                                {/*}]}*/}
+                                                {/*placeholder={i18n.t('viewgest')}*/}
+                                                {/*itemTextStyle={[styles.textRegular, {*/}
+                                                    {/*color: "#7C7C7C",*/}
+                                                    {/*writingDirection: 'rtl'*/}
+                                                {/*}]}*/}
+                                            {/*>*/}
 
-                                                <Picker.Item style={[styles.Width_100]} label={i18n.t('viewgest')}
-                                                             value={null}/>
+                                                {/*<Picker.Item style={[styles.Width_100]} label={i18n.t('viewgest')}*/}
+                                                             {/*value={null}/>*/}
 
-                                                <Picker.Item style={[styles.Width_100]} label={i18n.t('user')}
-                                                             value="user"/>
-                                                <Picker.Item style={[styles.Width_100]} label={i18n.t('provider')}
-                                                             value="provider"/>
-                                                <Picker.Item style={[styles.Width_100]} label={i18n.t('delegat')}
-                                                             value="delegate"/>
+                                                {/*<Picker.Item style={[styles.Width_100]} label={i18n.t('user')}*/}
+                                                             {/*value="user"/>*/}
+                                                {/*<Picker.Item style={[styles.Width_100]} label={i18n.t('provider')}*/}
+                                                             {/*value="provider"/>*/}
+                                                {/*<Picker.Item style={[styles.Width_100]} label={i18n.t('delegat')}*/}
+                                                             {/*value="delegate"/>*/}
 
-                                            </Picker>
-                                        </Item>
-                                        <Icon style={styles.iconPicker} type="AntDesign" name='down'/>
-                                    </View>
+                                            {/*</Picker>*/}
+                                        {/*</Item>*/}
+                                        {/*<Icon style={styles.iconPicker} type="AntDesign" name='down'/>*/}
+                                    {/*</View>*/}
 
                                     <View
                                         style={[styles.viewPiker, styles.flexCenter, styles.marginVertical_15, styles.Width_100, styles.borderBold]}>
