@@ -36,9 +36,10 @@ class DrawerCustomization extends Component {
     }
 
     logout(){
-        this.props.navigation.closeDrawer();
+        // this.props.navigation.closeDrawer();
+        alert('opsy');
         this.props.navigation.navigate('loginAs');
-        this.props.logout(this.props.user.token);
+        this.props.logout(this.props.auth.data.token);
         this.props.tempAuth();
     }
 
@@ -112,14 +113,14 @@ class DrawerCustomization extends Component {
                 {
                     (this.props.auth == null || this.props.user == null) ?
 
-                    <TouchableOpacity style={[styles.clickLogin, styles.bg_orange, styles.position_A, styles.width_150]} onPress={() => this.props.navigation.navigate('Login')}>
-                        <Text style={[styles.textRegular, styles.textSize_16, styles.text_White,styles.paddingVertical_5, styles.textCenter]}>{i18n.translate('login')}</Text>
+                    <TouchableOpacity style={[styles.clickLogin, styles.bg_orange, styles.position_A ]} onPress={() => this.props.navigation.navigate('Login')}>
+						<Text style={[styles.textRegular, styles.textSize_16, styles.text_White,styles.paddingVertical_5, styles.textCenter, { transform: [{ rotate: '90deg' }], width: 100, height: 90, top: 30 }]}>{i18n.translate('login')}</Text>
                     </TouchableOpacity>
 
                     :
 
-                    <TouchableOpacity style={[styles.clickLogin, styles.bg_orange ,styles.position_A, styles.width_150]} onPress={() => this.logout()}>
-                        <Text style={[styles.textRegular, styles.textSize_16, styles.text_White,styles.paddingVertical_5, styles.textCenter]}>{i18n.translate('logout')}</Text>
+                    <TouchableOpacity style={[styles.clickLogin, styles.bg_orange ,styles.position_A ]} onPress={() => this.logout()}>
+                        <Text style={[styles.textRegular, styles.textSize_16, styles.text_White,styles.paddingVertical_5, styles.textCenter, { transform: [{ rotate: '90deg' }], width: 100, height: 90, top: 30 }]}>{i18n.translate('logout')}</Text>
                     </TouchableOpacity>
 
                 }

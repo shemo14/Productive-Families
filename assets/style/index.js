@@ -939,8 +939,9 @@ const styles = ({
 
     clickLogin : {
         bottom                  : 100,
-        right                   : -57,
-        transform               : [{ rotate: '90deg' }] ,
+        right                   : 0,
+        height                  : 150,
+        width                   : 40
     },
     drawerItemStyle: {
         paddingHorizontal       : 17,
