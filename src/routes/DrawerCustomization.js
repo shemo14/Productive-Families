@@ -37,7 +37,7 @@ class DrawerCustomization extends Component {
 
     logout(){
         this.props.navigation.closeDrawer();
-        this.props.navigation.navigate('Login');
+        this.props.navigation.navigate('loginAs');
         this.props.logout(this.props.user.token);
         this.props.tempAuth();
     }

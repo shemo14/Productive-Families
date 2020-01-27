@@ -3,14 +3,14 @@ import { AsyncStorage } from 'react-native';
 import CONST from '../consts';
 import {Toast} from "native-base";
 
-export const userLogin = ({phone, password, deviceId }, lang) => {
+export const userLogin = ({phone, password, deviceId , userType }, lang) => {
     return (dispatch) => {
 
         dispatch({type: 'login_user'});
 
         axios.post(
             CONST.url + 'login',
-            {phone, password, lang, device_id: deviceId}).then( response => {
+            {phone, password, lang, device_id: deviceId , userType}).then( response => {
                 Toast.show({
                     text: response.data.msg,
                     type: response.data.key === 1 ? "success" : "danger",
