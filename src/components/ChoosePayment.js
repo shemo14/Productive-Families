@@ -6,6 +6,8 @@ import { DoubleBounce } from 'react-native-loader';
 import {connect} from "react-redux";
 import {NavigationEvents} from "react-navigation";
 import i18n from "../../locale/i18n";
+import {getOrderStore} from '../actions'
+
 
 class ChoosePayment extends Component {
     constructor(props){
@@ -29,15 +31,30 @@ class ChoosePayment extends Component {
         }
     }
 
+    setOrder(type){
+		const provider_id             = this.props.navigation.state.params.provider_id;
+		const shipping_price          = this.props.navigation.state.params.shipping_price;
+		const address                 = this.props.navigation.state.params.address;
+		const lat                     = this.props.navigation.state.params.latitude;
+		const lng                     = this.props.navigation.state.params.longitude;
+		const payment_type            = type;
+
+		this.props.getOrderStore(this.props.lang, provider_id , payment_type , shipping_price.toString() , lat , lng , address , this.props.user.token  , this.props )
+
+		// this.props.navigation.navigate('FormPayment' , {
+		// 	provider_id             : this.props.navigation.state.params.provider_id,
+		// 	shipping_price          : this.props.navigation.state.params.shipping_price,
+		// 	address                 : this.props.navigation.state.params.address,
+		// 	lat                     : this.props.navigation.state.params.latitude,
+		// 	lng                     : this.props.navigation.state.params.longitude,
+		// 	payment_type            : type,
+		// })
+    }
+
     onFocus(){
         this.componentWillMount();
     }
     render() {
-
-        // alert("provider_id"+this.props.navigation.state.params.provider_id + "shipping_price"+this.props.navigation.state.params.shipping_price +
-        //     " cccccc " +this.props.navigation.state.params.address + this.props.navigation.state.params.latitude + this.props.navigation.state.params.longitude)
-
-
         return (
             <Container>
 
@@ -58,14 +75,7 @@ class ChoosePayment extends Component {
                 <ImageBackground source={require('../../assets/images/bg_img.png')} style={[styles.bgFullWidth]}>
                 <Content  contentContainerStyle={styles.bgFullWidth} style={styles.bgFullWidth}>
                         <View style={[styles.rowGroup , styles.paddingHorizontal_10, styles.marginVertical_10]}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('FormPayment' , {
-                                provider_id             : this.props.navigation.state.params.provider_id,
-                                shipping_price          : this.props.navigation.state.params.shipping_price,
-                                address                 : this.props.navigation.state.params.address,
-                                lat                     : this.props.navigation.state.params.latitude,
-                                lng                     : this.props.navigation.state.params.longitude,
-                                payment_type            : 0,
-                            })} style={[styles.bg_White , styles.Border, styles.flex_45, styles.flexCenter, styles.Radius_5, styles.marginHorizontal_5, styles.height_120, styles.marginVertical_10]}>
+                            <TouchableOpacity onPress={() => this.setOrder(0)} style={[styles.bg_White , styles.Border, styles.flex_45, styles.flexCenter, styles.Radius_5, styles.marginHorizontal_5, styles.height_120, styles.marginVertical_10]}>
                                 <Image
                                     style       = {[styles.width_70 , styles.height_70, styles.flexCenter]}
                                     source      = {require('../../assets/images/cash.png')} resizeMode={'cover'}
@@ -73,14 +83,7 @@ class ChoosePayment extends Component {
                                 <Text
                                     style={[styles.textBold, {color:'#ed8928'}, styles.marginHorizontal_5]}>{i18n.translate('cash')}</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('FormPayment' , {
-                                provider_id             : this.props.navigation.state.params.provider_id,
-                                shipping_price          : this.props.navigation.state.params.shipping_price,
-                                address                 : this.props.navigation.state.params.address,
-                                lat                     : this.props.navigation.state.params.latitude,
-                                lng                     : this.props.navigation.state.params.longitude,
-                                payment_type            : 1,
-                            })} style={[styles.bg_White , styles.Border, styles.flex_45, styles.flexCenter, styles.Radius_5, styles.marginHorizontal_5, styles.height_120, styles.marginVertical_10]}>
+                            <TouchableOpacity onPress={() => this.setOrder(1)} style={[styles.bg_White , styles.Border, styles.flex_45, styles.flexCenter, styles.Radius_5, styles.marginHorizontal_5, styles.height_120, styles.marginVertical_10]}>
                                 <Image
                                     style       = {[styles.width_70 , styles.height_70, styles.flexCenter]}
                                     source      = {require('../../assets/images/visa_master.png')} resizeMode={'cover'}
@@ -88,14 +91,7 @@ class ChoosePayment extends Component {
                                 <Text
                                     style={[styles.textBold, {color:'#0d6bb4'}, styles.marginHorizontal_5]}>{i18n.translate('visa')}</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('FormPayment' , {
-                                provider_id             : this.props.navigation.state.params.provider_id,
-                                shipping_price          : this.props.navigation.state.params.shipping_price,
-                                address                 : this.props.navigation.state.params.address,
-                                lat                     : this.props.navigation.state.params.latitude,
-                                lng                     : this.props.navigation.state.params.longitude,
-                                payment_type            : 2,
-                            })} style={[styles.bg_White , styles.Border, styles.flex_45, styles.flexCenter, styles.Radius_5, styles.marginHorizontal_5, styles.height_120, styles.marginVertical_10]}>
+                            <TouchableOpacity onPress={() => this.setOrder(2)} style={[styles.bg_White , styles.Border, styles.flex_45, styles.flexCenter, styles.Radius_5, styles.marginHorizontal_5, styles.height_120, styles.marginVertical_10]}>
                                 <Image
                                     style       = {[styles.width_70 , styles.height_70, styles.flexCenter]}
                                     source      = {require('../../assets/images/paypal.png')} resizeMode={'cover'}
@@ -103,14 +99,7 @@ class ChoosePayment extends Component {
                                 <Text
                                     style={[styles.textBold, {color:'#20a2e0'}, styles.marginHorizontal_5]}>{i18n.translate('payPal')}</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('FormPayment' , {
-                                provider_id             : this.props.navigation.state.params.provider_id,
-                                shipping_price          : this.props.navigation.state.params.shipping_price,
-                                address                 : this.props.navigation.state.params.address,
-                                lat                     : this.props.navigation.state.params.latitude,
-                                lng                     : this.props.navigation.state.params.longitude,
-                                payment_type            : 3,
-                            })} style={[styles.bg_White , styles.Border, styles.flex_45, styles.flexCenter, styles.Radius_5, styles.marginHorizontal_5, styles.height_120, styles.marginVertical_10]}>
+                            <TouchableOpacity onPress={() => this.setOrder(3)} style={[styles.bg_White , styles.Border, styles.flex_45, styles.flexCenter, styles.Radius_5, styles.marginHorizontal_5, styles.height_120, styles.marginVertical_10]}>
                                 <Image
                                     style       = {[styles.width_70 , styles.height_70, styles.flexCenter]}
                                     source      = {require('../../assets/images/sadad.png')} resizeMode={'cover'}
@@ -127,9 +116,10 @@ class ChoosePayment extends Component {
     }
 }
 
-const mapStateToProps = ({ lang }) => {
-    return {
-        lang        : lang.lang,
-    };
+const mapStateToProps = ({lang , profile}) => {
+	return {
+		lang: lang.lang,
+		user: profile.user,
+	};
 };
-export default connect(mapStateToProps, { })(ChoosePayment);
+export default connect(mapStateToProps, {getOrderStore})(ChoosePayment);

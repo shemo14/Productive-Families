@@ -37,7 +37,6 @@ class DrawerCustomization extends Component {
 
     logout(){
         // this.props.navigation.closeDrawer();
-        alert('opsy');
         this.props.navigation.navigate('loginAs');
         this.props.logout(this.props.auth.data.token);
         this.props.tempAuth();
@@ -56,7 +55,6 @@ class DrawerCustomization extends Component {
             <Container>
                 <View style={[styles.bg_light_oran, styles.width_40, styles.heightFull, styles.position_A, styles.bg_before, styles.zIndexDown]}/>
                 <Content contentContainerStyle={styles.bgFullWidth}>
-
 
                     <Image style={[styles.imageMask]} source={require('../../assets/images/MaskGro.png')}/>
 
