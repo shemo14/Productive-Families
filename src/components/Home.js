@@ -33,10 +33,7 @@ class Home extends Component {
     }
 
     componentWillMount() {
-
-        if ( this.props.auth === null || this.props.auth.key === 0 ) {
-            this.props.navigation.navigate('Login');
-        } else if (this.props.auth.data.type === 'user') {
+        if (this.props.auth === null || this.props.auth.key === 0 || this.props.auth.data.type === 'user') {
             this.props.sliderHome(this.props.lang);
             this.props.categoryHome(this.props.lang);
         } else if (this.props.auth.data.type === 'provider') {
@@ -224,16 +221,16 @@ class Home extends Component {
                         {
                             this.props.user == null || this.props.user.type === 'user' ?
                                 <Right style={styles.rightIcon}>
-                                    <Button onPress={() => this.props.navigation.navigate('notifications')} style={[styles.text_gray]} transparent>
+                                    <Button onPress={() => this.props.navigation.navigate(this.props.user ?'notifications':'loginAs')} style={[styles.text_gray]} transparent>
                                         <Image style={[styles.ionImage]} source={require('../../assets/images/alarm.png')}/>
                                     </Button>
-                                    <Button  onPress={() => this.props.navigation.navigate('Basket')} style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent>
+                                    <Button  onPress={() => this.props.navigation.navigate(this.props.user ?'Basket':'loginAs')} style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent>
                                         <Image style={[styles.ionImage]} source={require('../../assets/images/basket.png')}/>
                                     </Button>
                                 </Right>
                                 :
                                 <Right style={styles.rightIcon}>
-                                    <Button  onPress={() => this.props.navigation.navigate('notifications')} style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent>
+                                    <Button  onPress={() => this.props.navigation.navigate(this.props.user ?'notifications':'loginAs')} style={[styles.bg_light_oran, styles.Radius_0, styles.iconHeader, styles.flexCenter]} transparent>
                                         <Image style={[styles.ionImage]} source={require('../../assets/images/alarm.png')}/>
                                     </Button>
                                 </Right>

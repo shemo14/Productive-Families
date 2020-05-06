@@ -111,7 +111,7 @@ class DrawerCustomization extends Component {
                 {
                     (this.props.auth == null || this.props.user == null) ?
 
-                    <TouchableOpacity style={[styles.clickLogin, styles.bg_orange, styles.position_A ]} onPress={() => this.props.navigation.navigate('Login')}>
+                    <TouchableOpacity style={[styles.clickLogin, styles.bg_orange, styles.position_A ]} onPress={() => this.props.navigation.navigate('loginAs')}>
 						<Text style={[styles.textRegular, styles.textSize_16, styles.text_White,styles.paddingVertical_5, styles.textCenter, { transform: [{ rotate: '90deg' }], width: 100, height: 90, top: 30 }]}>{i18n.translate('login')}</Text>
                     </TouchableOpacity>
 

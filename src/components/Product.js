@@ -35,7 +35,7 @@ class Product extends Component {
 			value: 1,
 			value2: 1,
 			status: null,
-			isFav: this.props.user.type == 'user' && this.props.products && this.props.products.is_fav == 1 ? true : false,
+			isFav: this.props.user ? this.props.user.type == 'user' && this.props.products && this.props.products.is_fav == 1 ? true : false : false,
 			isHidden: true,
 			fading: false,
 			isModalVisible: false,
@@ -45,7 +45,8 @@ class Product extends Component {
 	}
 
 	componentWillMount() {
-		this.props.productDetails(this.props.lang, this.props.navigation.state.params.id, this.props.user.token);
+		const token =  this.props.user ?  this.props.user.token : null;
+		this.props.productDetails(this.props.lang, this.props.navigation.state.params.id, token);
 	}
 
 
@@ -285,6 +286,7 @@ class Product extends Component {
 																source={{uri: img.image}} resizeMode={'cover'}/>
 															{
 																this.props.user == null || this.props.user.type === 'user' ?
+																	this.props.user ?
 																	<Animatable.View animation="fadeInRight"
 																		easing="ease-out" delay={500}
 																		style={[styles.blockContent]}>
@@ -308,10 +310,13 @@ class Product extends Component {
 																		</View>
 																	</Animatable.View>
 																	:
-																	<View/>
+																		null
+																	:
+																	null
 															}
 															{
 																this.props.user == null || this.props.user.type === 'provider' ?
+																	this.props.user ?
 																	<Animatable.View animation="fadeInRight"
 																		easing="ease-out" delay={500}
 																		style={[styles.blockContent, styles.top_5, styles.marginVertical_10]}>
@@ -326,10 +331,13 @@ class Product extends Component {
 																		</View>
 																	</Animatable.View>
 																	:
-																	<View/>
+																	null
+																	:
+																	null
 															}
 															{
 																this.props.user == null || this.props.user.type === 'provider' ?
+																	this.props.user ?
 																	<Animatable.View animation="fadeInRight"
 																		easing="ease-out" delay={500}
 																		style={[styles.blockContent, styles.top_35, styles.marginVertical_25]}>
@@ -344,7 +352,9 @@ class Product extends Component {
 																		</View>
 																	</Animatable.View>
 																	:
-																	<View/>
+																	null
+																	:
+																	null
 															}
 														</View>
 
@@ -398,6 +408,7 @@ class Product extends Component {
 
 													{
 														this.props.user == null || this.props.user.type === 'user' ?
+															this.props.user ?
 															<View style={styles.counterParent}>
 																<TouchableOpacity onPress={() => this.increment()}
 																	style={styles.touchPlus}>
@@ -419,6 +430,8 @@ class Product extends Component {
 															</View>
 															:
 															<View/>
+															:
+															null
 													}
 
 												</View>
@@ -448,9 +461,13 @@ class Product extends Component {
 												</View>
 												{
 													this.props.user == null || this.props.user.type === 'user' ?
+
+														this.props.user ?
 														<View style={{ alignSelf: 'center' }}>
 															{this.renderAddToCart()}
-														</View> : <View/>
+														</View> : null
+														:
+														null
 												}
 											</View>
 										</View>

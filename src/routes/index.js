@@ -71,12 +71,7 @@ const drawerNavigator = createDrawerNavigator({
 
 const appStack =  createStackNavigator({
 
-    loginAs: {
-        screen: LoginAs,
-        navigationOptions: {
-            header: null
-        }
-    },
+
     drawerNavigator: {
         screen: drawerNavigator,
         navigationOptions: {
