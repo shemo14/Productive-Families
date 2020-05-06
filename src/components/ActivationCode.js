@@ -150,8 +150,8 @@ class ActivationCode extends Component {
         console.log('props auth ...PPP', newProps, newProps.activeKey);
 
         if (this.state.activeKey == 0){
-            const { password, phone, deviceId } = this.props.navigation.state.params;
-            this.props.userLogin({ phone, password, deviceId }, this.props.lang);
+            const { password, phone, deviceId , userType } = this.props.navigation.state.params;
+            this.props.userLogin({ phone, password, deviceId , userType }, this.props.lang);
 
             this.setState({ activeKey: newProps.activeKey })
         }

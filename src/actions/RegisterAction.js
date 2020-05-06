@@ -35,7 +35,8 @@ export const register = (data, props, lang) => {
                         user_id			: response.data.data.id,
                         phone			: data.phone,
                         password		: data.password,
-                        deviceId		: device_id
+                        deviceId		: device_id,
+                        userType        : data.chooseUser
                     });
                 }
 
