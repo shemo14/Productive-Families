@@ -39,8 +39,9 @@ import OrderDetails             from "../components/OrderDetails";
 import EditProfile              from "../components/EditProfile";
 import DelegateOrderDetails     from "../components/DelegateOrderDetails";
 import Confirmation             from "../components/Confirmation";
-import UpdateProduct from "../components/UpdateProduct";
-import LoginAs from "../components/LoginAs";
+import UpdateProduct            from "../components/UpdateProduct";
+import LoginAs                  from "../components/LoginAs";
+import Payment                  from "../components/Payment";
 
 
 const drawerCust = (props) => (<DrawerCustomization {...props} />);
@@ -80,6 +81,12 @@ const appStack =  createStackNavigator({
     },
     AddProduct : {
         screen: AddProduct,
+        navigationOptions: {
+            header: null
+        }
+    },
+    Payment : {
+        screen: Payment,
         navigationOptions: {
             header: null
         }

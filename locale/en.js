@@ -6,6 +6,7 @@ const en = {
     'phone': 'phone number',
     'password': 'password',
     'forgetPassword': 'Forgot your password?',
+    'payment_way': 'Online payment',
     'doHaveAcc': 'Register',
     'changepass': 'change password',
     'currentpass': 'current password',

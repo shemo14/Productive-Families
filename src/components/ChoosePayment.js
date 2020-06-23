@@ -32,23 +32,25 @@ class ChoosePayment extends Component {
     }
 
     setOrder(type){
-		const provider_id             = this.props.navigation.state.params.provider_id;
-		const shipping_price          = this.props.navigation.state.params.shipping_price;
-		const address                 = this.props.navigation.state.params.address;
-		const lat                     = this.props.navigation.state.params.latitude;
-		const lng                     = this.props.navigation.state.params.longitude;
-		const payment_type            = type;
+        if(type == 0){
+            const provider_id             = this.props.navigation.state.params.provider_id;
+            const shipping_price          = this.props.navigation.state.params.shipping_price;
+            const address                 = this.props.navigation.state.params.address;
+            const lat                     = this.props.navigation.state.params.latitude;
+            const lng                     = this.props.navigation.state.params.longitude;
+            const payment_type            = type;
+            this.props.getOrderStore(this.props.lang, provider_id , payment_type , shipping_price.toString() , lat , lng , address , this.props.user.token  , this.props )
+        }else{
+            this.props.navigation.navigate('Payment',{
+                provider_id               : this.props.navigation.state.params.provider_id,
+                shipping_price            : this.props.navigation.state.params.shipping_price,
+                address                   : this.props.navigation.state.params.address,
+                lat                       : this.props.navigation.state.params.latitude,
+                lng                       : this.props.navigation.state.params.longitude,
+                user_id                   : this.props.user.id
+            });
+        }
 
-		this.props.getOrderStore(this.props.lang, provider_id , payment_type , shipping_price.toString() , lat , lng , address , this.props.user.token  , this.props )
-
-		// this.props.navigation.navigate('FormPayment' , {
-		// 	provider_id             : this.props.navigation.state.params.provider_id,
-		// 	shipping_price          : this.props.navigation.state.params.shipping_price,
-		// 	address                 : this.props.navigation.state.params.address,
-		// 	lat                     : this.props.navigation.state.params.latitude,
-		// 	lng                     : this.props.navigation.state.params.longitude,
-		// 	payment_type            : type,
-		// })
     }
 
     onFocus(){
@@ -90,22 +92,6 @@ class ChoosePayment extends Component {
                                 />
                                 <Text
                                     style={[styles.textBold, {color:'#0d6bb4'}, styles.marginHorizontal_5]}>{i18n.translate('visa')}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.setOrder(2)} style={[styles.bg_White , styles.Border, styles.flex_45, styles.flexCenter, styles.Radius_5, styles.marginHorizontal_5, styles.height_120, styles.marginVertical_10]}>
-                                <Image
-                                    style       = {[styles.width_70 , styles.height_70, styles.flexCenter]}
-                                    source      = {require('../../assets/images/paypal.png')} resizeMode={'cover'}
-                                />
-                                <Text
-                                    style={[styles.textBold, {color:'#20a2e0'}, styles.marginHorizontal_5]}>{i18n.translate('payPal')}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.setOrder(3)} style={[styles.bg_White , styles.Border, styles.flex_45, styles.flexCenter, styles.Radius_5, styles.marginHorizontal_5, styles.height_120, styles.marginVertical_10]}>
-                                <Image
-                                    style       = {[styles.width_70 , styles.height_70, styles.flexCenter]}
-                                    source      = {require('../../assets/images/sadad.png')} resizeMode={'cover'}
-                                />
-                                <Text
-                                    style={[styles.textBold, {color:'#ef7e31'}, styles.marginHorizontal_5]}>{i18n.translate('sdad')}</Text>
                             </TouchableOpacity>
                         </View>
                 </Content>
