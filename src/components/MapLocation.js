@@ -22,7 +22,6 @@ class MapLocation extends Component {
             location                  : '',
         }
     }
-
     async componentWillMount() {
 
         console.log('name', this.props.navigation);
@@ -37,8 +36,8 @@ class MapLocation extends Component {
         }
 
         let getCity = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-        getCity    += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
-        getCity    += '&key=AIzaSyCJTSwkdcdRpIXp2yG7DfSRKFWxKhQdYhQ&language=ar&sensor=true';
+        getCity     += this.state.mapRegion.latitude + ',' + this.state.mapRegion.longitude;
+        getCity     += '&key=AIzaSyDdsxnqpoSlY8u8nNlXDCKsP75mx8z5il0&language=ar&sensor=true';
 
         // ReactotronConfig.log(getCity);
 

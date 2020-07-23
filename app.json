@@ -3,7 +3,6 @@
     "name": "chifz",
     "slug": "chifz",
     "privacy": "public",
-    "sdkVersion": "35.0.0",
     "platforms": [
       "ios",
       "android",
@@ -38,7 +37,7 @@
       "versionCode": 5,
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyBQu-aDY--uY14s4U3ok-XwwqhsnhLFe5Q"
+          "apiKey": "AIzaSyDdsxnqpoSlY8u8nNlXDCKsP75mx8z5il0"
         }
       }
     }
